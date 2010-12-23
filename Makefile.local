@@ -1,0 +1,57 @@
+#############################
+# Library-specific settings #
+#############################
+INCFILES  = gbpSID.h
+LIBFILE   = 
+OBJFILES  = SID_init.o              \
+	    SID_test.o              \
+            SID_exit.o              \
+	    SID_type_size.o         \
+            SID_Bcast.o             \
+	    SID_Allreduce.o         \
+	    SID_Sendrecv.o          \
+	    SID_Send.o              \
+	    SID_Recv.o              \
+            SID_Barrier.o           \
+	    SID_parse_args.o        \
+	    SID_print_syntax.o      \
+	    SID_log.o               \
+	    SID_set_verbosity.o     \
+            SID_profile_start.o     \
+	    SID_profile_stop.o      \
+            SID_free.o              \
+            SID_malloc.o            \
+            SID_calloc.o            \
+	    SID_out.o               \
+	    SID_input.o             \
+	    SID_log_error.o         \
+	    SID_log_warning.o       \
+	    SID_trap_error.o        \
+	    SID_fopen.o             \
+	    SID_fopen_chunked.o     \
+            SID_fclose.o            \
+            SID_fclose_chunked.o    \
+            SID_remove_chunked.o    \
+	    SID_fread.o             \
+	    SID_fread_all.o         \
+	    SID_fread_ordered.o     \
+	    SID_fread_chunked.o     \
+	    SID_fread_chunked_ordered.o \
+            SID_fread_chunked_all.o \
+            SID_fskip_chunked.o     \
+            SID_fseek_chunked.o     \
+            SID_frewind_chunked.o   \
+	    SID_fwrite.o            \
+	    SID_fwrite_all.o        \
+            SID_fwrite_ordered.o    \
+            SID_fwrite_shared.o     \
+	    SID_fwrite_chunked.o    \
+	    SID_fseek.o             \
+            SID_fseek_end.o         \
+	    SID_fskip.o             \
+            SID_frewind.o           \
+            SID_cat_files.o         
+BINFILES  = 
+LIBS      = 
+SUBDIRS   =
+#############################
