@@ -54,7 +54,7 @@ size_t SID_fread_chunked(void   *buffer,
           SID_fclose(fp);
 #ifndef USE_MPI_IO
         }
-        SID_barrier();
+        SID_Barrier(SID.COMM_WORLD);
       }
 #endif
     }

@@ -37,7 +37,7 @@ int SID_fopen_chunked(char   *filename_root,
         SID_fclose(&fp_temp);
 #ifndef USE_MPI_IO
       }
-      SID_barrier();
+      SID_Barrier(SID.COMM_WORLD);
     }
 #endif
     fp->i_x_step_chunk =(size_t *)malloc(sizeof(size_t)*fp->chunked_header.n_chunk);
@@ -59,7 +59,7 @@ int SID_fopen_chunked(char   *filename_root,
           SID_fclose(&fp_temp);
 #ifndef USE_MPI_IO
         }
-        SID_barrier();
+        SID_Barrier(SID.COMM_WORLD);
       }
 #endif
       fp->i_x_start_chunk[i_chunk]=fp->i_x_last_chunk[i_chunk-1]+1;
