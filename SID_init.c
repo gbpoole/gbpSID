@@ -181,7 +181,7 @@ void SID_init(int       *argc,
 
   // Create private COMM_WORLD
 #ifdef USE_MPI
-  SID.COMM_WORLD=MPI_COMM_WORLD;
+  MPI_Comm_dup(MPI_COMM_WORLD,&(SID.COMM_WORLD));
 #else
   SID.COMM_WORLD=NULL;
 #endif
