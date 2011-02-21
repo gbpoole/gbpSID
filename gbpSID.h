@@ -206,7 +206,7 @@ struct SID_fp{
 void SID_init(int *argc,char **argv[],SID_args args[]);
 int  SID_parse_args(int argc,char *argv[],SID_args args[]);
 void SID_print_syntax(int argc,char *argv[],SID_args args[]);
-void SID_Bcast(void *data,int data_size,int source_rank);
+void SID_Bcast(void *buffer,int data_size,int source_rank,SID_Comm comm);
 void SID_Send(void         *sendbuf,
               int           sendcount,
               SID_Datatype  sendtype,
