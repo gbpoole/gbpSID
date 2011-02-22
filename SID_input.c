@@ -40,8 +40,8 @@ void SID_input(char *fmt, SID_Datatype type, void *input, ...){
       printf(" {%d}\n",((int *)input)[0]);
     }
     else if(type==SID_SIZE_T){
-      fscanf(SID.fp_in,"%lld",(size_t *)input);
-      printf(" {%lld}\n",((size_t *)input)[0]);
+      fscanf(SID.fp_in,"%zd",(size_t *)input);
+      printf(" {%zd}\n",((size_t *)input)[0]);
     }
     else
       SID_trap_error("Datatype is not a supported user-input type.",ERROR_LOGIC);

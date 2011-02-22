@@ -40,10 +40,10 @@ int SID_fopen_chunked(char   *filename_root,
       SID_Barrier(SID.COMM_WORLD);
     }
 #endif
-    fp->i_x_step_chunk =(size_t *)malloc(sizeof(size_t)*fp->chunked_header.n_chunk);
-    fp->i_x_start_chunk=(size_t *)malloc(sizeof(size_t)*fp->chunked_header.n_chunk);
-    fp->i_x_last_chunk =(size_t *)malloc(sizeof(size_t)*fp->chunked_header.n_chunk);
-    fp->header_offset  =(size_t *)malloc(sizeof(size_t)*fp->chunked_header.n_chunk);
+    fp->i_x_step_chunk =(size_t *)SID_malloc(sizeof(size_t)*fp->chunked_header.n_chunk);
+    fp->i_x_start_chunk=(size_t *)SID_malloc(sizeof(size_t)*fp->chunked_header.n_chunk);
+    fp->i_x_last_chunk =(size_t *)SID_malloc(sizeof(size_t)*fp->chunked_header.n_chunk);
+    fp->header_offset  =(size_t *)SID_malloc(sizeof(size_t)*fp->chunked_header.n_chunk);
     fp->i_x_start_chunk[0]=0;
     fp->i_x_step_chunk[0] =read_subheader.n_items;
     fp->i_x_last_chunk[0] =read_subheader.n_items-1;
@@ -75,10 +75,10 @@ int SID_fopen_chunked(char   *filename_root,
     fp->chunked_header.n_items    =(size_t)va_arg(vargs,size_t);
     fp->chunked_header.item_size  =(size_t)va_arg(vargs,size_t);
     fp->chunked_header.n_chunk    =(int)   va_arg(vargs,int);
-    fp->i_x_step_chunk            =(size_t *)malloc(sizeof(size_t)*fp->chunked_header.n_chunk);
-    fp->i_x_start_chunk           =(size_t *)malloc(sizeof(size_t)*fp->chunked_header.n_chunk);
-    fp->i_x_last_chunk            =(size_t *)malloc(sizeof(size_t)*fp->chunked_header.n_chunk);
-    fp->header_offset             =(size_t *)malloc(sizeof(size_t)*fp->chunked_header.n_chunk);
+    fp->i_x_step_chunk            =(size_t *)SID_malloc(sizeof(size_t)*fp->chunked_header.n_chunk);
+    fp->i_x_start_chunk           =(size_t *)SID_malloc(sizeof(size_t)*fp->chunked_header.n_chunk);
+    fp->i_x_last_chunk            =(size_t *)SID_malloc(sizeof(size_t)*fp->chunked_header.n_chunk);
+    fp->header_offset             =(size_t *)SID_malloc(sizeof(size_t)*fp->chunked_header.n_chunk);
     fp->i_x_step_chunk[0]         =(int)(0.5+(double)fp->chunked_header.n_items/(double)fp->chunked_header.n_chunk);
     fp->i_x_start_chunk[0]        =0;
     fp->i_x_last_chunk[0]         =fp->i_x_step_chunk[0]-1;
