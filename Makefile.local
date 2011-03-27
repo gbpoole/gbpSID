@@ -6,7 +6,7 @@ LIBFILE   =
 OBJFILES  = SID_init.o              \
 	    SID_test.o              \
             SID_exit.o              \
-	    SID_type_size.o         \
+	    SID_Type_size.o         \
             SID_Bcast.o             \
 	    SID_Allreduce.o         \
 	    SID_Sendrecv.o          \
