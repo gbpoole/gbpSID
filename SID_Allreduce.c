@@ -7,7 +7,7 @@ void SID_Allreduce(void *sendbuf,void *recvbuf,int count,SID_Datatype datatype,S
 #else
   int size;
   if(sendbuf!=SID_IN_PLACE){
-    SID_type_size(datatype,&size);
+    SID_Type_size(datatype,&size);
     memcpy(recvbuf,sendbuf,(size_t)(count*size));
   }
 #endif
