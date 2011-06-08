@@ -36,7 +36,7 @@ _FILE_C_CLASS int b;
 
 #define SID_FARG (void **)&
 
-#define SID_LOG_MAX_LEVELS 10
+#define SID_LOG_MAX_LEVELS 30
 #define SID_LOG_OPEN       1
 #define SID_LOG_CLOSE      2
 #define SID_LOG_TIMER      4
