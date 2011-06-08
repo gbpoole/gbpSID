@@ -12,10 +12,9 @@ void SID_Sendrecv(void         *sendbuf,
                   SID_Datatype  recvtype,
                   int           source,
                   int           recvtag,
-                  SID_Comm      comm){
+                  SID_Comm     *comm){
 #ifdef USE_MPI
-fprintf(stderr,"zz %3d: %d %d %d %d %d %d\n",sendcount,dest,sendtag,recvcount,source,recvtag);
-  MPI_Sendrecv(sendbuf,sendcount,(MPI_Datatype)sendtype,dest,sendtag,recvbuf,recvcount,(MPI_Datatype)recvtype,source,recvtag,(MPI_Comm)comm,MPI_STATUS_IGNORE);
+  MPI_Sendrecv(sendbuf,sendcount,(MPI_Datatype)sendtype,dest,sendtag,recvbuf,recvcount,(MPI_Datatype)recvtype,source,recvtag,(MPI_Comm)(comm->comm),MPI_STATUS_IGNORE);
 #else
   size_t send_size;
   size_t recv_size;

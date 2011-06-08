@@ -129,9 +129,9 @@ void SID_exit(int status){
   SID_free(SID_FARG SID.My_node);
 
   // Finalize MPI
+  SID_Comm_free(&(SID.COMM_WORLD));
   #ifdef USE_MPI_IO
     MPI_Info_free(&(SID.file_info));
-    MPI_Comm_free(&(SID.COMM_WORLD));
     MPI_Finalize(); 
   #endif
   exit(status);

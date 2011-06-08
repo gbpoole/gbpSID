@@ -180,10 +180,17 @@ void SID_init(int       *argc,
 #endif
 
   // Create private COMM_WORLD
+ SID_Comm_init(&(SID.COMM_WORLD));
 #ifdef USE_MPI
-  MPI_Comm_dup(MPI_COMM_WORLD,&(SID.COMM_WORLD));
+  MPI_Comm_dup(MPI_COMM_WORLD,&(SID.COMM_WORLD->comm));
+  MPI_Comm_group(MPI_COMM_WORLD,&(SID.COMM_WORLD->group));
+  MPI_Comm_size(SID.COMM_WORLD->comm,&(SID.COMM_WORLD->n_proc));
+  MPI_Comm_rank(SID.COMM_WORLD->comm,&(SID.COMM_WORLD->My_rank));
 #else
-  SID.COMM_WORLD=NULL;
+  SID.COMM_WORLD->comm   =NULL;
+  SID.COMM_WORLD->group  =NULL;
+  SID.COMM_WORLD->n_proc =1;
+  SID.COMM_WORLD->My_rank=MASTER_RANK;
 #endif
 
   // Start total-run-ime timer

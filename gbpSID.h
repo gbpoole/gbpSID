@@ -70,35 +70,37 @@ _FILE_C_CLASS int b;
 #endif
 
 #ifdef USE_MPI
-#define SID_Comm      MPI_Comm
-#define SID_IN_PLACE  MPI_IN_PLACE
-#define SID_Datatype  MPI_Datatype
-#define SID_CHAR      MPI_CHAR
-#define SID_INT       MPI_INT
-#define SID_LONG_LONG MPI_LONG_LONG
-#define SID_SIZE_T    MPI_LONG_LONG
-#define SID_FLOAT     MPI_FLOAT
-#define SID_DOUBLE    MPI_DOUBLE
-#define SID_BYTE      MPI_BYTE
-#define SID_Op        MPI_Op
-#define SID_SUM       MPI_SUM
-#define SID_MAX       MPI_MAX
-#define SID_MIN       MPI_MIN
+#define SID_IN_PLACE    MPI_IN_PLACE
+#define SID_COMM_NULL   MPI_COMM_NULL
+#define SID_GROUP_EMPTY MPI_GROUP_EMPTY
+#define SID_Datatype    MPI_Datatype
+#define SID_CHAR        MPI_CHAR
+#define SID_INT         MPI_INT
+#define SID_LONG_LONG   MPI_LONG_LONG
+#define SID_SIZE_T      MPI_LONG_LONG
+#define SID_FLOAT       MPI_FLOAT
+#define SID_DOUBLE      MPI_DOUBLE
+#define SID_BYTE        MPI_BYTE
+#define SID_Op          MPI_Op
+#define SID_SUM         MPI_SUM
+#define SID_MAX         MPI_MAX
+#define SID_MIN         MPI_MIN
 #else
-#define SID_Comm     char *
-#define SID_IN_PLACE NULL
-#define SID_Datatype int
-#define SID_DOUBLE    0
-#define SID_LONG_LONG 1
-#define SID_FLOAT     2
-#define SID_INT       3
-#define SID_SIZE_T    6
-#define SID_BYTE      7
-#define SID_CHAR      8
-#define SID_Op        int
-#define SID_SUM       1
-#define SID_MAX       2
-#define SID_MIN       3
+#define SID_IN_PLACE    NULL
+#define SID_COMM_NULL   NULL
+#define SID_GROUP_EMPTY NULL
+#define SID_Datatype    int
+#define SID_DOUBLE      0
+#define SID_LONG_LONG   1
+#define SID_FLOAT       2
+#define SID_INT         3
+#define SID_SIZE_T      6
+#define SID_BYTE        7
+#define SID_CHAR        8
+#define SID_Op          int
+#define SID_SUM         1
+#define SID_MAX         2
+#define SID_MIN         3
 #endif 
 #ifdef USE_DOUBLE
   #define SID_REAL SID_DOUBLE
@@ -116,6 +118,19 @@ struct SID_arg {
   int     type;
   int     flag_required;
   void   *val;
+};
+
+typedef struct SID_Comm SID_Comm;
+struct SID_Comm{
+  #ifdef USE_MPI
+    MPI_Comm   comm;
+    MPI_Group  group;
+  #else
+    char      *comm;
+    char      *group;
+  #endif
+  int        n_proc;
+  int        My_rank;
 };
 
 // Structure to store SID info 
@@ -148,7 +163,7 @@ struct SID_info{
 #ifdef USE_MPI
   MPI_Info  file_info;
 #endif
-  SID_Comm  COMM_WORLD;
+  SID_Comm *COMM_WORLD;
 #ifndef USE_MPI_IO
   int       n_groups;
   int       My_group;
@@ -204,21 +219,24 @@ struct SID_fp{
 
 // Function declarations 
 void SID_init(int *argc,char **argv[],SID_args args[]);
+void SID_Comm_init(SID_Comm **comm);
+void SID_Comm_free(SID_Comm **comm);
+void SID_Comm_list(SID_Comm *comm_in,int comm_id,SID_Comm *comm_out);
 int  SID_parse_args(int argc,char *argv[],SID_args args[]);
 void SID_print_syntax(int argc,char *argv[],SID_args args[]);
-void SID_Bcast(void *buffer,int data_size,int source_rank,SID_Comm comm);
+void SID_Bcast(void *buffer,int data_size,int source_rank,SID_Comm *comm);
 void SID_Send(void         *sendbuf,
               int           sendcount,
               SID_Datatype  sendtype,
               int           dest,
               int           sendtag,
-              SID_Comm      comm);
+              SID_Comm     *comm);
 void SID_Recv(void         *recvbuf,
               int           recvcount,
               SID_Datatype  recvtype,
               int           source,
               int           recvtag,
-              SID_Comm      comm);
+              SID_Comm     *comm);
 void SID_Sendrecv(void         *sendbuf,
                   int           sendcount,
                   SID_Datatype  sendtype,
@@ -229,10 +247,10 @@ void SID_Sendrecv(void         *sendbuf,
                   SID_Datatype  recvtype,
                   int           source,
                   int           recvtag,
-                  SID_Comm      comm);
+                  SID_Comm     *comm);
 void SID_test(int val,char *fmt,...);
 void SID_barrier();
-void SID_Barrier(SID_Comm comm);
+void SID_Barrier(SID_Comm *comm);
 void SID_demote();
 void SID_premote();
 void SID_say(char *fmt, ...);

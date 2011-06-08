@@ -7,6 +7,9 @@ OBJFILES  = SID_init.o              \
 	    SID_test.o              \
             SID_exit.o              \
 	    SID_Type_size.o         \
+	    SID_Comm_list.o         \
+	    SID_Comm_init.o         \
+	    SID_Comm_free.o         \
             SID_Bcast.o             \
 	    SID_Allreduce.o         \
 	    SID_Sendrecv.o          \
