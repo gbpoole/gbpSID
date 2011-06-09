@@ -221,7 +221,7 @@ struct SID_fp{
 void SID_init(int *argc,char **argv[],SID_args args[]);
 void SID_Comm_init(SID_Comm **comm);
 void SID_Comm_free(SID_Comm **comm);
-void SID_Comm_list(SID_Comm *comm_in,int comm_id,SID_Comm *comm_out);
+void SID_Comm_split(SID_Comm *comm_in,int colour,int key,SID_Comm *comm_out);
 int  SID_parse_args(int argc,char *argv[],SID_args args[]);
 void SID_print_syntax(int argc,char *argv[],SID_args args[]);
 void SID_Bcast(void *buffer,int data_size,int source_rank,SID_Comm *comm);

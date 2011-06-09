@@ -182,10 +182,10 @@ void SID_init(int       *argc,
   // Create private COMM_WORLD
  SID_Comm_init(&(SID.COMM_WORLD));
 #ifdef USE_MPI
-  MPI_Comm_dup(MPI_COMM_WORLD,&(SID.COMM_WORLD->comm));
-  MPI_Comm_group(MPI_COMM_WORLD,&(SID.COMM_WORLD->group));
-  MPI_Comm_size(SID.COMM_WORLD->comm,&(SID.COMM_WORLD->n_proc));
-  MPI_Comm_rank(SID.COMM_WORLD->comm,&(SID.COMM_WORLD->My_rank));
+  MPI_Comm_dup(MPI_COMM_WORLD,          &((SID.COMM_WORLD)->comm));
+  MPI_Comm_group((SID.COMM_WORLD)->comm,&((SID.COMM_WORLD)->group));
+  MPI_Comm_size(SID.COMM_WORLD->comm,   &((SID.COMM_WORLD)->n_proc));
+  MPI_Comm_rank(SID.COMM_WORLD->comm,   &((SID.COMM_WORLD)->My_rank));
 #else
   SID.COMM_WORLD->comm   =NULL;
   SID.COMM_WORLD->group  =NULL;
