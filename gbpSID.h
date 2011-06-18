@@ -70,6 +70,14 @@ _FILE_C_CLASS int b;
 #endif
 
 #ifdef USE_MPI
+#define SID_SEEK_SET MPI_SEEK_SET
+#define SID_SEEK_CUR MPI_SEEK_CUR
+#else
+#define SID_SEEK_SET SEEK_SET
+#define SID_SEEK_CUR SEEK_CUR
+#endif
+
+#ifdef USE_MPI
 #define SID_IN_PLACE    MPI_IN_PLACE
 #define SID_COMM_NULL   MPI_COMM_NULL
 #define SID_GROUP_EMPTY MPI_GROUP_EMPTY
@@ -281,9 +289,10 @@ void SID_fseek_chunked(size_t  i_x_skip_local,
                        SID_fp *fp);
 void SID_frewind_chunked(SID_fp *fp);
 size_t SID_fread(void *buffer,size_t size_per_item, size_t n_items,SID_fp *fp);
-void SID_fseek(size_t size_per_item,
-               size_t n_items,
-               SID_fp *fp);
+void SID_fseek(SID_fp *fp,
+               size_t  size_per_item,
+               size_t  n_items,
+               int     origin);
 void SID_fseek_end(SID_fp *fp);
 void SID_fskip(size_t size_per_item,
                size_t n_items,

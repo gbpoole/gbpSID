@@ -56,9 +56,10 @@ size_t SID_fread_chunked_ordered(void   *buffer,
 #endif
           SID_fopen(filename_chunk,"r",fp);
           if(n_x_chunk>0){
-            SID_fseek(1,
+            SID_fseek(fp,
+                      1,
                       fp->header_offset[i_chunk]+n_skip*fp->chunked_header.item_size,
-                      fp);
+                      SID_SEEK_SET);
             SID_fread((char *)buffer+i_x_read_chunk*fp->chunked_header.item_size,
                       fp->chunked_header.item_size,
                       n_x_chunk,
