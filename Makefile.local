@@ -53,7 +53,19 @@ OBJFILES  = SID_init.o              \
             SID_fseek_end.o         \
 	    SID_fskip.o             \
             SID_frewind.o           \
-            SID_cat_files.o         
+            SID_cat_files.o         \
+	    calc_min.o              \
+	    calc_min_global.o       \
+	    calc_max.o              \
+	    calc_max_global.o       \
+	    calc_mean.o             \
+	    calc_mean_global.o      \
+	    calc_sum.o              \
+	    calc_sum_global.o       \
+	    calc_stddev.o           \
+	    calc_stddev_global.o    \
+	    calc_mean.o             \
+	    calc_mean_global.o
 BINFILES  = 
 LIBS      = 
 SUBDIRS   =
