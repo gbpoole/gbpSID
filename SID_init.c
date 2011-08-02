@@ -133,10 +133,8 @@ void SID_init(int       *argc,
   SID.verbosity      =SID_LOG_MAX_LEVELS;
 
   // Store the name of the binary executable that brought us here
-  for(i_char=strlen((*argv)[0])-1,flag_continue=TRUE;i_char>1 && flag_continue;i_char--){
-    if((*argv)[0][i_char-1]=='/') break;
-  }
-  sprintf(SID.My_binary,"%s",&((*argv)[0][i_char]));
+  strcpy(SID.My_binary,(*argv)[0]);
+  strip_path(SID.My_binary);
 
   // Initialize argument information
   if(args!=NULL){
