@@ -23,7 +23,7 @@ int SID_fopen_chunked(char   *filename_root,
   if(!strcmp(mode,"r")){
     i_chunk=0;
     sprintf(filename_temp,"%s.%d",fp->filename_root,i_chunk);
-#ifndef USE_MPI_IO
+#if USE_MPI_IO
     for(i_group=0;i_group<SID.n_groups;i_group++){
       if(SID.My_group==i_group){
 #endif
@@ -35,7 +35,7 @@ int SID_fopen_chunked(char   *filename_root,
           fp->chunked_header.header_size=0;
         SID_fread_all(&read_subheader,sizeof(chunked_subheader_info),1,&fp_temp);
         SID_fclose(&fp_temp);
-#ifndef USE_MPI_IO
+#if USE_MPI_IO
       }
       SID_Barrier(SID.COMM_WORLD);
     }
@@ -50,14 +50,14 @@ int SID_fopen_chunked(char   *filename_root,
     fp->header_offset[0]  =sizeof(chunked_header_info)+fp->chunked_header.header_size+sizeof(chunked_subheader_info);
     for(i_chunk=1;i_chunk<fp->chunked_header.n_chunk;i_chunk++){
       sprintf(filename_temp,"%s.%d",fp->filename_root,i_chunk);
-#ifndef USE_MPI_IO
+#if USE_MPI_IO
       for(i_group=0;i_group<SID.n_groups;i_group++){
         if(SID.My_group==i_group){
 #endif
           SID_fopen(filename_temp,"r",&fp_temp);
           SID_fread_all(&read_subheader,sizeof(chunked_subheader_info), 1,&fp_temp);
           SID_fclose(&fp_temp);
-#ifndef USE_MPI_IO
+#if USE_MPI_IO
         }
         SID_Barrier(SID.COMM_WORLD);
       }
