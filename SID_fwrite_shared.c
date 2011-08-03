@@ -3,8 +3,8 @@
 
 size_t SID_fwrite_shared(void *buffer,size_t size_per_item, size_t n_items,SID_fp *fp){
   size_t r_val;
-#ifdef USE_MPI
-#ifdef USE_MPI_IO
+#if USE_MPI
+#if USE_MPI_IO
   int    r_val_i;
   MPI_Status status;
   MPI_File_write_shared(fp->fp,

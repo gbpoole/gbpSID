@@ -3,7 +3,7 @@
 
 void SID_Comm_init(SID_Comm **comm){
   (*comm)        =(SID_Comm *)SID_malloc(sizeof(SID_Comm));
-#ifdef USE_MPI
+#if USE_MPI
   (*comm)->comm  =SID_COMM_NULL;
   (*comm)->group =SID_GROUP_EMPTY;
 #else

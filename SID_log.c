@@ -118,7 +118,7 @@ void SID_log(char *fmt, int mode, ...){
     fflush(SID.fp_log);
   }
 
-#ifdef USE_MPI
+#if USE_MPI
   if(check_mode_for_flag(mode,SID_LOG_CHECKPOINT))
     SID_Barrier(SID.COMM_WORLD);
 #endif

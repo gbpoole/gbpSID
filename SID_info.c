@@ -12,7 +12,7 @@ void SID_info(char *fmt, int mode, ...){
 
   fp_info=stderr;
 
-#ifdef USE_MPI
+#if USE_MPI
   if(!SID.flag_results_on && check_mode(mode,SID_INFO_RESULT)){
     fprintf(fp_info,"\n");
     fprintf(fp_info,"-------------\n");

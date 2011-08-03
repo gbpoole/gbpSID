@@ -5,8 +5,8 @@
 
 size_t SID_fread_all(void *buffer,size_t size_per_item, size_t n_items,SID_fp *fp){
   size_t r_val;
-#ifdef USE_MPI
-#ifdef USE_MPI_IO
+#if USE_MPI
+#if USE_MPI_IO
   int    r_val_i;
   MPI_Status status;
   MPI_File_read_all(fp->fp,
@@ -34,11 +34,11 @@ size_t SID_fread_all(void *buffer,size_t size_per_item, size_t n_items,SID_fp *f
     size_offset=0;
     while(size_left>0){
       size_send=MIN(size_left,MAX_SEND_LOCAL);
-      MPI_Bcast(&(((char *)buffer)[size_offset]),(int)(size_send),MPI_BYTE,MASTER_RANK,MPI_COMM_WORLD);
+      SID_Bcast(&(((char *)buffer)[size_offset]),size_send,MASTER_RANK,SID.COMM_WORLD);
       size_left  -=size_send;
       size_offset+=size_send;
     }
-    MPI_Bcast(&r_val,1,MPI_SIZE_T,MASTER_RANK,MPI_COMM_WORLD);
+    SID_Bcast(&r_val,sizeof(size_t),MASTER_RANK,SID.COMM_WORLD);
   }
   else
     r_val=0;

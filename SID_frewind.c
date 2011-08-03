@@ -2,8 +2,8 @@
 #include <gbpSID.h>
 
 void SID_frewind(SID_fp *fp){
-  #ifdef USE_MPI
-  #ifdef USE_MPI_IO
+  #if USE_MPI
+  #if USE_MPI_IO
     MPI_File_seek(fp->fp,
                   0,
                   MPI_SEEK_SET);

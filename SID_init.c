@@ -14,7 +14,7 @@ void SID_init(int       *argc,
   int  flag_continue;
 
   // MPI-specific things
-#ifdef USE_MPI
+#if USE_MPI
   int      n_keys;
   int      i_key;
   char     key[256];
@@ -24,7 +24,7 @@ void SID_init(int       *argc,
   SID_fp   fp_tmp;
   FILE    *fp_hack;
   int      node_name_length;
-#ifdef USE_MPI_IO
+#if USE_MPI_IO
   MPI_Info info_disp;
 #endif
   MPI_Init(argc,argv);
@@ -32,7 +32,7 @@ void SID_init(int       *argc,
   MPI_Comm_rank(MPI_COMM_WORLD,&(SID.My_rank));
 
   SID.My_node = SID_malloc(SID_MAXLENGTH_PROCESSOR_NAME * sizeof(char));
-#ifdef USE_MPI
+#if USE_MPI
   MPI_Get_processor_name(SID.My_node, &node_name_length);
 #else
   sprintf(SID.My_node,"localhost");
@@ -53,7 +53,7 @@ void SID_init(int       *argc,
   else
     SID.I_am_last_rank=FALSE;
 
-  #ifdef USE_MPI_IO
+  #if USE_MPI_IO
   // Fetch collective buffering defaults
   MPI_Info_create(&(SID.file_info));
   if(SID.I_am_Master){
@@ -89,7 +89,7 @@ void SID_init(int       *argc,
 #endif
 
 /*
-#ifndef USE_MPI_IO
+#if !USE_MPI_IO
     SID.n_groups=SID.n_proc/N_IO_FILES_MAX;
     if(SID.n_proc%N_IO_FILES_MAX) SID.n_groups++;
     SID.My_group=SID.My_rank/N_IO_FILES_MAX;
@@ -117,7 +117,7 @@ void SID_init(int       *argc,
   }
 
   // Initialize other log information
-#ifdef USE_MPI
+#if USE_MPI
   if(*argc>1)
     SID.fp_in        =fopen((*argv)[1],"r");
   else
@@ -146,7 +146,7 @@ void SID_init(int       *argc,
   else
     SID.args=NULL;
 
-#ifdef USE_MPI_IO
+#if USE_MPI_IO
   if(SID.I_am_Master){
     fp_hack=fopen(".tmp.SID","w+");
     fclose(fp_hack);
@@ -171,7 +171,7 @@ void SID_init(int       *argc,
   if(SID.I_am_Master)
     remove(".tmp.SID");
 #else
-  #ifdef USE_MPI
+  #if USE_MPI
   if(SID.I_am_Master)
     fprintf(stdout,"MPI-I/O switched off.\n\n");
   #endif
@@ -179,7 +179,7 @@ void SID_init(int       *argc,
 
   // Create private COMM_WORLD
  SID_Comm_init(&(SID.COMM_WORLD));
-#ifdef USE_MPI
+#if USE_MPI
   MPI_Comm_dup(MPI_COMM_WORLD,          &((SID.COMM_WORLD)->comm));
   MPI_Comm_group((SID.COMM_WORLD)->comm,&((SID.COMM_WORLD)->group));
   MPI_Comm_size(SID.COMM_WORLD->comm,   &((SID.COMM_WORLD)->n_proc));

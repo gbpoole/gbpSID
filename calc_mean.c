@@ -7,6 +7,11 @@ void calc_mean(void   *data,
                SID_Datatype type,
                int          mode){
   double temp;
+  int    flag_abs;
+  if(check_mode_for_flag(mode,CALC_MODE_ABS))
+    flag_abs=CALC_MODE_ABS;
+  else
+    flag_abs=FALSE;
   if(n_data<1){
     if(type==SID_DOUBLE || check_mode_for_flag(mode,CALC_MODE_RETURN_DOUBLE))
       ((double *)result)[0]=0.;
@@ -20,7 +25,7 @@ void calc_mean(void   *data,
       SID_trap_error("Unknown variable type in calc_min",ERROR_LOGIC);
   }
   else{
-    calc_sum(data,&temp,n_data,type,CALC_MODE_RETURN_DOUBLE);
+    calc_sum(data,&temp,n_data,type,CALC_MODE_RETURN_DOUBLE|flag_abs);
     temp/=(double)n_data;
     if(type==SID_DOUBLE)
       ((double *)result)[0]=(double)temp; 

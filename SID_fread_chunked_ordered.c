@@ -22,10 +22,10 @@ size_t SID_fread_chunked_ordered(void   *buffer,
   // Operates the same way as SID_fread_chunked() except i_x_offset_local is 
   //   computed here under the assumption that reads are done in order by rank
   i_x_offset_local=0;
-#ifdef USE_MPI
+#if USE_MPI
   for(i_rank=0;i_rank<SID.n_proc;i_rank++){
     n_x_read_local_bcast=n_x_read_local;
-    MPI_Bcast(&n_x_read_local_bcast,1,MPI_SIZE_T,i_rank,MPI_COMM_WORLD);
+    SID_Bcast(&n_x_read_local_bcast,sizeof(size_t),i_rank,SID.COMM_WORLD);
     if(i_rank<SID.My_rank)
       i_x_offset_local+=n_x_read_local_bcast;
   }
@@ -43,14 +43,10 @@ size_t SID_fread_chunked_ordered(void   *buffer,
       n_x_chunk=0;
       n_skip   =0;
     }
-    #ifdef USE_MPI
-      MPI_Allreduce(&n_x_chunk,&n_x_chunk_max,1,MPI_SIZE_T,MPI_MAX,MPI_COMM_WORLD);
-    #else
-      n_x_chunk_max=n_x_chunk;
-    #endif
+    SID_Allreduce(&n_x_chunk,&n_x_chunk_max,1,SID_SIZE_T,SID_MAX,SID.COMM_WORLD);
     if(n_x_chunk_max>0){
       sprintf(filename_chunk,"%s.%d",fp->filename_root,i_chunk);
-#ifndef USE_MPI_IO
+#if !USE_MPI_IO
       for(i_group=0;i_group<SID.n_proc;i_group++){
         if(SID.My_group==i_group && n_x_chunk>0){
 #endif
@@ -68,18 +64,14 @@ size_t SID_fread_chunked_ordered(void   *buffer,
             i_x_read_chunk+=n_x_chunk;
           }
           SID_fclose(fp);
-#ifndef USE_MPI_IO
+#if !USE_MPI_IO
         }
         SID_Barrier(SID.COMM_WORLD);
       }
 #endif
     }
   }
-  #ifdef USE_MPI
-    MPI_Allreduce(&i_x_chunk,&(fp->last_item),1,MPI_SIZE_T,MPI_MAX,MPI_COMM_WORLD);
-  #else
-    fp->last_item=i_x_chunk;
-  #endif
+  SID_Allreduce(&i_x_chunk,&(fp->last_item),1,SID_SIZE_T,SID_MAX,SID.COMM_WORLD);
   //fp->last_item--;
   return(r_val);
 }

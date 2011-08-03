@@ -2,7 +2,7 @@
 #include <gbpSID.h>
 
 void SID_Type_size(SID_Datatype type,int *size){
-  #ifdef USE_MPI
+  #if USE_MPI
   MPI_Type_size(type,size);
   #else
   if(type==SID_INT)

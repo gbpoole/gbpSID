@@ -2,7 +2,7 @@
 #include <gbpSID.h>
 
 void SID_Comm_list(SID_Comm *comm_in,int comm_id,SID_Comm *comm_out){
-#ifdef USE_MPI
+#if USE_MPI
   int       i_rank,j_rank;
   int       flag_include_me;
   int      *membership;

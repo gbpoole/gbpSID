@@ -9,8 +9,15 @@ void calc_mean_global(void   *data_local,
                       SID_Comm    *comm){
   double temp;
   size_t n_data;
-  calc_sum_global(data_local,   &temp,  n_data_local,type,      CALC_MODE_RETURN_DOUBLE,comm);
-  calc_sum_global(&n_data_local,&n_data,1,           SID_SIZE_T,CALC_MODE_DEFAULT,      comm);
+  int    flag_abs;
+
+  if(check_mode_for_flag(mode,CALC_MODE_ABS))
+    flag_abs=CALC_MODE_ABS;
+  else
+    flag_abs=FALSE;
+
+  calc_sum_global(data_local,   &temp,  n_data_local,type,      CALC_MODE_RETURN_DOUBLE|flag_abs,comm);
+  calc_sum_global(&n_data_local,&n_data,1,           SID_SIZE_T,CALC_MODE_DEFAULT,               comm);
   temp/=(double)n_data;
   if(type==SID_DOUBLE || check_mode_for_flag(mode,CALC_MODE_RETURN_DOUBLE))
     ((double *)result)[0]=(double)temp; 

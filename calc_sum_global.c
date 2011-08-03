@@ -16,23 +16,39 @@ void calc_sum_global(void   *data,
 
   if(type==SID_DOUBLE){
     d_temp=0.;
-    for(i_data=0;i_data<n_data;i_data++)
-      d_temp+=((double *)data)[i_data];
+    if(check_mode_for_flag(mode,CALC_MODE_ABS))
+      for(i_data=0;i_data<n_data;i_data++)
+        d_temp+=IABS(((double *)data)[i_data]);
+    else
+      for(i_data=0;i_data<n_data;i_data++)
+        d_temp+=((double *)data)[i_data];
   }
   else if(type==SID_FLOAT){
     f_temp=0.;
-    for(i_data=0;i_data<n_data;i_data++)
-      f_temp+=((float *)data)[i_data];
+    if(check_mode_for_flag(mode,CALC_MODE_ABS))
+      for(i_data=0;i_data<n_data;i_data++)
+        f_temp+=IABS(((float *)data)[i_data]);
+    else
+      for(i_data=0;i_data<n_data;i_data++)
+        f_temp+=((float *)data)[i_data];
   }
   else if(type==SID_INT){
     i_temp=0;
-    for(i_data=0;i_data<n_data;i_data++)
-      i_temp+=((int *)data)[i_data];
+    if(check_mode_for_flag(mode,CALC_MODE_ABS))
+      for(i_data=0;i_data<n_data;i_data++)
+        i_temp+=IABS(((int *)data)[i_data]);
+    else
+      for(i_data=0;i_data<n_data;i_data++)
+        i_temp+=((int *)data)[i_data];
   }
   else if(type==SID_SIZE_T){
     s_temp=0;
-    for(i_data=0;i_data<n_data;i_data++)
-      s_temp+=((size_t *)data)[i_data];
+    if(check_mode_for_flag(mode,CALC_MODE_ABS))
+      for(i_data=0;i_data<n_data;i_data++)
+        s_temp+=IABS(((size_t *)data)[i_data]);
+    else
+      for(i_data=0;i_data<n_data;i_data++)
+        s_temp+=((size_t *)data)[i_data];
   }
   else
     SID_trap_error("Unknown variable type in calc_sum",ERROR_LOGIC);

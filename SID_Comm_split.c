@@ -2,7 +2,7 @@
 #include <gbpSID.h>
 
 void SID_Comm_split(SID_Comm *comm_in,int colour,int key,SID_Comm *comm_out){
-#ifdef USE_MPI
+#if USE_MPI
   MPI_Comm_split(comm_in->comm, colour,key,&(comm_out->comm));
   MPI_Comm_group(comm_out->comm,&(comm_out->group));
   MPI_Comm_size(comm_out->comm, &(comm_out->n_proc));

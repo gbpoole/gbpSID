@@ -15,7 +15,7 @@ void SID_out(char *fmt, int mode, ...){
 
   if(SID.I_am_Master){
 
-#ifdef USE_MPI
+#if USE_MPI
   if(!SID.flag_results_on && check_mode_for_flag(mode,SID_INFO_RESULT)){
     fprintf(fp_info,"\n");
     fprintf(fp_info,"-------------\n");

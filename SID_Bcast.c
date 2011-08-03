@@ -4,7 +4,7 @@
 #define MAX_SEND_LOCAL 10*SIZE_OF_MEGABYTE
 
 void SID_Bcast(void *buffer,int data_size,int source_rank,SID_Comm *comm){
-#ifdef USE_MPI
+#if USE_MPI
     int size_left,size_offset,size_used,size_send;
     size_left  =data_size;
     size_offset=0;

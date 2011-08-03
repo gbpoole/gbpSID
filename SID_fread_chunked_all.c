@@ -25,11 +25,7 @@ size_t SID_fread_chunked_all(void   *buffer,
       n_x_chunk=0;
       n_skip   =0;
     }
-    #ifdef USE_MPI
-      MPI_Allreduce(&n_x_chunk,&n_x_chunk_max,1,MPI_SIZE_T,MPI_MAX,MPI_COMM_WORLD);
-    #else
-      n_x_chunk_max=n_x_chunk;
-    #endif
+    SID_Allreduce(&n_x_chunk,&n_x_chunk_max,1,SID_SIZE_T,SID_MAX,SID.COMM_WORLD);
     if(n_x_chunk_max>0){
       sprintf(filename_chunk,"%s.%d",fp->filename_root,i_chunk);
       SID_fopen(filename_chunk,"r",fp);

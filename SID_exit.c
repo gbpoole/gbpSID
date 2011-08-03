@@ -19,9 +19,7 @@ void SID_exit(int status){
 
   // Deal with I/O channels
   fflush(SID.fp_log);
-  #ifdef USE_MPI
-    MPI_Barrier(MPI_COMM_WORLD);
-  #endif
+  SID_Barrier(SID.COMM_WORLD);
   if(SID.fp_in!=stdin && SID.fp_in!=NULL)
     fclose(SID.fp_in);
 
@@ -57,14 +55,14 @@ void SID_exit(int status){
     fprintf(SID.fp_log,"\nMemory usage:\n");
     fprintf(SID.fp_log,"------------\n");
   }
-  #ifdef USE_MPI
-    MPI_Barrier(MPI_COMM_WORLD);
-    MPI_Allreduce(&(SID.max_RAM_local),&max_RAM,1,MPI_SIZE_T,MPI_SUM,MPI_COMM_WORLD);
+  #if USE_MPI
+    SID_Barrier(SID.COMM_WORLD);
+    SID_Allreduce(&(SID.max_RAM_local),&max_RAM,1,SID_SIZE_T,SID_SUM,SID.COMM_WORLD);
     if(SID.n_proc>1){
       for(i_rank=0;i_rank<SID.n_proc;i_rank++){
         SID_max_RAM_local=SID.max_RAM_local;
         if(i_rank!=MASTER_RANK)
-          MPI_Bcast(&SID_max_RAM_local,1,MPI_SIZE_T,i_rank,MPI_COMM_WORLD);
+          SID_Bcast(&SID_max_RAM_local,sizeof(size_t),i_rank,SID.COMM_WORLD);
         if(SID.I_am_Master){
           if(SID.n_proc>1000){
             if((float)SID.max_RAM_local/(float)SIZE_OF_MEGABYTE>1.)
@@ -103,7 +101,7 @@ void SID_exit(int status){
             strcpy(spacer,"    ");
           }
         }
-        MPI_Barrier(MPI_COMM_WORLD);
+        SID_Barrier(SID.COMM_WORLD);
       }
     }
   #else
@@ -130,7 +128,7 @@ void SID_exit(int status){
 
   // Finalize MPI
   SID_Comm_free(&(SID.COMM_WORLD));
-  #ifdef USE_MPI_IO
+  #if USE_MPI_IO
     MPI_Info_free(&(SID.file_info));
     MPI_Finalize(); 
   #endif

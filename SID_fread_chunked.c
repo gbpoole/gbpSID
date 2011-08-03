@@ -6,6 +6,7 @@ size_t SID_fread_chunked(void   *buffer,
                          size_t  i_x_offset_local,
                          SID_fp *fp){
   int    i_chunk;
+  int    i_test;
   int    i_group;
   size_t i_x_read_chunk;
   size_t i_x_offset_global;
@@ -28,14 +29,10 @@ size_t SID_fread_chunked(void   *buffer,
       n_x_chunk=0;
       n_skip   =0;
     }
-    #ifdef USE_MPI
-      MPI_Allreduce(&n_x_chunk,&n_x_chunk_max,1,MPI_SIZE_T,MPI_MAX,MPI_COMM_WORLD);
-    #else
-      n_x_chunk_max=n_x_chunk;
-    #endif
+    SID_Allreduce(&n_x_chunk,&n_x_chunk_max,1,SID_SIZE_T,SID_MAX,SID.COMM_WORLD);
     if(n_x_chunk_max>0){
       sprintf(filename_chunk,"%s.%d",fp->filename_root,i_chunk);
-#ifndef USE_MPI_IO
+#if !USE_MPI_IO
       for(i_group=0;i_group<SID.n_proc;i_group++){
         if(SID.My_group==i_group && n_x_chunk>0){
 #endif
@@ -45,7 +42,7 @@ size_t SID_fread_chunked(void   *buffer,
                       1,
                       fp->header_offset[i_chunk]+n_skip*fp->chunked_header.item_size,
                       SID_SEEK_SET);
-            SID_fread((char *)buffer+i_x_read_chunk*fp->chunked_header.item_size,
+            SID_fread(buffer+i_x_read_chunk*fp->chunked_header.item_size,
                       fp->chunked_header.item_size,
                       n_x_chunk,
                       fp);
@@ -53,18 +50,14 @@ size_t SID_fread_chunked(void   *buffer,
             i_x_read_chunk+=n_x_chunk;
           }
           SID_fclose(fp);
-#ifndef USE_MPI_IO
+#if !USE_MPI_IO
         }
         SID_Barrier(SID.COMM_WORLD);
       }
 #endif
     }
   }
-  #ifdef USE_MPI
-    MPI_Allreduce(&i_x_chunk,&(fp->last_item),1,MPI_SIZE_T,MPI_MAX,MPI_COMM_WORLD);
-  #else
-    fp->last_item=i_x_chunk;
-  #endif
+  SID_Allreduce(&i_x_chunk,&(fp->last_item),1,SID_SIZE_T,SID_MAX,SID.COMM_WORLD);
   //fp->last_item--;
   return(r_val);
 }

@@ -3,7 +3,7 @@
 #include <stdarg.h>
 #include <gbpCommon.h>
 
-#ifdef USE_MPI
+#if USE_MPI
 #ifndef MPI_DEFINED
 #include <mpi.h>
 #else
@@ -13,7 +13,7 @@
 
 #ifndef _FILE_H
 #define _FILE_H
-#ifdef _FILE_C
+#if _FILE_C
 #define _FILE_C_CLASS
 #else
 #define _FILE_C_CLASS extern
@@ -63,13 +63,13 @@ _FILE_C_CLASS int b;
 #define SID_CAT_DEFAULT 0
 #define SID_CAT_CLEAN   2
 
-#ifdef USE_MPI
+#if USE_MPI
   #define SID_MAXLENGTH_PROCESSOR_NAME MPI_MAX_PROCESSOR_NAME
 #else
   #define SID_MAXLENGTH_PROCESSOR_NAME 64
 #endif
 
-#ifdef USE_MPI
+#if USE_MPI_IO
 #define SID_SEEK_SET MPI_SEEK_SET
 #define SID_SEEK_CUR MPI_SEEK_CUR
 #else
@@ -77,7 +77,7 @@ _FILE_C_CLASS int b;
 #define SID_SEEK_CUR SEEK_CUR
 #endif
 
-#ifdef USE_MPI
+#if USE_MPI
 #define SID_IN_PLACE    MPI_IN_PLACE
 #define SID_COMM_NULL   MPI_COMM_NULL
 #define SID_GROUP_EMPTY MPI_GROUP_EMPTY
@@ -110,7 +110,7 @@ _FILE_C_CLASS int b;
 #define SID_MAX         2
 #define SID_MIN         3
 #endif 
-#ifdef USE_DOUBLE
+#if USE_DOUBLE
   #define SID_REAL SID_DOUBLE
 #else
   #define SID_REAL SID_FLOAT
@@ -130,7 +130,7 @@ struct SID_arg {
 
 typedef struct SID_Comm SID_Comm;
 struct SID_Comm{
-  #ifdef USE_MPI
+  #if USE_MPI
     MPI_Comm   comm;
     MPI_Group  group;
   #else
@@ -168,11 +168,11 @@ struct SID_info{
   int       flag_input_on;
   size_t    RAM_local;
   size_t    max_RAM_local;
-#ifdef USE_MPI
+#if USE_MPI
   MPI_Info  file_info;
 #endif
   SID_Comm *COMM_WORLD;
-#ifndef USE_MPI_IO
+#if !USE_MPI_IO
   int       n_groups;
   int       My_group;
 #endif
@@ -206,8 +206,8 @@ struct chunked_subheader_info{
 // Structure to store file info 
 typedef struct SID_fp SID_fp;
 struct SID_fp{
-#ifdef USE_MPI
-#ifdef USE_MPI_IO
+#if USE_MPI
+#if USE_MPI_IO
   MPI_File fp;
 #else
   FILE    *fp;
@@ -335,6 +335,7 @@ void SID_free(void **ptr);
 
 #define CALC_MODE_DEFAULT       DEFAULT_MODE
 #define CALC_MODE_RETURN_DOUBLE 1
+#define CALC_MODE_ABS           2
 
 void calc_max(void   *data,
               void   *result,

@@ -49,21 +49,21 @@ void SID_input(char *fmt, SID_Datatype type, void *input, ...){
   }
 
   // Make sure all ranks get the input
-#ifdef USE_MPI
-  MPI_Barrier(MPI_COMM_WORLD);
+#if USE_SID
+  SID_Barrier(SID.COMM_WORLD);
   if(type==SID_CHAR){
     char_length=strlen((char *)input)+1;
-    MPI_Bcast(&char_length,1,          MPI_INTEGER,MASTER_RANK,MPI_COMM_WORLD);
-    MPI_Bcast(input,       char_length,MPI_CHAR,   MASTER_RANK,MPI_COMM_WORLD);
+    SID_Bcast(&char_length,1,          SID_INTEGER,MASTER_RANK,SID.COMM_WORLD);
+    SID_Bcast(input,       char_length,SID_CHAR,   MASTER_RANK,SID.COMM_WORLD);
   }
   else if(type==SID_DOUBLE)
-    MPI_Bcast(input,1,MPI_DOUBLE,MASTER_RANK,MPI_COMM_WORLD);
+    SID_Bcast(input,1,SID_DOUBLE,MASTER_RANK,SID.COMM_WORLD);
   else if(type==SID_FLOAT)
-    MPI_Bcast(input,1,MPI_FLOAT,MASTER_RANK,MPI_COMM_WORLD);
+    SID_Bcast(input,1,SID_FLOAT,MASTER_RANK,SID.COMM_WORLD);
   else if(type==SID_INT)
-    MPI_Bcast(input,1,MPI_INT,MASTER_RANK,MPI_COMM_WORLD);
+    SID_Bcast(input,1,SID_INT,MASTER_RANK,SID.COMM_WORLD);
   else if(type==SID_SIZE_T)
-    MPI_Bcast(input,1,MPI_SIZE_T,MASTER_RANK,MPI_COMM_WORLD);
+    SID_Bcast(input,1,SID_SIZE_T,MASTER_RANK,SID.COMM_WORLD);
   else
     SID_trap_error("Datatype is not a supported user-input type.",ERROR_LOGIC);
 #endif
