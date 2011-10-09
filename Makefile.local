@@ -23,7 +23,9 @@ OBJFILES  = SID_init.o              \
             SID_profile_start.o     \
 	    SID_profile_stop.o      \
             SID_free.o              \
+            SID_free_array.o        \
             SID_malloc.o            \
+            SID_malloc_array.o      \
             SID_calloc.o            \
 	    SID_out.o               \
 	    SID_input.o             \
