@@ -48,28 +48,28 @@ size_t SID_fwrite_chunked(void   *buffer,
                 fp);
               if(fp->header!=NULL && fp->chunked_header.header_size>0)
                 SID_fwrite(fp->header,
-                fp->chunked_header.header_size,
-                1,
-                fp);
+                           fp->chunked_header.header_size,
+                           1,
+                           fp);
             }
             chunked_subheader.i_chunk=i_chunk;
             chunked_subheader.n_items=fp->i_x_step_chunk[i_chunk];
             SID_fwrite(&chunked_subheader,
-              sizeof(chunked_subheader_info),
-              1,
-              fp);
+                       sizeof(chunked_subheader_info),
+                       1,
+                       fp);
           }
 #if USE_MPI_IO
           else
             SID_fseek(1,
-            fp->header_offset[i_chunk]+n_skip*fp->chunked_header.item_size,
-            fp);
+                      fp->header_offset[i_chunk]+n_skip*fp->chunked_header.item_size,
+                      fp);
 #endif
           if(n_x_chunk>0){
             SID_fwrite((char *)buffer+i_x_write_chunk*fp->chunked_header.item_size,
-              fp->chunked_header.item_size,
-              n_x_chunk,
-              fp);
+                       fp->chunked_header.item_size,
+                       n_x_chunk,
+                       fp);
             i_x_chunk      +=n_x_chunk;
             i_x_write_chunk+=n_x_chunk;
           }

@@ -78,6 +78,7 @@ _FILE_C_CLASS int b;
 #endif
 
 #if USE_MPI
+#define SID_COMM_WORLD  (SID.COMM_WORLD->comm)
 #define SID_IN_PLACE    MPI_IN_PLACE
 #define SID_COMM_NULL   MPI_COMM_NULL
 #define SID_GROUP_EMPTY MPI_GROUP_EMPTY
@@ -94,6 +95,7 @@ _FILE_C_CLASS int b;
 #define SID_MAX         MPI_MAX
 #define SID_MIN         MPI_MIN
 #else
+#define SID_COMM_WORLD  NULL
 #define SID_IN_PLACE    NULL
 #define SID_COMM_NULL   NULL
 #define SID_GROUP_EMPTY NULL
