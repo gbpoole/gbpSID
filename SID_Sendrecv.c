@@ -19,8 +19,10 @@ void SID_Sendrecv(void         *sendbuf,
   size_t send_size;
   size_t recv_size;
   if(sendbuf!=recvbuf){
-    send_size=(size_t)sendcount*SID_sizeof(sendtype);
-    recv_size=(size_t)recvcount*SID_sizeof(recvtype);
+    SID_Type_size(sendtype,&send_size);
+    SID_Type_size(recvtype,&recv_size);
+    send_size*=(size_t)sendcount;
+    recv_size*=(size_t)recvcount;
     if(send_size==recv_size)
       memcpy(recvbuf,sendbuf,send_size);
     else
