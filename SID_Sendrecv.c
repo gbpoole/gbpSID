@@ -16,13 +16,15 @@ void SID_Sendrecv(void         *sendbuf,
 #if USE_MPI
   MPI_Sendrecv(sendbuf,sendcount,sendtype,dest,sendtag,recvbuf,recvcount,recvtype,source,recvtag,(MPI_Comm)(comm->comm),MPI_STATUS_IGNORE);
 #else
+  int    send_type_size;
+  int    recv_type_size;
   size_t send_size;
   size_t recv_size;
   if(sendbuf!=recvbuf){
-    SID_Type_size(sendtype,&send_size);
-    SID_Type_size(recvtype,&recv_size);
-    send_size*=(size_t)sendcount;
-    recv_size*=(size_t)recvcount;
+    SID_Type_size(sendtype,&send_type_size);
+    SID_Type_size(recvtype,&recv_type_size);
+    send_size=(size_t)sendcount*(size_t)send_type_size;
+    recv_size=(size_t)recvcount*(size_t)recv_type_size;
     if(send_size==recv_size)
       memcpy(recvbuf,sendbuf,send_size);
     else

@@ -1,9 +1,10 @@
 #############################
 # Library-specific settings #
 #############################
-INCFILES  = gbpSID.h
+INCFILES  = gbpSID.h gbpSID_cuda.h
 LIBFILE   = 
 OBJFILES  = SID_init.o              \
+	    calc_array_multiply.ou  \
 	    SID_test.o              \
             SID_exit.o              \
 	    SID_Type_size.o         \
