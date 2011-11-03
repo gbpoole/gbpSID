@@ -16,12 +16,12 @@ __global__ void calc_array_multiply_kernel_double(double *a,double *b){
    a[threadIdx.x]*=b[threadIdx.x];
 }
 */
-void calc_sum(void         *data_1,
-              void         *data_2,
-              void         *result,
-    	      size_t        n_data,
-              SID_Datatype  type,
-              int           mode){
+void calc_array_multiply(void         *data_1,
+                         void         *data_2,
+                         void         *result,
+    	                 size_t        n_data,
+                         SID_Datatype  type,
+                         int           mode){
   int datatype_size;
 
   // Don't do anything if there's no data

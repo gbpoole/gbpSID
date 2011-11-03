@@ -1,6 +1,6 @@
+#include <gbpCommon.h>
+#include <gbpSID.h>
 #include <math.h>
-#include <gbpLib.h>
-#include <gbpStats.h>
 
 void calc_stddev(void   *data,
                  void   *result,

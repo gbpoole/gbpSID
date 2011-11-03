@@ -42,7 +42,7 @@ size_t SID_fread_chunked(void   *buffer,
                       1,
                       fp->header_offset[i_chunk]+n_skip*fp->chunked_header.item_size,
                       SID_SEEK_SET);
-            SID_fread(buffer+i_x_read_chunk*fp->chunked_header.item_size,
+            SID_fread(&(((char *)buffer)[i_x_read_chunk*fp->chunked_header.item_size]),
                       fp->chunked_header.item_size,
                       n_x_chunk,
                       fp);

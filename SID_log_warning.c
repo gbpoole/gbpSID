@@ -3,12 +3,12 @@
 #include <gbpCommon.h>
 #include <gbpSID.h>
 
-void SID_log_warning(char *fmt, int r_val, ...){
+void SID_log_warning(char *fmt, int mode, ...){
   char    temp_char[2];
   int     flag_CR=FALSE;
   int     i;
   va_list vargs;
-  va_start(vargs,r_val);
+  va_start(vargs,mode);
   if(SID.I_am_Master){
     if(!SID.indent){
       fprintf(SID.fp_log,"\n");

@@ -1,5 +1,5 @@
-#include <gbpLib.h>
-#include <gbpStats.h>
+#include <gbpCommon.h>
+#include <gbpSID.h>
 
 void calc_mean_global(void   *data_local,
                       void   *result,

@@ -1,5 +1,5 @@
-#include <gbpLib.h>
-#include <gbpStats.h>
+#include <gbpCommon.h>
+#include <gbpSID.h>
 
 void calc_max_global(void   *data_local,
                      void   *result,
