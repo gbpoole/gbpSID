@@ -4,11 +4,11 @@
 #include <gbpCommon.h>
 
 #if USE_MPI
-#ifndef MPI_DEFINED
-#include <mpi.h>
-#else
-#define MPI_DEFINED 1
-#endif
+  #ifndef MPI_AWAKE
+    #include <mpi.h>
+  #else
+    #define MPI_AWAKE 
+  #endif
 #endif 
 
 #ifndef _FILE_H
@@ -25,9 +25,10 @@ _FILE_C_CLASS int b;
 #ifndef SID_AWAKE
 #define SID_AWAKE
 
-#if USE_CUDA
-  #include <gbpSID_cuda.h>
-#endif
+// Declare some stuff needed by Cuda code
+//#if USE_CUDA
+  #define SID_CUDA_MAX_THREADS_PER_BLOCK 32
+//#endif
 
 #define MASTER_RANK    0
 #define DEFAULT_MODE   0
@@ -407,6 +408,7 @@ void calc_sum_global(void   *data_local,
                      int          mode,
                      SID_Comm    *comm);
 
+// Cuda functions
 void calc_array_multiply(void         *data_1,
                          void         *data_2,
                          void         *result,
