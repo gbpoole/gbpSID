@@ -31,7 +31,7 @@ void SID_init(int       *argc,
   MPI_Comm_size(MPI_COMM_WORLD,&(SID.n_proc));
   MPI_Comm_rank(MPI_COMM_WORLD,&(SID.My_rank));
 
-  SID.My_node = SID_malloc(SID_MAXLENGTH_PROCESSOR_NAME * sizeof(char));
+  SID.My_node =(char *)SID_malloc(SID_MAXLENGTH_PROCESSOR_NAME * sizeof(char));
 #if USE_MPI
   MPI_Get_processor_name(SID.My_node, &node_name_length);
 #else
