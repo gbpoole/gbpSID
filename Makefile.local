@@ -18,6 +18,7 @@ OBJFILES  = SID_init.o              \
             SID_Barrier.o           \
 	    SID_parse_args.o        \
 	    SID_print_syntax.o      \
+	    is_a_member.o           \
 	    SID_log.o               \
 	    SID_set_verbosity.o     \
             SID_profile_start.o     \

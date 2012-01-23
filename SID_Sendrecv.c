@@ -14,7 +14,8 @@ void SID_Sendrecv(void         *sendbuf,
                   int           recvtag,
                   SID_Comm     *comm){
 #if USE_MPI
-  MPI_Sendrecv(sendbuf,sendcount,sendtype,dest,sendtag,recvbuf,recvcount,recvtype,source,recvtag,(MPI_Comm)(comm->comm),MPI_STATUS_IGNORE);
+  MPI_Status status;
+  MPI_Sendrecv(sendbuf,sendcount,sendtype,dest,sendtag,recvbuf,recvcount,recvtype,source,recvtag,comm->comm,&status);
 #else
   int    send_type_size;
   int    recv_type_size;

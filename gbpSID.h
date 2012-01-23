@@ -352,6 +352,8 @@ void *SID_malloc_array(size_t allocation_size_i,int n_D,...);
 void *SID_calloc(size_t allocation_size);
 void SID_free_array(void **ptr,int n_D,...);
 
+int is_a_member(void *candidate,void *list,int n_list,SID_Datatype type);
+
 void calc_max(void   *data,
               void   *result,
 	      size_t  n_data,
