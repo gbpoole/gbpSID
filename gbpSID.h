@@ -250,6 +250,7 @@ int  SID_parse_args(int argc,char *argv[],SID_args args[]);
 void SID_print_syntax(int argc,char *argv[],SID_args args[]);
 void SID_Bcast(void *buffer,int data_size,int source_rank,SID_Comm *comm);
 void SID_Type_size(SID_Datatype type,int *size);
+void SID_Reduce(void *sendbuf,void *recvbuf,int count,SID_Datatype datatype,SID_Op op,int root,SID_Comm *comm);
 void SID_Allreduce(void *sendbuf,void *recvbuf,int count,SID_Datatype datatype,SID_Op op,SID_Comm *comm);
 void SID_Send(void         *sendbuf,
               int           sendcount,

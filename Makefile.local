@@ -11,6 +11,7 @@ OBJFILES  = SID_init.o              \
 	    SID_Comm_init.o         \
 	    SID_Comm_free.o         \
             SID_Bcast.o             \
+	    SID_Reduce.o            \
 	    SID_Allreduce.o         \
 	    SID_Sendrecv.o          \
 	    SID_Send.o              \
