@@ -58,6 +58,7 @@ void SID_log(char *fmt, int mode, ...){
         flag_write_time=FALSE;
 
       if(SID.level<=SID.verbosity && flag_print){
+
         // Write indenting text
         if(check_mode_for_flag(mode,SID_LOG_OPEN) && !SID.indent){
           fprintf(SID.fp_log,"\n");
@@ -67,8 +68,10 @@ void SID_log(char *fmt, int mode, ...){
           fprintf(SID.fp_log,"\n");
           SID.indent=TRUE;
         }
+/*
         else if(check_mode_for_flag(mode,SID_LOG_CONTINUE))
           SID.indent=FALSE;
+*/
         if(SID.indent){
           for(i_level=0;i_level<SID.level;i_level++)
             fprintf(SID.fp_log,"%s",SID_LOG_INDENT_STRING);

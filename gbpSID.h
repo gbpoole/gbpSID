@@ -92,6 +92,7 @@ _FILE_C_CLASS int b;
 #define SID_Datatype    MPI_Datatype
 #define SID_CHAR        MPI_CHAR
 #define SID_INT         MPI_INT
+#define SID_UNSIGNED    MPI_UNSIGNED
 #define SID_LONG_LONG   MPI_LONG_LONG
 #define SID_SIZE_T      MPI_LONG_LONG
 #define SID_FLOAT       MPI_FLOAT
@@ -111,6 +112,7 @@ _FILE_C_CLASS int b;
 #define SID_LONG_LONG   1
 #define SID_FLOAT       2
 #define SID_INT         3
+#define SID_UNSIGNED    4
 #define SID_SIZE_T      6
 #define SID_BYTE        7
 #define SID_CHAR        8

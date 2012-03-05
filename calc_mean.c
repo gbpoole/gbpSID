@@ -19,6 +19,8 @@ void calc_mean(void   *data,
       ((float  *)result)[0]=0.;
     else if(type==SID_INT)
       ((int    *)result)[0]=0;
+    else if(type==SID_UNSIGNED)
+      ((unsigned int *)result)[0]=0;
     else if(type==SID_SIZE_T)
       ((size_t *)result)[0]=0;
     else
@@ -31,8 +33,8 @@ void calc_mean(void   *data,
       ((double *)result)[0]=(double)temp; 
     else if(type==SID_FLOAT)
       ((float  *)result)[0]=(float)temp; 
-    else if(type==SID_INT)
-      ((int    *)result)[0]=(int)temp; 
+    else if(type==SID_UNSIGNED)
+      ((unsigned int *)result)[0]=(unsigned int)temp; 
     else if(type==SID_SIZE_T)
       ((size_t *)result)[0]=(size_t)temp; 
   }

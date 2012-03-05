@@ -10,6 +10,7 @@ void calc_sum(void   *data,
   double  d_temp;
   float   f_temp;
   int     i_temp;
+  unsigned int ui_temp;
   size_t  s_temp;
   if(n_data<1){
     if(type==SID_DOUBLE || check_mode_for_flag(mode,CALC_MODE_RETURN_DOUBLE))
@@ -18,6 +19,8 @@ void calc_sum(void   *data,
       ((float  *)result)[0]=0.;
     else if(type==SID_INT)
       ((int    *)result)[0]=0;
+    else if(type==SID_UNSIGNED)
+      ((unsigned int *)result)[0]=0;
     else if(type==SID_SIZE_T)
       ((size_t *)result)[0]=0;
     else
@@ -50,6 +53,15 @@ void calc_sum(void   *data,
       for(i_data=0;i_data<n_data;i_data++)
         i_temp+=((int *)data)[i_data];
   }
+  else if(type==SID_UNSIGNED){
+    ui_temp=0;
+    if(check_mode_for_flag(mode,CALC_MODE_ABS))
+      for(i_data=0;i_data<n_data;i_data++)
+        ui_temp+=IABS(((unsigned int *)data)[i_data]);
+    else
+      for(i_data=0;i_data<n_data;i_data++)
+        ui_temp+=((unsigned int *)data)[i_data];
+  }
   else if(type==SID_SIZE_T){
     s_temp=0;
     if(check_mode_for_flag(mode,CALC_MODE_ABS))
@@ -68,6 +80,8 @@ void calc_sum(void   *data,
     ((float  *)result)[0]=f_temp;
   else if(type==SID_INT)
     ((int    *)result)[0]=i_temp;
+  else if(type==SID_UNSIGNED)
+    ((unsigned int *)result)[0]=ui_temp;
   else if(type==SID_SIZE_T)
     ((size_t *)result)[0]=s_temp;
   else
