@@ -351,6 +351,7 @@ void SID_profile_stop(int mode);
 void SID_profile_start(char *function_name, int mode, ...);
 
 void *SID_malloc(size_t allocation_size);
+void *SID_realloc(void *original_pointer,size_t allocation_size);
 void *SID_malloc_array(size_t allocation_size_i,int n_D,...);
 void *SID_calloc(size_t allocation_size);
 void SID_free_array(void **ptr,int n_D,...);
