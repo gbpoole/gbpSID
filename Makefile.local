@@ -26,6 +26,7 @@ OBJFILES  = SID_init.o              \
             SID_free.o              \
             SID_free_array.o        \
             SID_malloc.o            \
+            SID_realloc.o           \
             SID_malloc_array.o      \
             SID_calloc.o            \
 	    SID_out.o               \

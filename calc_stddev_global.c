@@ -21,6 +21,8 @@ void calc_stddev_global(void   *data,
         stddev+=pow(IABS((double)((float  *)data)[i_data])-mean,2.);
       else if(type==SID_INT)
         stddev+=pow(IABS((double)((int    *)data)[i_data])-mean,2.);
+      else if(type==SID_UNSIGNED)
+        stddev+=pow(IABS((double)((unsigned int *)data)[i_data])-mean,2.);
       else if(type==SID_SIZE_T)
         stddev+=pow(IABS((double)((size_t *)data)[i_data])-mean,2.);
       else
@@ -36,6 +38,8 @@ void calc_stddev_global(void   *data,
         stddev+=pow((double)((float  *)data)[i_data]-mean,2.);
       else if(type==SID_INT)
         stddev+=pow((double)((int    *)data)[i_data]-mean,2.);
+      else if(type==SID_UNSIGNED)
+        stddev+=pow((double)((unsigned int *)data)[i_data]-mean,2.);
       else if(type==SID_SIZE_T)
         stddev+=pow((double)((size_t *)data)[i_data]-mean,2.);
       else
@@ -51,6 +55,8 @@ void calc_stddev_global(void   *data,
     ((float  *)result)[0]=(float)stddev;
   else if(type==SID_INT)
     ((int    *)result)[0]=(int)stddev;
+  else if(type==SID_UNSIGNED)
+    ((unsigned int *)result)[0]=(unsigned int)stddev;
   else if(type==SID_SIZE_T)
     ((size_t *)result)[0]=(size_t)stddev;
   else
