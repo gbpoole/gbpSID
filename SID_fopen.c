@@ -2,8 +2,8 @@
 #include <gbpCommon.h>
 #include <gbpSID.h>
 
-int SID_fopen(char   *filename,
-              char   *mode,
+int SID_fopen(const char   *filename,
+              const char   *mode,
               SID_fp *fp){
    int r_val=TRUE;
 #if USE_MPI

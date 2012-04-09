@@ -3,8 +3,8 @@
 #include <gbpCommon.h>
 #include <gbpSID.h>
 
-int SID_fopen_chunked(char   *filename_root,
-                      char   *mode,
+int SID_fopen_chunked(const char   *filename_root,
+                      const char   *mode,
                       SID_fp *fp,
                       void   *header, ...){
   int     i_chunk;

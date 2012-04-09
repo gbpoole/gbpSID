@@ -282,11 +282,11 @@ void SID_demote();
 void SID_premote();
 void SID_say(char *fmt, ...);
 void SID_exit(int status);
-int SID_fopen(char   *filename,
-              char   *mode,
+int SID_fopen(const char   *filename,
+              const char   *mode,
               SID_fp *fp);
-int SID_fopen_chunked(char   *filename_root,
-                      char   *mode,
+int SID_fopen_chunked(const char   *filename_root,
+                      const char   *mode,
                       SID_fp *fp,
                       void   *header, ...);
 size_t SID_fread_all(void *buffer,size_t size_per_item, size_t n_items,SID_fp *fp);
@@ -317,7 +317,7 @@ void SID_fskip(size_t size_per_item,
                size_t n_items,
                SID_fp *fp);
 void SID_frewind(SID_fp *fp);
-void SID_cat_files(char *filename_out,
+void SID_cat_files(const char *filename_out,
                    int   mode,
                    int   n_files, ...);
 size_t SID_fwrite_all(void *buffer,size_t size_per_item, size_t n_items,SID_fp *fp);
@@ -337,12 +337,12 @@ void seconds2ascii(int n_secs, char *string);
 int  check_mode_for_flag(int mode, int flag);
 
 void SID_input(char *fmt, SID_Datatype type, void *input, ...);
-void SID_log(char *fmt, int mode, ...);
+void SID_log(const char *fmt, int mode, ...);
 void SID_free(void **ptr);
 void SID_log_error(char *fmt, ...);
-void SID_log_warning(char *fmt, int mode, ...);
+void SID_log_warning(const char *fmt, int mode, ...);
 void SID_out(char *fmt, int mode, ...);
-void SID_trap_error(char *fmt, int r_val, ...);
+void SID_trap_error(const char *fmt, int r_val, ...);
 void SID_set_verbosity(int mode, ...);
 
 void SID_profile_stop(int mode);

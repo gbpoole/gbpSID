@@ -3,7 +3,7 @@
 #include <gbpCommon.h>
 #include <gbpSID.h>
 
-void SID_cat_files(char *filename_out,
+void SID_cat_files(const char *filename_out,
                    int   mode,
                    int   n_files, ...){
   int      i_file;

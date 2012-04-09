@@ -3,7 +3,7 @@
 #include <gbpCommon.h>
 #include <gbpSID.h>
 
-void SID_trap_error(char *fmt, int r_val, ...){
+void SID_trap_error(const char *fmt, int r_val, ...){
   char    temp_char[2];
   int     flag_CR=FALSE;
   int     i;

@@ -4,7 +4,7 @@
 #include <gbpCommon.h>
 #include <gbpSID.h>
 
-void SID_log(char *fmt, int mode, ...){
+void SID_log(const char *fmt, int mode, ...){
   int     flag_write_time;
   int     flag_print=TRUE;
   int     i_level;
