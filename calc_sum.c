@@ -57,7 +57,7 @@ void calc_sum(void   *data,
     ui_temp=0;
     if(check_mode_for_flag(mode,CALC_MODE_ABS))
       for(i_data=0;i_data<n_data;i_data++)
-        ui_temp+=IABS(((unsigned int *)data)[i_data]);
+        ui_temp+=((unsigned int *)data)[i_data];
     else
       for(i_data=0;i_data<n_data;i_data++)
         ui_temp+=((unsigned int *)data)[i_data];
@@ -66,7 +66,7 @@ void calc_sum(void   *data,
     s_temp=0;
     if(check_mode_for_flag(mode,CALC_MODE_ABS))
       for(i_data=0;i_data<n_data;i_data++)
-        s_temp+=IABS(((size_t *)data)[i_data]);
+        s_temp+=((size_t *)data)[i_data];
     else
       for(i_data=0;i_data<n_data;i_data++)
         s_temp+=((size_t *)data)[i_data];

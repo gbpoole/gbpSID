@@ -9,8 +9,6 @@ void SID_free_array_local_recursive(void **ptr,int n_D,size_t *D);
 void SID_free_array_local_recursive(void **ptr,int n_D,size_t *D){
   int       i_D;
 
-  if(D[0]<0)
-    SID_trap_error("Size of dimension %zd<0 in SID_free_array",ERROR_LOGIC,D[0]);
   if(n_D==1)
     SID_free(ptr);
   else if(n_D>1){

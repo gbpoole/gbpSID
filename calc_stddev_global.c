@@ -11,10 +11,9 @@ void calc_stddev_global(void   *data,
   int     i_data;
   double  stddev;
   double  mean;
-  size_t  n_data;
   if(check_mode_for_flag(mode,CALC_MODE_ABS)){
-    calc_mean_global(data,&mean,n_data,type,CALC_MODE_RETURN_DOUBLE|CALC_MODE_ABS,comm);
-    for(i_data=0,stddev=0.;i_data<n_data;i_data++){
+    calc_mean_global(data,&mean,n_data_local,type,CALC_MODE_RETURN_DOUBLE|CALC_MODE_ABS,comm);
+    for(i_data=0,stddev=0.;i_data<n_data_local;i_data++){
       if(type==SID_DOUBLE)
         stddev+=pow(IABS((double)((double *)data)[i_data])-mean,2.);
       else if(type==SID_FLOAT)
@@ -30,8 +29,8 @@ void calc_stddev_global(void   *data,
     }
   }
   else{
-    calc_mean_global(data,&mean,n_data,type,CALC_MODE_RETURN_DOUBLE,comm);
-    for(i_data=0,stddev=0.;i_data<n_data;i_data++){
+    calc_mean_global(data,&mean,n_data_local,type,CALC_MODE_RETURN_DOUBLE,comm);
+    for(i_data=0,stddev=0.;i_data<n_data_local;i_data++){
       if(type==SID_DOUBLE)
         stddev+=pow((double)((double *)data)[i_data]-mean,2.);
       else if(type==SID_FLOAT)
@@ -46,6 +45,7 @@ void calc_stddev_global(void   *data,
         SID_trap_error("Unknown variable type in calc_stddev",ERROR_LOGIC);
     }
   }
+  size_t n_data;
   SID_Allreduce(SID_IN_PLACE,&stddev, 1,SID_DOUBLE,SID_SUM,comm);
   SID_Allreduce(&n_data_local,&n_data,1,SID_SIZE_T,SID_SUM,comm);
   stddev=sqrt(stddev/(double)n_data);

@@ -13,8 +13,6 @@ void *SID_malloc(size_t allocation_size){
     SID.RAM_local   +=allocation_size;
     SID.max_RAM_local=MAX(SID.max_RAM_local,SID.RAM_local);
   }
-  else if(allocation_size<0)
-    SID_trap_error("A negative amount of memory (%zd) was requested in SID_malloc().",ERROR_LOGIC);
   else
     r_val=NULL;
   return(r_val);

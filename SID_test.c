@@ -7,7 +7,7 @@ void SID_test(int val,char *fmt,...){
   int     i;
   va_list vargs;
   va_start(vargs,fmt);
-  fprintf(SID.fp_log,"",SID_ERROR_HEADER);
+  fprintf(SID.fp_log,"");
 #if USE_MPI
   fprintf(SID.fp_log,"SID_test N=%05d R=%05d ",val,SID.My_rank);
 #else
