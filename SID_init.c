@@ -34,10 +34,13 @@ void SID_init(int       *argc,
   SID.My_node =(char *)SID_malloc(SID_MAXLENGTH_PROCESSOR_NAME * sizeof(char));
 #if USE_MPI
   MPI_Get_processor_name(SID.My_node, &node_name_length);
+test1
 #else
+test2
   sprintf(SID.My_node,"localhost");
   node_name_length=strlen(SID.My_node);
 #endif
+test3
   if (node_name_length >= SID_MAXLENGTH_PROCESSOR_NAME-1)
     SID_trap_error("SID_MAXLENGTH_PROCESSOR_NAME needs to be increased",ERROR_LOGIC);
 
