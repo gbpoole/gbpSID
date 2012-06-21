@@ -43,17 +43,18 @@ _FILE_C_CLASS int b;
 
 #define SID_FARG (void **)&
 
-#define SID_LOG_MAX_LEVELS 30
-#define SID_LOG_OPEN       1
-#define SID_LOG_CLOSE      2
-#define SID_LOG_TIMER      4
-#define SID_LOG_CONTINUE   8
-#define SID_LOG_SINGLE     16
-#define SID_LOG_IO_RATE    32
-#define SID_LOG_COMMENT    64
-#define SID_LOG_NOPRINT    128
-#define SID_LOG_ALLRANKS   256
-#define SID_LOG_CHECKPOINT 512
+#define SID_LOG_MAX_LEVELS   30
+#define SID_LOG_OPEN         1
+#define SID_LOG_CLOSE        2
+#define SID_LOG_TIMER        4
+#define SID_LOG_CONTINUE     8
+#define SID_LOG_SINGLE       16
+#define SID_LOG_IO_RATE      32
+#define SID_LOG_COMMENT      64
+#define SID_LOG_NOPRINT      128
+#define SID_LOG_ALLRANKS     256
+#define SID_LOG_CHECKPOINT   512
+#define SID_LOG_SILENT_CLOSE SID_LOG_CLOSE|SID_LOG_NOPRINT
 
 #define SID_SET_VERBOSITY_DEFAULT  0
 #define SID_SET_VERBOSITY_ABSOLUTE 1
