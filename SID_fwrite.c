@@ -19,14 +19,14 @@ size_t SID_fwrite(void *buffer,size_t size_per_item, size_t n_items,SID_fp *fp){
                size_per_item,
                n_items,
                fp->fp);
-  sync();
+//  sync();
 #endif
 #else
   r_val=fwrite(buffer,
                size_per_item,
                n_items,
                fp->fp);
-  sync();
+//  sync();
 #endif
   return(r_val);
 }
