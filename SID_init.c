@@ -193,4 +193,8 @@ void SID_init(int       *argc,
 
   // Start total-run-ime timer
   (void)time(&(SID.time_start));
+
+  // Default max wallclock
+  SID.max_wallclock=DEFAULT_MAX_WALLCLOCK_TIME;
 }
+

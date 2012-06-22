@@ -3,6 +3,8 @@
 #include <stdarg.h>
 #include <gbpCommon.h>
 
+#define DEFAULT_MAX_WALLCLOCK_TIME 172800
+
 #if USE_MPI
   #ifndef MPI_AWAKE
     #include <mpi.h>
@@ -174,6 +176,7 @@ struct SID_info{
   int       rank_to_left;
   int       rank_to_right;
   time_t    time_start;
+  time_t    max_wallclock;
   time_t    time_stop;
   time_t   *time_start_level;
   time_t   *time_stop_level;
