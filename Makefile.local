@@ -6,6 +6,8 @@ LIBFILE   =
 OBJFILES  = SID_init.o              \
 	    SID_test.o              \
             SID_exit.o              \
+	    SID_init_pcounter.o     \
+	    SID_check_pcounter.o    \
 	    SID_Type_size.o         \
 	    SID_Comm_split.o        \
 	    SID_Comm_init.o         \

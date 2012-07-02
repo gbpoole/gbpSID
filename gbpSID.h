@@ -208,6 +208,15 @@ SID_info SID={NULL,NULL,FALSE,0,0,FALSE,MASTER_RANK,1,NULL,TRUE,TRUE,MASTER_RANK
 extern SID_info SID;
 #endif 
 
+// Datastructure for managing progress counters
+typedef struct pcounter_info pcounter_info;
+struct pcounter_info{
+  size_t n_i;
+  size_t i_report_next;
+  int    n_report;
+  int    i_report;
+};
+
 // Structures to define file header info for chunked files
 typedef struct chunked_header_info chunked_header_info;
 struct chunked_header_info{
@@ -415,6 +424,14 @@ void calc_sum_global(void   *data_local,
                      SID_Datatype type,
                      int          mode,
                      SID_Comm    *comm);
+
+// These routines manage progress counters
+void SID_init_pcounter(pcounter_info *pcounter,
+                       size_t         n_i,
+                       int            n_report);
+void SID_check_pcounter(pcounter_info *pcounter,
+                        size_t         i);
+
 
 // Cuda functions
 void calc_array_multiply(void         *data_1,
