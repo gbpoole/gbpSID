@@ -130,8 +130,8 @@ void SID_exit(int status){
   SID_Comm_free(&(SID.COMM_WORLD));
   #if USE_MPI_IO
     MPI_Info_free(&(SID.file_info));
-    MPI_Finalize(); 
   #endif
+  MPI_Finalize(); 
   exit(status);
 }
 
