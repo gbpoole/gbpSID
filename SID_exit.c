@@ -131,7 +131,9 @@ void SID_exit(int status){
   #if USE_MPI_IO
     MPI_Info_free(&(SID.file_info));
   #endif
-  MPI_Finalize(); 
+  #if USE_MPI
+    MPI_Finalize(); 
+  #endif
   exit(status);
 }
 
