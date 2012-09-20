@@ -134,6 +134,16 @@ _FILE_C_CLASS int b;
 #define CALC_MODE_RETURN_DOUBLE 1
 #define CALC_MODE_ABS           2
 
+// Variable limits
+#include <limits.h>
+#include <float.h>
+#define SID_MAX_DOUBLE DBL_MAX
+#define SID_MIN_DOUBLE DBL_MIN
+#define SID_MAX_FLOAT  FLT_MAX
+#define SID_MIN_FLOAT  FLT_MIN
+#define SID_MAX_INT    INT_MAX
+#define SID_MIN_INT    INT_MIN
+
 // Structures for parsing the command line
 typedef void** SID_args;
 typedef struct SID_arg SID_arg;
