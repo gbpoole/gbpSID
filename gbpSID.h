@@ -174,6 +174,7 @@ typedef struct SID_info SID_info;
 struct SID_info{
   FILE     *fp_log;
   FILE     *fp_in;
+  int       error_state;
   int       awake;
   int       verbosity;
   int       level;
@@ -213,7 +214,7 @@ struct SID_info{
 
 // Default values
 #ifdef _MAIN
-SID_info SID={NULL,NULL,FALSE,0,0,FALSE,MASTER_RANK,1,NULL,TRUE,TRUE,MASTER_RANK,MASTER_RANK,0,0,0,NULL,NULL,NULL,NULL,NULL,FALSE,FALSE,0,0};
+SID_info SID={NULL,NULL,FALSE,FALSE,0,0,FALSE,MASTER_RANK,1,NULL,TRUE,TRUE,MASTER_RANK,MASTER_RANK,0,0,0,NULL,NULL,NULL,NULL,NULL,FALSE,FALSE,0,0};
 #else
 extern SID_info SID;
 #endif 
@@ -367,6 +368,7 @@ void SID_free(void **ptr);
 void SID_log_error(char *fmt, ...);
 void SID_log_warning(const char *fmt, int mode, ...);
 void SID_out(char *fmt, int mode, ...);
+void SID_throw_error(const char *fmt, int r_val, ...);
 void SID_trap_error(const char *fmt, int r_val, ...);
 void SID_set_verbosity(int mode, ...);
 
