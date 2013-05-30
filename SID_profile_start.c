@@ -4,7 +4,7 @@
 #include <stdarg.h>
 #include <time.h>
 
-void SID_profile_start(char *function_name, int mode, ...){
+void SID_profile_start(const char *function_name, int mode, ...){
   va_list vargs;
   va_start(vargs,mode);
 

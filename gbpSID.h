@@ -365,7 +365,7 @@ int  check_mode_for_flag(int mode, int flag);
 void SID_input(char *fmt, SID_Datatype type, void *input, ...);
 void SID_log(const char *fmt, int mode, ...);
 void SID_free(void **ptr);
-void SID_log_error(char *fmt, ...);
+void SID_log_error(const char *fmt, ...);
 void SID_log_warning(const char *fmt, int mode, ...);
 void SID_out(char *fmt, int mode, ...);
 void SID_throw_error(const char *fmt, int r_val, ...);
@@ -373,7 +373,7 @@ void SID_trap_error(const char *fmt, int r_val, ...);
 void SID_set_verbosity(int mode, ...);
 
 void SID_profile_stop(int mode);
-void SID_profile_start(char *function_name, int mode, ...);
+void SID_profile_start(const char *function_name, int mode, ...);
 
 void *SID_malloc(size_t allocation_size);
 void *SID_realloc(void *original_pointer,size_t allocation_size);
