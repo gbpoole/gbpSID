@@ -82,6 +82,8 @@ int SID_fopen(const char   *filename,
   else
     r_val=FALSE;
 #endif
+  if(fp->fp==NULL)
+     SID_trap_error("Could not open file {%s}.",ERROR_IO_OPEN,filename);
   return(r_val);
 }
 
