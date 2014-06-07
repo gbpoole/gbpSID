@@ -224,8 +224,8 @@ typedef struct pcounter_info pcounter_info;
 struct pcounter_info{
   size_t n_i;
   size_t i_report_next;
-  int    n_report;
   int    i_report;
+  int    n_report;
 };
 
 // Structures to define file header info for chunked files
