@@ -264,6 +264,18 @@ struct SID_fp{
   size_t               last_item;
 };
 
+// This is used with SID_fp to perform buffered reads
+typedef struct SID_fp_buffer SID_fp_buffer;
+struct SID_fp_buffer{
+   SID_fp *fp;
+   char   *buffer;
+   size_t  n_bytes_buffer_max;
+   size_t  n_bytes_unread;
+   size_t  n_bytes_buffer_unprocessed;
+   size_t  n_bytes_buffer_processed;
+   size_t  n_bytes_buffer;
+};
+
 // Function declarations 
 #ifdef __cplusplus
 extern "C" {
@@ -328,6 +340,11 @@ size_t SID_fread_chunked_ordered(void   *buffer,
 size_t SID_fread_chunked_all(void   *buffer,
                              size_t  n_x_read,
                              SID_fp *fp);
+
+void init_SID_fp_buffer(SID_fp *fp,size_t n_bytes_to_read,size_t n_bytes_buffer_max,SID_fp_buffer **fp_buffer);
+void free_SID_fp_buffer(SID_fp_buffer **fp_buffer);
+int  SID_fread_all_buffer(void *rval,size_t dtype_size,size_t n_items,SID_fp_buffer *fp_buffer);
+
 void SID_fskip_chunked(size_t  n_x_skip_local,
                        SID_fp *fp);
 void SID_fseek_chunked(size_t  i_x_skip_local,

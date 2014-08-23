@@ -44,6 +44,9 @@ OBJFILES  = SID_init.o              \
         SID_remove_chunked.o    \
 	    SID_fread.o             \
 	    SID_fread_all.o         \
+	    init_SID_fp_buffer.o    \
+	    free_SID_fp_buffer.o    \
+	    SID_fread_all_buffer.o  \
 	    SID_fread_ordered.o     \
 	    SID_fread_chunked.o     \
 	    SID_fread_chunked_ordered.o \
