@@ -156,6 +156,14 @@ struct SID_arg {
   void   *val;
 };
 
+// Custom variadic arguments functions
+#define MAX_GBP_VA_ARGS_STREAM_SIZE 128
+typedef struct gbp_va_list gbp_va_list;
+struct gbp_va_list{
+   char  stream[MAX_GBP_VA_ARGS_STREAM_SIZE];
+   int   stream_position;
+};
+
 typedef struct SID_Comm SID_Comm;
 struct SID_Comm{
   #if USE_MPI
@@ -280,6 +288,10 @@ struct SID_fp_buffer{
 #ifdef __cplusplus
 extern "C" {
 #endif
+void gbp_va_start    (gbp_va_list *vargs);
+void gbp_add_va_arg  (gbp_va_list *vargs,size_t size,void *ptr);
+void gbp_fetch_va_arg(gbp_va_list *vargs,size_t size,void *ptr);
+
 void SID_init(int *argc,char **argv[],SID_args args[]);
 void SID_Comm_init(SID_Comm **comm);
 void SID_Comm_free(SID_Comm **comm);
