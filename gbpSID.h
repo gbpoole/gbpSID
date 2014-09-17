@@ -268,7 +268,7 @@ struct SID_fp{
 #ifdef __cplusplus
 extern "C" {
 #endif
-void SID_init(int *argc,char **argv[],SID_args args[]);
+void SID_init(int *argc,char **argv[],SID_args args[], MPI_Comm *mpi_comm);
 void SID_Comm_init(SID_Comm **comm);
 void SID_Comm_free(SID_Comm **comm);
 void SID_Comm_split(SID_Comm *comm_in,int colour,int key,SID_Comm *comm_out);
