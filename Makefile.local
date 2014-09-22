@@ -21,6 +21,7 @@ OBJFILES  = SID_init.o              \
             SID_Barrier.o           \
 	    SID_parse_args.o        \
 	    SID_print_syntax.o      \
+	    SID_log_set_fp.o        \
 	    SID_log.o               \
 	    SID_set_verbosity.o     \
             SID_profile_start.o     \
