@@ -8,7 +8,7 @@
 void SID_init(int       *argc,
               char     **argv[],
               SID_args   args[],
-              MPI_Comm  *mpi_comm){
+              void      *mpi_comm_as_void){
   int  status;
   int  i_level;
   int  i_char;
@@ -26,6 +26,7 @@ void SID_init(int       *argc,
   SID_fp   fp_tmp;
   FILE    *fp_hack;
   int      node_name_length;
+  MPI_Comm *mpi_comm = (MPI_Comm *)mpi_comm_as_void;
 #if USE_MPI_IO
   MPI_Info info_disp;
 #endif
