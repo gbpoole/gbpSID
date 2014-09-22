@@ -14,7 +14,7 @@ void SID_log(const char *fmt, int mode, ...){
   va_list vargs;
   va_start(vargs,mode);
 
-  if(SID.awake && (SID.I_am_Master || check_mode_for_flag(mode,SID_LOG_ALLRANKS))){
+  if(SID.awake && (SID.I_am_Master || check_mode_for_flag(mode,SID_LOG_ALLRANKS)) && (SID.fp_log != NULL)){
     if(SID.level<SID_LOG_MAX_LEVELS){
       // If SID_LOG_NOPRINT is set, do not write anything (useful for changing indenting)
       if(check_mode_for_flag(mode,SID_LOG_NOPRINT))

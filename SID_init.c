@@ -8,11 +8,12 @@
 void SID_init(int       *argc,
               char     **argv[],
               SID_args   args[],
-              MPI_Comm *mpi_comm){
+              MPI_Comm  *mpi_comm){
   int  status;
   int  i_level;
   int  i_char;
   int  flag_continue;
+  int  flag_passed_comm;
 
   // MPI-specific things
 #if USE_MPI
@@ -30,9 +31,13 @@ void SID_init(int       *argc,
 #endif
 
   if (mpi_comm == NULL)
+  {
+    flag_passed_comm = 0;
     MPI_Init(argc,argv);
-  else
     MPI_Comm_dup(MPI_COMM_WORLD, mpi_comm);
+  }
+  else
+    flag_passed_comm = 1;
 
   MPI_Comm_size(*mpi_comm, &(SID.n_proc));
   MPI_Comm_rank(*mpi_comm, &(SID.My_rank));
@@ -131,7 +136,10 @@ void SID_init(int       *argc,
 #else
   SID.fp_in          =stdin;
 #endif
-  SID.fp_log         =stderr;
+  if (flag_passed_comm)
+    SID.fp_log       = NULL;
+  else
+    SID.fp_log       = stderr;
   SID.level          =0;
   SID.indent         =TRUE;
   SID.awake          =TRUE;
