@@ -17,7 +17,9 @@ void SID_Type_size(SID_Datatype type,int *size){
     (*size)=sizeof(float);
   else if(type==SID_DOUBLE)
     (*size)=sizeof(double);
+  else if(type==SID_CHAR)
+    (*size)=sizeof(char);
   else
-    SID_trap_error("Unsupported SID_Datatype (%d) in SID_sizeof",ERROR_LOGIC,type);
+    SID_trap_error("Unsupported SID_Datatype (%d) in SID_Type_size().",ERROR_LOGIC,type);
   #endif
 }
