@@ -5,7 +5,7 @@
 #include <gbpSID.h>
 
 void SID_log(const char *fmt, int mode, ...){
-  int     flag_write_time;
+  int     flag_write_time=FALSE;
   int     flag_print=TRUE;
   int     i_level;
   int     level_next;
@@ -43,6 +43,7 @@ void SID_log(const char *fmt, int mode, ...){
           }
         }
       }
+      // Set timer for comments
       else if(check_mode_for_flag(mode,SID_LOG_COMMENT) && check_mode_for_flag(mode,SID_LOG_TIMER)){
         if(SID.level>0 && SID.level<SID_LOG_MAX_LEVELS){
           if(SID.flag_use_timer[SID.level-1]){
