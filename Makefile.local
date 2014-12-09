@@ -48,6 +48,7 @@ OBJFILES  = gbp_va_start.o          \
 	        SID_fread.o             \
 	        SID_fread_all.o         \
 	        init_SID_fp_buffer.o    \
+	        reset_SID_fp_buffer.o   \
 	        free_SID_fp_buffer.o    \
 	        SID_fread_all_buffer.o  \
 	        SID_fread_ordered.o     \

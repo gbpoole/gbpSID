@@ -7,6 +7,21 @@ void calc_max(void   *data,
               SID_Datatype  type,
               int           mode){
   int     i_data;
+
+  // Initialize to zero
+  if(type==SID_DOUBLE || check_mode_for_flag(mode,CALC_MODE_RETURN_DOUBLE))
+    ((double *)result)[0]=0.;
+  else if(type==SID_FLOAT)
+    ((float  *)result)[0]=0.;
+  else if(type==SID_INT)
+    ((int    *)result)[0]=0;
+  else if(type==SID_UNSIGNED)
+    ((unsigned int *)result)[0]=0;
+  else if(type==SID_SIZE_T)
+    ((size_t *)result)[0]=0;
+  else
+    SID_trap_error("Unknown variable type in calc_max",ERROR_LOGIC);
+
   if(n_data<1){
     if(type==SID_DOUBLE || check_mode_for_flag(mode,CALC_MODE_RETURN_DOUBLE))
       ((double *)result)[0]=0.;

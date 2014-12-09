@@ -11,6 +11,7 @@ void init_SID_fp_buffer(SID_fp *fp,size_t n_bytes_to_read,size_t n_bytes_buffer_
    (*fp_buffer)->fp                        =fp;
    (*fp_buffer)->buffer                    =(char *)SID_malloc(n_bytes_buffer_max);
    (*fp_buffer)->n_bytes_buffer_max        =n_bytes_buffer_max;
+   (*fp_buffer)->n_bytes_to_read           =n_bytes_to_read;
    (*fp_buffer)->n_bytes_unread            =n_bytes_to_read;
    (*fp_buffer)->n_bytes_buffer_unprocessed=0; // This way we will perform a read right away
    (*fp_buffer)->n_bytes_buffer_processed  =0;
