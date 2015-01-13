@@ -27,7 +27,9 @@ void SID_init(int       *argc,
 #if USE_MPI_IO
   MPI_Info info_disp;
 #endif
+#ifndef _MAIN_NO_SID_MPIINIT
   MPI_Init(argc,argv);
+#endif
   MPI_Comm_size(MPI_COMM_WORLD,&(SID.n_proc));
   MPI_Comm_rank(MPI_COMM_WORLD,&(SID.My_rank));
 
