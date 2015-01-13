@@ -26,6 +26,7 @@ OBJFILES  = gbp_va_start.o          \
 	        SID_parse_args.o        \
 	        SID_print_syntax.o      \
 	        SID_log.o               \
+	        SID_log_set_fp.o        \
 	        SID_set_verbosity.o     \
             SID_profile_start.o     \
 	        SID_profile_stop.o      \

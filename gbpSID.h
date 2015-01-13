@@ -292,8 +292,7 @@ extern "C" {
 void gbp_va_start    (gbp_va_list *vargs);
 void gbp_add_va_arg  (gbp_va_list *vargs,size_t size,void *ptr);
 void gbp_fetch_va_arg(gbp_va_list *vargs,size_t size,void *ptr);
-
-void SID_init(int *argc,char **argv[],SID_args args[]);
+void SID_init(int *argc,char **argv[],SID_args args[], void *mpi_comm_as_void);
 void SID_Comm_init(SID_Comm **comm);
 void SID_Comm_free(SID_Comm **comm);
 void SID_Comm_split(SID_Comm *comm_in,int colour,int key,SID_Comm *comm_out);
@@ -395,6 +394,7 @@ int  check_mode_for_flag(int mode, int flag);
 
 void SID_input(char *fmt, SID_Datatype type, void *input, ...);
 void SID_log(const char *fmt, int mode, ...);
+void SID_log_set_fp(FILE *fp);
 void SID_free(void **ptr);
 void SID_log_error(const char *fmt, ...);
 void SID_log_warning(const char *fmt, int mode, ...);
