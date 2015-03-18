@@ -3,7 +3,8 @@
 #############################
 INCFILES  = gbpSID.h 
 LIBFILE   = 
-OBJFILES  = gbp_va_start.o          \
+OBJFILES  = fread_verify.o          \
+	        gbp_va_start.o          \
 	        gbp_add_va_arg.o        \
 	        gbp_fetch_va_arg.o      \
 	        SID_init.o              \

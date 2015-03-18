@@ -339,6 +339,7 @@ int SID_fopen_chunked(const char   *filename_root,
                       const char   *mode,
                       SID_fp *fp,
                       void   *header, ...);
+size_t fread_verify(void *ptr, size_t size, size_t count, FILE *stream);
 size_t SID_fread_all(void *buffer,size_t size_per_item, size_t n_items,SID_fp *fp);
 size_t SID_fread_ordered(void *buffer,size_t size_per_item, size_t n_items,SID_fp *fp);
 size_t SID_fread(void *buffer,size_t size_per_item, size_t n_items,SID_fp *fp);
