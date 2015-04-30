@@ -31,28 +31,21 @@ void SID_init(int       *argc,
   MPI_Info info_disp;
 #endif
 
-  if (mpi_comm_as_void == NULL)
-  {
-    flag_passed_comm = 0;
+  if(mpi_comm_as_void == NULL){
+    flag_passed_comm=FALSE;
     MPI_Init(argc,argv);
     MPI_Comm_dup(MPI_COMM_WORLD, &mpi_comm);
   }
-  else
-  {
+  else{
     mpi_comm = *((MPI_Comm *) mpi_comm_as_void);
-    flag_passed_comm = 1;
+    flag_passed_comm=TRUE;
   }
 
   MPI_Comm_size(mpi_comm, &(SID.n_proc));
   MPI_Comm_rank(mpi_comm, &(SID.My_rank));
 
   SID.My_node =(char *)SID_malloc(SID_MAXLENGTH_PROCESSOR_NAME * sizeof(char));
-#if USE_MPI
   MPI_Get_processor_name(SID.My_node, &node_name_length);
-#else
-  sprintf(SID.My_node,"localhost");
-  node_name_length=strlen(SID.My_node);
-#endif
   if (node_name_length >= SID_MAXLENGTH_PROCESSOR_NAME-1)
     SID_trap_error("SID_MAXLENGTH_PROCESSOR_NAME needs to be increased",ERROR_LOGIC);
 
@@ -99,8 +92,14 @@ void SID_init(int       *argc,
   MPI_Info_set((SID.file_info),"cb_config_list",      "*:1");
   #endif
 #else
+  if(mpi_comm_as_void==NULL)
+    flag_passed_comm=FALSE;
+  else
+    flag_passed_comm=TRUE;
   SID.My_rank=MASTER_RANK;
   SID.n_proc =1;
+  SID.My_node =(char *)SID_malloc(SID_MAXLENGTH_PROCESSOR_NAME * sizeof(char));
+  sprintf(SID.My_node,"localhost");
 #endif
 
 /*
@@ -140,7 +139,7 @@ void SID_init(int       *argc,
 #else
   SID.fp_in          =stdin;
 #endif
-  if (flag_passed_comm)
+  if(flag_passed_comm)
     SID.fp_log       = NULL;
   else
     SID.fp_log       = stderr;
