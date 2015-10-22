@@ -105,7 +105,7 @@ void SID_exit(int status){
       }
     }
   #else
-    strcpy(spacer,"");
+    strcpy(spacer,"\0");
     max_RAM=SID.max_RAM_local;
   #endif
   if(SID.I_am_Master){
