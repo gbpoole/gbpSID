@@ -20,10 +20,10 @@ size_t SID_fread_all(void *buffer,size_t size_per_item, size_t n_items,SID_fp *f
   size_t size_send,size_left,size_offset;
   if(size_per_item*n_items>0){
     if(SID.I_am_Master){
-      r_val=fread(buffer,
-                  size_per_item,
-                  n_items,
-                  fp->fp);
+      r_val=fread_verify(buffer,
+                         size_per_item,
+                         n_items,
+                         fp->fp);
     }
     else{
       fseek(fp->fp,
@@ -44,10 +44,10 @@ size_t SID_fread_all(void *buffer,size_t size_per_item, size_t n_items,SID_fp *f
     r_val=0;
 #endif
 #else
-  r_val=fread(buffer,
-              size_per_item,
-              n_items,
-              fp->fp);
+  r_val=fread_verify(buffer,
+                     size_per_item,
+                     n_items,
+                     fp->fp);
 #endif
   return(r_val);
 }

@@ -48,10 +48,10 @@ void SID_cat_files(const char *filename_out,
     n_bytes_buffer=MIN(n_bytes,IO_BUFFER_SIZE);
     while(n_bytes_buffer>0){
       // Read
-      r_val=fread(buffer,
-                  1,
-                  n_bytes_buffer,
-                  fp_in);
+      r_val=fread_verify(buffer,
+                         1,
+                         n_bytes_buffer,
+                         fp_in);
       // Write
       r_val=fwrite(buffer,
                    1,
