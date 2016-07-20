@@ -37,7 +37,7 @@ void SID_init(int       *argc,
     MPI_Comm_dup(MPI_COMM_WORLD, &mpi_comm);
   }
   else{
-    mpi_comm = *((MPI_Comm *) mpi_comm_as_void);
+    MPI_Comm_dup(*((MPI_Comm *) mpi_comm_as_void), &mpi_comm);
     flag_passed_comm=TRUE;
   }
 
