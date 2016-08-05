@@ -71,14 +71,14 @@ int SID_fopen(const char   *filename,
 #else
   (fp->fp)=fopen(filename,mode);
   if((fp->fp)!=NULL)
-    r_val==TRUE;
+    r_val=TRUE;
   else
     r_val=FALSE;
 #endif
 #else
   (fp->fp)=fopen(filename,mode);
   if((fp->fp)!=NULL)
-    r_val==TRUE;
+    r_val=TRUE;
   else
     r_val=FALSE;
 #endif
