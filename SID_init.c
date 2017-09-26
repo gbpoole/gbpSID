@@ -154,6 +154,7 @@ void SID_init(int       *argc,
   strip_path(SID.My_binary);
 
   // Initialize argument information
+  /*
   if(args!=NULL){
     if((status=SID_parse_args(*argc,*argv,args))>0){
       SID_print_syntax(*argc,*argv,args);
@@ -161,6 +162,7 @@ void SID_init(int       *argc,
     }
   }
   else
+  */
     SID.args=NULL;
 
 #if USE_MPI_IO

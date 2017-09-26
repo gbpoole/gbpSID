@@ -1,4 +1,4 @@
-#include <common.h>
+#include <gbpCommon.h>
 
 double calc_mean_marked(double *data,
                         int    *marked,
