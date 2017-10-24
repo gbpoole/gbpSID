@@ -1,7 +1,6 @@
 #include <string.h>
 #include <stdarg.h>
 #include <time.h>
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 void SID_log(const char *fmt, int mode, ...){

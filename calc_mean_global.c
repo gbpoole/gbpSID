@@ -1,4 +1,3 @@
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 void calc_mean_global(void   *data_local,

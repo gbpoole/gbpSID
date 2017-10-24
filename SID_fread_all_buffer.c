@@ -1,8 +1,7 @@
 #include <string.h>
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
-int SID_fread_all_buffer(void *rval,size_t dtype_size,size_t n_items,SID_fp_buffer *fp_buffer){
+void SID_fread_all_buffer(void *rval,size_t dtype_size,size_t n_items,SID_fp_buffer *fp_buffer){
     // Set the requested total return size
     size_t data_size=dtype_size*n_items;
     // Check if we need to peroform the next read

@@ -1,8 +1,7 @@
-#include <gbpCommon.h>
-#include <gbpSID.h>
 #include <string.h>
 #include <stdarg.h>
 #include <time.h>
+#include <gbpSID.h>
 
 void SID_profile_start(const char *function_name, int mode, ...){
   va_list vargs;

@@ -1,5 +1,4 @@
 #include <string.h>
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 void SID_Sendrecv(void         *sendbuf,

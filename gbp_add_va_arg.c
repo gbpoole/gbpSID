@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 void gbp_add_va_arg(gbp_va_list *vargs,size_t size,void *ptr){

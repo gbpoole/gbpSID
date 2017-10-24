@@ -1,4 +1,3 @@
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 // Inititialize the read buffer

@@ -1,4 +1,3 @@
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 size_t fread_verify(void *ptr, size_t size, size_t count, FILE *stream){

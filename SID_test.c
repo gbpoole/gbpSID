@@ -1,6 +1,6 @@
-#include <gbpSID.h>
 #include <string.h>
 #include <stdarg.h>
+#include <gbpSID.h>
 
 void SID_test(int val,char *fmt,...){
   char    temp_char[2];

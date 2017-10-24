@@ -1,4 +1,3 @@
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 void SID_Comm_list(SID_Comm *comm_in,int comm_id,SID_Comm *comm_out){

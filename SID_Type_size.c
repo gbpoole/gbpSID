@@ -1,4 +1,3 @@
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 void SID_Type_size(SID_Datatype type,int *size){

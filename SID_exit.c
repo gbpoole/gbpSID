@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 void SID_exit(int status){

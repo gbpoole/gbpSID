@@ -1,6 +1,5 @@
 #include <string.h>
 #include <stdarg.h>
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 int SID_fopen_chunked(const char   *filename_root,

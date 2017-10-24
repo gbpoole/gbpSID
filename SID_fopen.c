@@ -1,5 +1,4 @@
 #include <string.h>
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 int SID_fopen(const char   *filename,

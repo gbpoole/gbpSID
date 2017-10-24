@@ -19,6 +19,7 @@ set(DATASUBDIR "" )
 
 # Add header files
 # eg. list(APPEND INCFILES "filename.ext")
+list(APPEND INCFILES "gbpConstants.h" )
 list(APPEND INCFILES "gbpSID.h" )
 
 # Add source files
@@ -89,7 +90,6 @@ list(APPEND SRCFILES "SID_cat_files.c" )
 list(APPEND SRCFILES "init_SID_fp_buffer.c" )
 list(APPEND SRCFILES "reset_SID_fp_buffer.c" )
 list(APPEND SRCFILES "free_SID_fp_buffer.c" )
-list(APPEND SRCFILES "calc_array_multiply.cu" )
 list(APPEND SRCFILES "calc_min.c" )
 list(APPEND SRCFILES "calc_min_global.c" )
 list(APPEND SRCFILES "calc_max.c" )
@@ -102,6 +102,8 @@ list(APPEND SRCFILES "calc_stddev.c" )
 list(APPEND SRCFILES "calc_stddev_global.c" )
 list(APPEND SRCFILES "calc_mean.c" )
 list(APPEND SRCFILES "calc_mean_global.c" )
+list(APPEND SRCFILES "check_mode_for_flag.c" )
+list(APPEND SRCFILES "seconds2ascii.c" )
 
 # Add executable source files (those with a main())
 # eg. list(APPEND EXEFILES "filename.ext")

@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 void *SID_malloc(size_t allocation_size){

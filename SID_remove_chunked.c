@@ -1,5 +1,4 @@
 #include <string.h>
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 int SID_remove_chunked(char *filename_root){

@@ -1,5 +1,4 @@
 #include <unistd.h>
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 int SID_fclose(SID_fp *fp){

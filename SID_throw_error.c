@@ -1,6 +1,5 @@
 #include <string.h>
 #include <stdarg.h>
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 void SID_throw_error(const char *fmt, int r_val, ...){

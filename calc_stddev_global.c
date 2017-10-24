@@ -1,5 +1,4 @@
 #include <math.h>
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 void calc_stddev_global(void   *data,

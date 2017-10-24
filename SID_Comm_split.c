@@ -1,4 +1,3 @@
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 void SID_Comm_split(SID_Comm *comm_in,int colour,int key,SID_Comm *comm_out){

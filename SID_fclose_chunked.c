@@ -1,4 +1,3 @@
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 int SID_fclose_chunked(SID_fp *fp){

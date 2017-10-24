@@ -1,6 +1,5 @@
 #include <string.h>
 #include <stdarg.h>
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 void SID_log_error(const char *fmt, ...){

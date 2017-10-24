@@ -1,4 +1,3 @@
-#include <gbpCommon.h>
 #include <gbpSID.h>
 #include <unistd.h>
 #include <stdarg.h>

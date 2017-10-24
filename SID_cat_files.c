@@ -1,6 +1,5 @@
 #include <sys/stat.h>
 #include <stdarg.h>
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 void SID_cat_files(const char *filename_out,

@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 void SID_input(char *fmt, SID_Datatype type, void *input, ...){

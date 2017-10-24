@@ -1,4 +1,3 @@
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 #define MAX_SEND_LOCAL 10*SIZE_OF_MEGABYTE

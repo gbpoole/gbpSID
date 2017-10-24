@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 void *SID_malloc_array_local_recursive(size_t allocation_size_i,int n_D,size_t *D);

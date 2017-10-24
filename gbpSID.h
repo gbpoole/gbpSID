@@ -1,7 +1,8 @@
+#ifndef SID_H
+#define SID_H
 #include <stdio.h>     // Needed for type FILE
 #include <sys/types.h> // Needed for type time_t
 #include <stdarg.h>
-#include <gbpCommon.h>
 
 #define DEFAULT_MAX_WALLCLOCK_TIME 172800
 
@@ -24,13 +25,176 @@ _FILE_C_CLASS int a;
 _FILE_C_CLASS int b;
 #endif
 
-#ifndef SID_AWAKE
-#define SID_AWAKE
+#define IO_BUFFER_SIZE 4096
 
-// Declare some stuff needed by Cuda code
-//#if USE_CUDA
-  #define SID_CUDA_MAX_THREADS_PER_BLOCK 32
-//#endif
+#define C_VACUUM       2.99792458E8   /* in m/s          */
+#define G_NEWTON       6.67428E-11    /* in m^3/(kg*s^2) */
+#define M_SOL          1.98892E30     /* in kilograms    */
+#define M_HYDROGEN     1.6735E-27     /* in kilograms    */
+#define M_PROTON       1.6726216E-27  /* in kilograms    */
+#define M_ELECTRON     9.10938188E-31 /* in kilograms    */
+#define SIGMA_THOMPSON 6.65245854E-29 /* in m^2          */
+#define M_PER_PC       3.08568025E16  /* in meters       */
+#define M_PER_KPC      3.08568025E19  /* in meters       */
+#define M_PER_MPC      3.08568025E22  /* in meters       */
+#ifndef CM_PER_MPC
+   #define CM_PER_MPC  3.08568025E24  /* in cm           */
+#endif
+#define S_PER_GYR      3.155693e+16   /* in seconds      */
+#define S_PER_MYR      3.155693e+13   /* in seconds      */
+#define S_PER_YR       3.155693e+7    /* in seconds      */
+#define K_BOLTZMANN    1.3806503E-23  /* in J per K      */
+#define H_PLANK        6.62606876E-34 /* in J*s          */
+#define LOG_M_P      -57.075256       /* in log(M_sol)   */
+#define T_CMB          2.728          /* in Kelvin       */
+
+#define FIVE_THIRDS    1.6666667
+#define THREE_HALVES   1.5
+#define TWO_THIRDS     0.6666667
+#define ONE_THIRD      0.3333333
+#define ONE_HALF       0.4999999
+#define ONE_QUARTER    0.25
+
+#define FOUR_THIRDS_PI     4.1887902
+#define PI                 3.1415926
+#define HALF_PI            1.5707963
+#define THREE_QUARTERS_PI  2.3561944
+#define TWO_PI             6.2831853
+#define FOUR_PI           12.5663706
+#define LN_OF_10           2.30288509
+#define LOG10_OF_E         0.43429448
+#define SQRT_OF_2          1.41421356
+
+#define DEG_PER_RAD   5.72957795E+1
+#define DEG_PER_AMIN  3.43774677E+3
+#define DEG_PER_ASEC  4.84811331E-6
+#define RAD_PER_DEG   1.74532925E-2
+#define RAD_PER_AMIN  2.90888209E-4
+#define RAD_PER_ASEC  4.84811331E-6
+#define ASEC_PER_RAD  2.06265806E+5
+#define ASEC_PER_DEG  3.60000000E+3
+
+#define S_PER_YEAR     3.155693e+07
+#define ERGS_PER_KEV   1.60217733000e-9
+#define ERGS_PER_J     1e7
+#define J_PER_KEV      1.60217646E-16
+#define SI_TO_MJY      1E29
+
+// TTPXX=Two-to-the-power-XX
+#define TTTP00 1
+#define TTTP01 2
+#define TTTP02 4
+#define TTTP03 8
+#define TTTP04 16
+#define TTTP05 32
+#define TTTP06 64
+#define TTTP07 128
+#define TTTP08 256
+#define TTTP09 512
+#define TTTP10 1024
+#define TTTP11 2048
+#define TTTP12 4096
+#define TTTP13 8192
+#define TTTP14 16384
+#define TTTP15 32768
+#define TTTP16 65536
+#define TTTP17 131072
+#define TTTP18 262144
+#define TTTP19 524288
+#define TTTP20 1048576
+#define TTTP21 2097152
+#define TTTP22 4194304
+#define TTTP23 8388608
+#define TTTP24 16777216
+#define TTTP25 33554432
+#define TTTP26 67108864
+#define TTTP27 134217728
+#define TTTP28 268435456
+#define TTTP29 536870912
+#define TTTP30 1073741824
+#define TTTP31 2147483648
+#define TTTP32 4294967296
+
+#define MU_MMW         0.597  /* Mean molecular weight      */
+#define XI             1.0878 /* Xi=1+Y/(4*(1-Y)) w/ Y=0.26 */
+#define XE             1.1756 /* Xe=1+Y/(2*(1-Y)) w/ Y=0.26 */
+
+#define NE_PER_RHOGAS  XE/(MU_MMW*M_PROTON*(XI+XE))
+#define NH_PER_RHOGAS  1.0/(MU_MMW*M_PROTON*(XI+XE))
+#define MU_E_MMW       MU_MMW*(XI+XE)/XE
+
+#define GAMMA_ICM      FIVE_THIRDS
+
+#define MSOL_KPCQU_PER_KG_MQU M_PER_KPC*M_PER_KPC*M_PER_KPC/M_SOL
+
+#define MAX_FILENAME_LENGTH 256
+
+#define LOG_ZERO  -1000.0
+#define K_PER_KEV  1.1604447e7
+
+#define LOG_BIN    0
+#define LINEAR_BIN 1
+
+#define AVG_MEAN   0
+#define AVG_WEIGHT 1
+#define AVG_SUM    2
+
+#define X_PROJECTION 0
+#define Y_PROJECTION 1
+#define Z_PROJECTION 2
+
+// Storage sizes
+#define SIZE_OF_KILOBYTE  1024
+#define SIZE_OF_MEGABYTE  1048576
+#define SIZE_OF_GIGIBYTE  1073741824
+#define SIZE_OF_TERABYTE  1099511627776
+
+#define mode_int int
+
+#define TRUE  1
+#define FALSE 0
+#define MIN(A,B)  ((A) < (B) ?  (A) : (B))
+#define MAX(A,B)  ((A) > (B) ?  (A) : (B))
+#define IABS(A)   ((A) <  0  ? -(A) : (A))
+#define SIGN(A,B) ((B) <  0  ? -(A) : (A))
+#define INDEX_2D(A,B,C) (A*B+C)
+
+// Compile flags to control large variables
+#if USE_DOUBLE
+#define GBPREAL double
+#else
+#define GBPREAL float
+#endif
+
+#define big_int long long
+#define id_int  size_t
+
+// Other common header files
+
+// MPI
+#if USE_MPI
+  #ifndef MPI_DEFINED
+    #include <mpi.h>
+  #else
+    #define MPI_DEFINED 1
+  #endif
+  #if USE_DOUBLE
+    #define MPI_MY_REAL MPI_DOUBLE
+  #else
+    #define MPI_MY_REAL MPI_FLOAT
+  #endif
+  #define MPI_SIZE_T MPI_LONG_LONG
+#endif
+
+// Error messages
+#define ERROR_NONE      0
+#define ERROR_SYNTAX    TTTP01
+#define ERROR_LOGIC     TTTP02
+#define ERROR_IO_OPEN   TTTP03
+#define ERROR_IO_READ   TTTP04
+#define ERROR_IO_WRITE  TTTP05
+#define ERROR_3RD_PARTY TTTP06
+#define ERROR_MEMORY    TTTP07
 
 #define MASTER_RANK    0
 #define DEFAULT_MODE   0
@@ -46,16 +210,16 @@ _FILE_C_CLASS int b;
 #define SID_FARG (void **)&
 
 #define SID_LOG_MAX_LEVELS   30
-#define SID_LOG_OPEN         1
-#define SID_LOG_CLOSE        2
-#define SID_LOG_TIMER        4
-#define SID_LOG_CONTINUE     8
-#define SID_LOG_SINGLE       16
-#define SID_LOG_IO_RATE      32
-#define SID_LOG_COMMENT      64
-#define SID_LOG_NOPRINT      128
-#define SID_LOG_ALLRANKS     256
-#define SID_LOG_CHECKPOINT   512
+#define SID_LOG_OPEN         TTTP01
+#define SID_LOG_CLOSE        TTTP02
+#define SID_LOG_TIMER        TTTP03
+#define SID_LOG_CONTINUE     TTTP04
+#define SID_LOG_SINGLE       TTTP05
+#define SID_LOG_IO_RATE      TTTP06
+#define SID_LOG_COMMENT      TTTP07
+#define SID_LOG_NOPRINT      TTTP08
+#define SID_LOG_ALLRANKS     TTTP09
+#define SID_LOG_CHECKPOINT   TTTP10
 #define SID_LOG_SILENT_CLOSE SID_LOG_CLOSE|SID_LOG_NOPRINT
 
 #define SID_SET_VERBOSITY_DEFAULT  0
@@ -112,19 +276,19 @@ _FILE_C_CLASS int b;
 #define SID_COMM_NULL   NULL
 #define SID_GROUP_EMPTY NULL
 #define SID_Datatype    int
-#define SID_DOUBLE      0
-#define SID_LONG_LONG   1
-#define SID_LONG        2
-#define SID_FLOAT       3
-#define SID_INT         4
-#define SID_UNSIGNED    5
-#define SID_SIZE_T      6
-#define SID_BYTE        7
-#define SID_CHAR        8
+#define SID_LONG_LONG   TTTP01
+#define SID_LONG        TTTP02
+#define SID_FLOAT       TTTP03
+#define SID_DOUBLE      TTTP04
+#define SID_INT         TTTP05
+#define SID_UNSIGNED    TTTP06
+#define SID_SIZE_T      TTTP07
+#define SID_BYTE        TTTP08
+#define SID_CHAR        TTTP09
 #define SID_Op          int
-#define SID_SUM         1
-#define SID_MAX         2
-#define SID_MIN         3
+#define SID_SUM         TTTP01
+#define SID_MAX         TTTP02
+#define SID_MIN         TTTP03
 #endif 
 #if USE_DOUBLE
   #define SID_REAL SID_DOUBLE
@@ -135,6 +299,16 @@ _FILE_C_CLASS int b;
 #define CALC_MODE_DEFAULT       DEFAULT_MODE
 #define CALC_MODE_RETURN_DOUBLE 1
 #define CALC_MODE_ABS           2
+
+#define CALC_STAT_DEFAULT       0
+#define CALC_STAT_RETURN_DOUBLE TTTP01
+#define CALC_STAT_GLOBAL        TTTP02
+#define CALC_STAT_SUM           TTTP03
+#define CALC_STAT_MIN           TTTP04
+#define CALC_STAT_MAX           TTTP05
+#define CALC_STAT_MEAN          TTTP06
+#define CALC_STAT_MEDIAN        TTTP07
+#define CALC_STAT_STDDEV        TTTP08
 
 // Variable limits
 #include <limits.h>
@@ -359,7 +533,7 @@ size_t SID_fread_chunked_all(void   *buffer,
 void init_SID_fp_buffer(SID_fp *fp,size_t n_bytes_to_read,size_t n_bytes_buffer_max,SID_fp_buffer **fp_buffer);
 void reset_SID_fp_buffer(SID_fp_buffer **fp_buffer);
 void free_SID_fp_buffer(SID_fp_buffer **fp_buffer);
-int  SID_fread_all_buffer(void *rval,size_t dtype_size,size_t n_items,SID_fp_buffer *fp_buffer);
+void SID_fread_all_buffer(void *rval,size_t dtype_size,size_t n_items,SID_fp_buffer *fp_buffer);
 
 void SID_fskip_chunked(size_t  n_x_skip_local,
                        SID_fp *fp);
@@ -477,15 +651,6 @@ void SID_init_pcounter(pcounter_info *pcounter,
                        int            n_report);
 void SID_check_pcounter(pcounter_info *pcounter,
                         size_t         i);
-
-
-// Cuda functions
-void calc_array_multiply(void         *data_1,
-                         void         *data_2,
-                         void         *result,
-                         size_t        n_data,
-                         SID_Datatype  type,
-                         int           mode);
 
 #ifdef __cplusplus
 }

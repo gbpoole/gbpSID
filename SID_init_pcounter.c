@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <gbpCommon.h>
 #include <gbpSID.h>
 
 void SID_init_pcounter(pcounter_info *pcounter,
