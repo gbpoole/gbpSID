@@ -19,7 +19,6 @@ set(DATASUBDIR "" )
 
 # Add header files
 # eg. list(APPEND INCFILES "filename.ext")
-list(APPEND INCFILES "gbpConstants.h" )
 list(APPEND INCFILES "gbpSID.h" )
 
 # Add source files

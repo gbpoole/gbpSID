@@ -15,72 +15,18 @@
 #endif 
 
 #ifndef _FILE_H
-#define _FILE_H
-#if _FILE_C
-#define _FILE_C_CLASS
-#else
-#define _FILE_C_CLASS extern
-#endif
+#   define _FILE_H
+#   if _FILE_C
+#      define _FILE_C_CLASS
+#   else
+#      define _FILE_C_CLASS extern
+#   endif
 _FILE_C_CLASS int a;
 _FILE_C_CLASS int b;
 #endif
 
-#define IO_BUFFER_SIZE 4096
-
-#define C_VACUUM       2.99792458E8   /* in m/s          */
-#define G_NEWTON       6.67428E-11    /* in m^3/(kg*s^2) */
-#define M_SOL          1.98892E30     /* in kilograms    */
-#define M_HYDROGEN     1.6735E-27     /* in kilograms    */
-#define M_PROTON       1.6726216E-27  /* in kilograms    */
-#define M_ELECTRON     9.10938188E-31 /* in kilograms    */
-#define SIGMA_THOMPSON 6.65245854E-29 /* in m^2          */
-#define M_PER_PC       3.08568025E16  /* in meters       */
-#define M_PER_KPC      3.08568025E19  /* in meters       */
-#define M_PER_MPC      3.08568025E22  /* in meters       */
-#ifndef CM_PER_MPC
-   #define CM_PER_MPC  3.08568025E24  /* in cm           */
-#endif
-#define S_PER_GYR      3.155693e+16   /* in seconds      */
-#define S_PER_MYR      3.155693e+13   /* in seconds      */
-#define S_PER_YR       3.155693e+7    /* in seconds      */
-#define K_BOLTZMANN    1.3806503E-23  /* in J per K      */
-#define H_PLANK        6.62606876E-34 /* in J*s          */
-#define LOG_M_P      -57.075256       /* in log(M_sol)   */
-#define T_CMB          2.728          /* in Kelvin       */
-
-#define FIVE_THIRDS    1.6666667
-#define THREE_HALVES   1.5
-#define TWO_THIRDS     0.6666667
-#define ONE_THIRD      0.3333333
-#define ONE_HALF       0.4999999
-#define ONE_QUARTER    0.25
-
-#define FOUR_THIRDS_PI     4.1887902
-#define PI                 3.1415926
-#define HALF_PI            1.5707963
-#define THREE_QUARTERS_PI  2.3561944
-#define TWO_PI             6.2831853
-#define FOUR_PI           12.5663706
-#define LN_OF_10           2.30288509
-#define LOG10_OF_E         0.43429448
-#define SQRT_OF_2          1.41421356
-
-#define DEG_PER_RAD   5.72957795E+1
-#define DEG_PER_AMIN  3.43774677E+3
-#define DEG_PER_ASEC  4.84811331E-6
-#define RAD_PER_DEG   1.74532925E-2
-#define RAD_PER_AMIN  2.90888209E-4
-#define RAD_PER_ASEC  4.84811331E-6
-#define ASEC_PER_RAD  2.06265806E+5
-#define ASEC_PER_DEG  3.60000000E+3
-
-#define S_PER_YEAR     3.155693e+07
-#define ERGS_PER_KEV   1.60217733000e-9
-#define ERGS_PER_J     1e7
-#define J_PER_KEV      1.60217646E-16
-#define SI_TO_MJY      1E29
-
 // TTPXX=Two-to-the-power-XX
+#define DEFAULT_MODE 0
 #define TTTP00 1
 #define TTTP01 2
 #define TTTP02 4
@@ -115,49 +61,19 @@ _FILE_C_CLASS int b;
 #define TTTP31 2147483648
 #define TTTP32 4294967296
 
-#define MU_MMW         0.597  /* Mean molecular weight      */
-#define XI             1.0878 /* Xi=1+Y/(4*(1-Y)) w/ Y=0.26 */
-#define XE             1.1756 /* Xe=1+Y/(2*(1-Y)) w/ Y=0.26 */
-
-#define NE_PER_RHOGAS  XE/(MU_MMW*M_PROTON*(XI+XE))
-#define NH_PER_RHOGAS  1.0/(MU_MMW*M_PROTON*(XI+XE))
-#define MU_E_MMW       MU_MMW*(XI+XE)/XE
-
-#define GAMMA_ICM      FIVE_THIRDS
-
-#define MSOL_KPCQU_PER_KG_MQU M_PER_KPC*M_PER_KPC*M_PER_KPC/M_SOL
-
+#define IO_BUFFER_SIZE      4096
 #define MAX_FILENAME_LENGTH 256
-
-#define LOG_ZERO  -1000.0
-#define K_PER_KEV  1.1604447e7
-
-#define LOG_BIN    0
-#define LINEAR_BIN 1
-
-#define AVG_MEAN   0
-#define AVG_WEIGHT 1
-#define AVG_SUM    2
-
-#define X_PROJECTION 0
-#define Y_PROJECTION 1
-#define Z_PROJECTION 2
 
 // Storage sizes
 #define SIZE_OF_KILOBYTE  1024
 #define SIZE_OF_MEGABYTE  1048576
 #define SIZE_OF_GIGIBYTE  1073741824
-#define SIZE_OF_TERABYTE  1099511627776
-
-#define mode_int int
 
 #define TRUE  1
 #define FALSE 0
 #define MIN(A,B)  ((A) < (B) ?  (A) : (B))
 #define MAX(A,B)  ((A) > (B) ?  (A) : (B))
 #define IABS(A)   ((A) <  0  ? -(A) : (A))
-#define SIGN(A,B) ((B) <  0  ? -(A) : (A))
-#define INDEX_2D(A,B,C) (A*B+C)
 
 // Compile flags to control large variables
 #if USE_DOUBLE
@@ -168,8 +84,6 @@ _FILE_C_CLASS int b;
 
 #define big_int long long
 #define id_int  size_t
-
-// Other common header files
 
 // MPI
 #if USE_MPI
@@ -193,11 +107,9 @@ _FILE_C_CLASS int b;
 #define ERROR_IO_OPEN   TTTP03
 #define ERROR_IO_READ   TTTP04
 #define ERROR_IO_WRITE  TTTP05
-#define ERROR_3RD_PARTY TTTP06
-#define ERROR_MEMORY    TTTP07
+#define ERROR_MEMORY    TTTP06
 
 #define MASTER_RANK    0
-#define DEFAULT_MODE   0
 
 #define N_IO_FILES_MAX 64
 
@@ -210,32 +122,30 @@ _FILE_C_CLASS int b;
 #define SID_FARG (void **)&
 
 #define SID_LOG_MAX_LEVELS   30
-#define SID_LOG_OPEN         TTTP01
-#define SID_LOG_CLOSE        TTTP02
-#define SID_LOG_TIMER        TTTP03
-#define SID_LOG_CONTINUE     TTTP04
-#define SID_LOG_SINGLE       TTTP05
-#define SID_LOG_IO_RATE      TTTP06
-#define SID_LOG_COMMENT      TTTP07
-#define SID_LOG_NOPRINT      TTTP08
-#define SID_LOG_ALLRANKS     TTTP09
-#define SID_LOG_CHECKPOINT   TTTP10
+#define SID_LOG_OPEN         TTTP00
+#define SID_LOG_CLOSE        TTTP01
+#define SID_LOG_TIMER        TTTP02
+#define SID_LOG_CONTINUE     TTTP03
+#define SID_LOG_IO_RATE      TTTP04
+#define SID_LOG_COMMENT      TTTP05
+#define SID_LOG_NOPRINT      TTTP06
+#define SID_LOG_ALLRANKS     TTTP07
+#define SID_LOG_CHECKPOINT   TTTP08
 #define SID_LOG_SILENT_CLOSE SID_LOG_CLOSE|SID_LOG_NOPRINT
 
-#define SID_SET_VERBOSITY_DEFAULT  0
-#define SID_SET_VERBOSITY_ABSOLUTE 1
-#define SID_SET_VERBOSITY_RELATIVE 2
+#define SID_SET_VERBOSITY_DEFAULT  DEFAULT_MODE
+#define SID_SET_VERBOSITY_ABSOLUTE TTTP00
+#define SID_SET_VERBOSITY_RELATIVE TTTP01
 
-#define SID_INFO           1
-#define SID_INFO_RESULT    2
-#define SID_INFO_MASTER    4
+#define SID_INFO_RESULT    TTTP01
+#define SID_INFO_MASTER    TTTP02
 
-#define SID_PROFILE_DEFAULT       1
-#define SID_PROFILE_MPIENABLED    2
-#define SID_PROFILE_NOTMPIENABLED 4
+#define SID_PROFILE_DEFAULT       TTTP01
+#define SID_PROFILE_MPIENABLED    TTTP02
+#define SID_PROFILE_NOTMPIENABLED TTTP03
 
-#define SID_CAT_DEFAULT 0
-#define SID_CAT_CLEAN   2
+#define SID_CAT_DEFAULT DEFAULT_MODE
+#define SID_CAT_CLEAN   TTTP01
 
 #if USE_MPI
   #define SID_MAXLENGTH_PROCESSOR_NAME MPI_MAX_PROCESSOR_NAME
@@ -297,18 +207,18 @@ _FILE_C_CLASS int b;
 #endif
 
 #define CALC_MODE_DEFAULT       DEFAULT_MODE
-#define CALC_MODE_RETURN_DOUBLE 1
-#define CALC_MODE_ABS           2
+#define CALC_MODE_RETURN_DOUBLE TTTP00
+#define CALC_MODE_ABS           TTTP01
 
-#define CALC_STAT_DEFAULT       0
-#define CALC_STAT_RETURN_DOUBLE TTTP01
-#define CALC_STAT_GLOBAL        TTTP02
-#define CALC_STAT_SUM           TTTP03
-#define CALC_STAT_MIN           TTTP04
-#define CALC_STAT_MAX           TTTP05
-#define CALC_STAT_MEAN          TTTP06
-#define CALC_STAT_MEDIAN        TTTP07
-#define CALC_STAT_STDDEV        TTTP08
+#define CALC_STAT_DEFAULT       DEFAULT_MODE
+#define CALC_STAT_RETURN_DOUBLE TTTP00
+#define CALC_STAT_GLOBAL        TTTP01
+#define CALC_STAT_SUM           TTTP02
+#define CALC_STAT_MIN           TTTP03
+#define CALC_STAT_MAX           TTTP04
+#define CALC_STAT_MEAN          TTTP05
+#define CALC_STAT_MEDIAN        TTTP06
+#define CALC_STAT_STDDEV        TTTP07
 
 // Variable limits
 #include <limits.h>
@@ -319,6 +229,71 @@ _FILE_C_CLASS int b;
 #define SID_MIN_FLOAT  FLT_MIN
 #define SID_MAX_INT    INT_MAX
 #define SID_MIN_INT    INT_MIN
+
+#define LOG_ZERO  -1000.0
+
+#define FIVE_THIRDS    1.6666667
+#define THREE_HALVES   1.5
+#define TWO_THIRDS     0.6666667
+#define ONE_THIRD      0.3333333
+#define ONE_HALF       0.4999999
+#define ONE_QUARTER    0.25
+
+#define FOUR_THIRDS_PI     4.1887902
+#define PI                 3.1415926
+#define HALF_PI            1.5707963
+#define THREE_QUARTERS_PI  2.3561944
+#define TWO_PI             6.2831853
+#define FOUR_PI           12.5663706
+#define LN_OF_10           2.30288509
+#define LOG10_OF_E         0.43429448
+#define SQRT_OF_2          1.41421356
+
+#define C_VACUUM       2.99792458E8   /* in m/s          */
+#define G_NEWTON       6.67428E-11    /* in m^3/(kg*s^2) */
+#define M_SOL          1.98892E30     /* in kilograms    */
+#define M_HYDROGEN     1.6735E-27     /* in kilograms    */
+#define M_PROTON       1.6726216E-27  /* in kilograms    */
+#define M_ELECTRON     9.10938188E-31 /* in kilograms    */
+#define SIGMA_THOMPSON 6.65245854E-29 /* in m^2          */
+#define M_PER_PC       3.08568025E16  /* in meters       */
+#define M_PER_KPC      3.08568025E19  /* in meters       */
+#define M_PER_MPC      3.08568025E22  /* in meters       */
+#ifndef CM_PER_MPC
+#define CM_PER_MPC  3.08568025E24  /* in cm           */
+#endif
+#define S_PER_YEAR     3.155693e+07
+#define S_PER_GYR      3.155693e+16   /* in seconds      */
+#define S_PER_MYR      3.155693e+13   /* in seconds      */
+#define S_PER_YR       3.155693e+7    /* in seconds      */
+#define K_BOLTZMANN    1.3806503E-23  /* in J per K      */
+#define H_PLANK        6.62606876E-34 /* in J*s          */
+#define LOG_M_P      -57.075256       /* in log(M_sol)   */
+#define T_CMB          2.728          /* in Kelvin       */
+
+#define DEG_PER_RAD   5.72957795E+1
+#define DEG_PER_AMIN  3.43774677E+3
+#define DEG_PER_ASEC  4.84811331E-6
+#define RAD_PER_DEG   1.74532925E-2
+#define RAD_PER_AMIN  2.90888209E-4
+#define RAD_PER_ASEC  4.84811331E-6
+#define ASEC_PER_RAD  2.06265806E+5
+#define ASEC_PER_DEG  3.60000000E+3
+
+#define K_PER_KEV  1.1604447e7
+#define ERGS_PER_KEV   1.60217733000e-9
+#define ERGS_PER_J     1e7
+#define J_PER_KEV      1.60217646E-16
+#define SI_TO_MJY      1E29
+
+#define MU_MMW         0.597  /* Mean molecular weight      */
+#define XI             1.0878 /* Xi=1+Y/(4*(1-Y)) w/ Y=0.26 */
+#define XE             1.1756 /* Xe=1+Y/(2*(1-Y)) w/ Y=0.26 */
+#define NE_PER_RHOGAS  XE/(MU_MMW*M_PROTON*(XI+XE))
+#define NH_PER_RHOGAS  1.0/(MU_MMW*M_PROTON*(XI+XE))
+#define MU_E_MMW       MU_MMW*(XI+XE)/XE
+#define GAMMA_ICM      FIVE_THIRDS
+#define MSOL_KPCQU_PER_KG_MQU M_PER_KPC*M_PER_KPC*M_PER_KPC/M_SOL
 
 // Structures for parsing the command line
 typedef void** SID_args;
