@@ -3,11 +3,10 @@
 #include <string.h>
 #include <gbpSID.h>
 
-void gbp_fetch_va_arg(gbp_va_list *vargs,size_t size,void *ptr){
-   size_t next_position=vargs->stream_position+size;
-   if(next_position>=MAX_GBP_VA_ARGS_STREAM_SIZE)
-      SID_log("gbp_va_args stream has been over-run.",ERROR_LOGIC);
-   memcpy(ptr,&(vargs->stream[vargs->stream_position]),size);
-   vargs->stream_position=next_position;
+void gbp_fetch_va_arg(gbp_va_list *vargs, size_t size, void *ptr) {
+    size_t next_position = vargs->stream_position + size;
+    if(next_position >= MAX_GBP_VA_ARGS_STREAM_SIZE)
+        SID_log("gbp_va_args stream has been over-run.", ERROR_LOGIC);
+    memcpy(ptr, &(vargs->stream[vargs->stream_position]), size);
+    vargs->stream_position = next_position;
 }
-

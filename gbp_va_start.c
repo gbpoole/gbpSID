@@ -3,7 +3,6 @@
 #include <string.h>
 #include <gbpSID.h>
 
-void gbp_va_start(gbp_va_list *vargs){
-   vargs->stream_position=0;
+void gbp_va_start(gbp_va_list *vargs) {
+    vargs->stream_position = 0;
 }
-
