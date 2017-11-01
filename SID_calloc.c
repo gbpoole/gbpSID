@@ -8,7 +8,7 @@ void *SID_calloc(size_t allocation_size) {
     if(allocation_size > 0) {
         r_val = calloc(allocation_size, 1);
         if(r_val == NULL)
-            SID_trap_error("Could not allocate %lld bytes of RAM!", SID_ERROR_MEMORY, allocation_size);
+            SID_exit_error("Could not allocate %lld bytes of RAM!", SID_ERROR_MEMORY, allocation_size);
         SID.RAM_local += allocation_size;
         SID.max_RAM_local = GBP_MAX(SID.max_RAM_local, SID.RAM_local);
     } else

@@ -19,6 +19,6 @@ void SID_Type_size(SID_Datatype type, int *size) {
     else if(type == SID_CHAR)
         (*size) = sizeof(char);
     else
-        SID_trap_error("Unsupported SID_Datatype (%d) in SID_Type_size().", SID_ERROR_LOGIC, type);
+        SID_exit_error("Unsupported SID_Datatype (%d) in SID_Type_size().", SID_ERROR_LOGIC, type);
 #endif
 }

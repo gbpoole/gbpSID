@@ -2,7 +2,7 @@
 #include <stdarg.h>
 #include <gbpSID.h>
 
-void SID_trap_error(const char *fmt, int r_val, ...) {
+void SID_exit_error(const char *fmt, int r_val, ...) {
     char    temp_char[2];
     int     flag_CR = GBP_FALSE;
     int     i;

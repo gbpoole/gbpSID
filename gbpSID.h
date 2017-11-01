@@ -421,7 +421,7 @@ void SID_log_error(const char *fmt, ...);
 void SID_log_warning(const char *fmt, int mode, ...);
 void SID_out(char *fmt, int mode, ...);
 void SID_throw_error(const char *fmt, int r_val, ...);
-void SID_trap_error(const char *fmt, int r_val, ...);
+void SID_exit_error(const char *fmt, int r_val, ...);
 void SID_set_verbosity(int mode, ...);
 
 void SID_profile_stop(int mode);

@@ -28,7 +28,7 @@ void SID_cat_files(const char *filename_out, int mode, int n_files, ...) {
     // Open output file
     fp_out = fopen(filename_out, "w");
     if(fp_out == NULL)
-        SID_trap_error("Could not open file {%s}!", SID_ERROR_IO_OPEN, filename_out);
+        SID_exit_error("Could not open file {%s}!", SID_ERROR_IO_OPEN, filename_out);
     buffer = SID_malloc(SID_IO_BUFFER_SIZE);
 
     // Loop over the files to be concatinated...
@@ -37,7 +37,7 @@ void SID_cat_files(const char *filename_out, int mode, int n_files, ...) {
         filename_in = (char *)va_arg(vargs, char *);
         r_val       = stat(filename_in, &file_stats);
         if(r_val != 0)
-            SID_trap_error("Could not open file {%s}!", SID_ERROR_IO_OPEN, filename_in);
+            SID_exit_error("Could not open file {%s}!", SID_ERROR_IO_OPEN, filename_in);
         else
             SID_log("Processing {%s}...", SID_LOG_OPEN, filename_in);
         n_bytes = file_stats.st_size;

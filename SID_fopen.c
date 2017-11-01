@@ -63,6 +63,6 @@ int SID_fopen(const char *filename, const char *mode, SID_fp *fp) {
         r_val = GBP_FALSE;
 #endif
     if(fp->fp == NULL)
-        SID_trap_error("Could not open file {%s}.", SID_ERROR_IO_OPEN, filename);
+        SID_exit_error("Could not open file {%s}.", SID_ERROR_IO_OPEN, filename);
     return (r_val);
 }
