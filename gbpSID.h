@@ -206,20 +206,6 @@ _FILE_C_CLASS int b;
 #define SID_REAL SID_FLOAT
 #endif
 
-#define CALC_MODE_DEFAULT DEFAULT_MODE
-#define CALC_MODE_RETURN_DOUBLE TTTP00
-#define CALC_MODE_ABS TTTP01
-
-#define CALC_STAT_DEFAULT DEFAULT_MODE
-#define CALC_STAT_RETURN_DOUBLE TTTP00
-#define CALC_STAT_GLOBAL TTTP01
-#define CALC_STAT_SUM TTTP02
-#define CALC_STAT_MIN TTTP03
-#define CALC_STAT_MAX TTTP04
-#define CALC_STAT_MEAN TTTP05
-#define CALC_STAT_MEDIAN TTTP06
-#define CALC_STAT_STDDEV TTTP07
-
 // Variable limits
 #include <limits.h>
 #include <float.h>
@@ -530,17 +516,6 @@ void *SID_realloc(void *original_pointer, size_t allocation_size);
 void *SID_malloc_array(size_t allocation_size_i, int n_D, ...);
 void *SID_calloc(size_t allocation_size);
 void  SID_free_array(void **ptr, int n_D, ...);
-
-void calc_max(void *data, void *result, size_t n_data, SID_Datatype type, int mode);
-void calc_max_global(void *data_local, void *result, size_t n_data_local, SID_Datatype type, int mode, SID_Comm *comm);
-void calc_mean(void *data, void *result, size_t n_data, SID_Datatype type, int mode);
-void calc_mean_global(void *data_local, void *result, size_t n_data_local, SID_Datatype type, int mode, SID_Comm *comm);
-void calc_min(void *data, void *result, size_t n_data, SID_Datatype type, int mode);
-void calc_min_global(void *data_local, void *result, size_t n_data_local, SID_Datatype type, int mode, SID_Comm *comm);
-void calc_stddev(void *data, void *result, size_t n_data, SID_Datatype type, int mode);
-void calc_stddev_global(void *data_local, void *result, size_t n_data_local, SID_Datatype type, int mode, SID_Comm *comm);
-void calc_sum(void *data, void *result, size_t n_data, SID_Datatype type, int mode);
-void calc_sum_global(void *data_local, void *result, size_t n_data_local, SID_Datatype type, int mode, SID_Comm *comm);
 
 // These routines manage progress counters
 void SID_init_pcounter(pcounter_info *pcounter, size_t n_i, int n_report);
