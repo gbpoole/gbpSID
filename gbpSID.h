@@ -274,8 +274,9 @@ struct SID_info {
 // Default values
 #define DEFAULT_MAX_WALLCLOCK_TIME 31536000 // 1 year
 #ifdef _MAIN
-SID_info SID = {NULL,        NULL, GBP_FALSE, GBP_FALSE, 0,    0,    GBP_FALSE, SID_MASTER_RANK, 1,    NULL,  GBP_TRUE,  GBP_TRUE, SID_MASTER_RANK,
-                SID_MASTER_RANK, 0,    0,     0,     NULL, NULL, NULL,  NULL,        NULL, GBP_FALSE, GBP_FALSE, 0,    0};
+SID_info SID = {
+    NULL, NULL, GBP_FALSE, GBP_FALSE, 0,    0,    GBP_FALSE, SID_MASTER_RANK, 1, NULL, GBP_TRUE, GBP_TRUE, SID_MASTER_RANK, SID_MASTER_RANK, 0, 0,
+    0,    NULL, NULL,      NULL,      NULL, NULL, GBP_FALSE, GBP_FALSE,       0, 0};
 #else
 extern SID_info SID;
 #endif
