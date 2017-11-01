@@ -20,12 +20,12 @@ void SID_out(char *fmt, int mode, ...) {
             fprintf(fp_info, "   Results   \n");
             fprintf(fp_info, "-------------\n");
             fprintf(fp_info, "\n");
-            SID.flag_results_on = TRUE;
+            SID.flag_results_on = GBP_TRUE;
         }
 #else
         if(!SID.indent) {
             fprintf(fp_info, "\n");
-            SID.indent = TRUE;
+            SID.indent = GBP_TRUE;
         }
         // Write indenting text
         if(SID.indent) {

@@ -18,7 +18,7 @@ void *SID_malloc_array_local_recursive(size_t allocation_size_i, int n_D, size_t
         for(i_D = 0; i_D < D[0]; i_D++)
             ((void **)ptr_return)[i_D] = SID_malloc_array_local_recursive(allocation_size_i, n_D_pass, &(D[1]));
     } else
-        SID_trap_error("Number of dimensions %d<0 in SID_malloc_array", ERROR_LOGIC, n_D);
+        SID_trap_error("Number of dimensions %d<0 in SID_malloc_array", SID_ERROR_LOGIC, n_D);
     return (ptr_return);
 }
 

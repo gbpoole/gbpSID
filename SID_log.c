@@ -4,8 +4,8 @@
 #include <gbpSID.h>
 
 void SID_log(const char *fmt, int mode, ...) {
-    int     flag_write_time = FALSE;
-    int     flag_print      = TRUE;
+    int     flag_write_time = GBP_FALSE;
+    int     flag_print      = GBP_TRUE;
     int     i_level;
     int     level_next;
     char    time_string[48];
@@ -17,25 +17,25 @@ void SID_log(const char *fmt, int mode, ...) {
         if(SID.level < SID_LOG_MAX_LEVELS) {
             // If SID_LOG_NOPRINT is set, do not write anything (useful for changing indenting)
             if(check_mode_for_flag(mode, SID_LOG_NOPRINT))
-                flag_print = FALSE;
+                flag_print = GBP_FALSE;
 
             // If SID_LOG_IO_RATE is set, the first varg is the IO size
             if(check_mode_for_flag(mode, SID_LOG_IO_RATE))
-                IO_size = (double)((size_t)va_arg(vargs, size_t)) / (double)SIZE_OF_MEGABYTE;
+                IO_size = (double)((size_t)va_arg(vargs, size_t)) / (double)SID_SIZE_OF_MEGABYTE;
             else
                 IO_size = 0.;
 
             // Close a log bracket
             if(check_mode_for_flag(mode, SID_LOG_CLOSE)) {
-                SID.level = MAX(0, SID.level - 1);
+                SID.level = GBP_MAX(0, SID.level - 1);
                 if(SID.level < SID_LOG_MAX_LEVELS) {
                     if(SID.flag_use_timer[SID.level]) {
                         (void)time(&(SID.time_stop_level[SID.level]));
                         SID.time_total_level[SID.level] = (int)(SID.time_stop_level[SID.level] - SID.time_start_level[SID.level]);
-                        flag_write_time                 = TRUE;
+                        flag_write_time                 = GBP_TRUE;
                     } else {
                         SID.time_stop_level[SID.level] = 0;
-                        flag_write_time                = FALSE;
+                        flag_write_time                = GBP_FALSE;
                     }
                 }
             }
@@ -45,24 +45,24 @@ void SID_log(const char *fmt, int mode, ...) {
                     if(SID.flag_use_timer[SID.level - 1]) {
                         (void)time(&(SID.time_stop_level[SID.level - 1]));
                         SID.time_total_level[SID.level] = (int)(SID.time_stop_level[SID.level - 1] - SID.time_start_level[SID.level - 1]);
-                        flag_write_time                 = TRUE;
+                        flag_write_time                 = GBP_TRUE;
                     }
                 }
             } else
-                flag_write_time = FALSE;
+                flag_write_time = GBP_FALSE;
 
             if(SID.level <= SID.verbosity && flag_print) {
                 // Write indenting text
                 if(check_mode_for_flag(mode, SID_LOG_OPEN) && !SID.indent) {
                     fprintf(SID.fp_log, "\n");
-                    SID.indent = TRUE;
+                    SID.indent = GBP_TRUE;
                 } else if(check_mode_for_flag(mode, SID_LOG_COMMENT) && !SID.indent) {
                     fprintf(SID.fp_log, "\n");
-                    SID.indent = TRUE;
+                    SID.indent = GBP_TRUE;
                 }
                 /*
                         else if(check_mode_for_flag(mode,SID_LOG_CONTINUE))
-                          SID.indent=FALSE;
+                          SID.indent=GBP_FALSE;
                 */
                 if(SID.indent) {
                     for(i_level = 0; i_level < SID.level; i_level++)
@@ -87,9 +87,9 @@ void SID_log(const char *fmt, int mode, ...) {
 
                 // Determine if the next log entry needs to be indented or not
                 if(check_mode_for_flag(mode, SID_LOG_CONTINUE) || check_mode_for_flag(mode, SID_LOG_OPEN))
-                    SID.indent = FALSE;
+                    SID.indent = GBP_FALSE;
                 else {
-                    SID.indent = TRUE;
+                    SID.indent = GBP_TRUE;
                 }
             }
 
@@ -97,11 +97,11 @@ void SID_log(const char *fmt, int mode, ...) {
             if(check_mode_for_flag(mode, SID_LOG_OPEN)) {
                 if(SID.level < SID_LOG_MAX_LEVELS - 1) {
                     if(check_mode_for_flag(mode, SID_LOG_TIMER)) {
-                        SID.flag_use_timer[SID.level] = TRUE;
+                        SID.flag_use_timer[SID.level] = GBP_TRUE;
                         (void)time(&(SID.time_start_level[SID.level]));
                         SID.IO_size[SID.level] = IO_size;
                     } else {
-                        SID.flag_use_timer[SID.level]   = FALSE;
+                        SID.flag_use_timer[SID.level]   = GBP_FALSE;
                         SID.time_start_level[SID.level] = 0;
                     }
                     SID.level++;

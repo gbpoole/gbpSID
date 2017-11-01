@@ -15,7 +15,7 @@ void SID_free_array_local_recursive(void **ptr, int n_D, size_t *D) {
             SID_free_array_local_recursive(SID_FARG(((char *)(*ptr))[i_D]), n_D - 1, &(D[1]));
         SID_free(ptr);
     } else
-        SID_trap_error("Number of dimensions %d<0 in SID_free_array", ERROR_LOGIC, n_D);
+        SID_trap_error("Number of dimensions %d<0 in SID_free_array", SID_ERROR_LOGIC, n_D);
 }
 
 void SID_free_array(void **ptr, int n_D, ...) {

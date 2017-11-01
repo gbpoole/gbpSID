@@ -4,14 +4,14 @@
 
 void SID_log_warning(const char *fmt, int mode, ...) {
     char    temp_char[2];
-    int     flag_CR = FALSE;
+    int     flag_CR = GBP_FALSE;
     int     i;
     va_list vargs;
     va_start(vargs, mode);
     if(SID.I_am_Master) {
         if(!SID.indent) {
             fprintf(SID.fp_log, "\n");
-            SID.indent = TRUE;
+            SID.indent = GBP_TRUE;
         }
         fprintf(SID.fp_log, "%s ", SID_WARNING_HEADER);
         vfprintf(SID.fp_log, fmt, vargs);

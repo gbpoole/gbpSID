@@ -6,7 +6,7 @@ int SID_fopen_chunked(const char *filename_root, const char *mode, SID_fp *fp, v
     int                    i_chunk;
     int                    i_group;
     int                    n_chunk;
-    int                    r_val = TRUE;
+    int                    r_val = GBP_TRUE;
     SID_fp                 fp_temp;
     char                   filename_temp[256];
     va_list                vargs;
@@ -97,7 +97,7 @@ int SID_fopen_chunked(const char *filename_root, const char *mode, SID_fp *fp, v
             }
         }
     } else
-        r_val = FALSE;
+        r_val = GBP_FALSE;
     va_end(vargs);
     return (r_val);
 }

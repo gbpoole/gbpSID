@@ -10,6 +10,6 @@ void SID_Comm_split(SID_Comm *comm_in, int colour, int key, SID_Comm *comm_out) 
     comm_out->comm    = NULL;
     comm_out->group   = NULL;
     comm_out->n_proc  = 1;
-    comm_out->My_rank = MASTER_RANK;
+    comm_out->My_rank = SID_MASTER_RANK;
 #endif
 }

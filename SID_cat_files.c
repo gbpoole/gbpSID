@@ -21,15 +21,15 @@ void SID_cat_files(const char *filename_out, int mode, int n_files, ...) {
 
     // Interpret mode
     if(check_mode_for_flag(mode, SID_CAT_CLEAN))
-        flag_clean = TRUE;
+        flag_clean = GBP_TRUE;
     else
-        flag_clean = FALSE;
+        flag_clean = GBP_FALSE;
 
     // Open output file
     fp_out = fopen(filename_out, "w");
     if(fp_out == NULL)
-        SID_trap_error("Could not open file {%s}!", ERROR_IO_OPEN, filename_out);
-    buffer = SID_malloc(IO_BUFFER_SIZE);
+        SID_trap_error("Could not open file {%s}!", SID_ERROR_IO_OPEN, filename_out);
+    buffer = SID_malloc(SID_IO_BUFFER_SIZE);
 
     // Loop over the files to be concatinated...
     for(i_file = 0; i_file < n_files; i_file++) {
@@ -37,14 +37,14 @@ void SID_cat_files(const char *filename_out, int mode, int n_files, ...) {
         filename_in = (char *)va_arg(vargs, char *);
         r_val       = stat(filename_in, &file_stats);
         if(r_val != 0)
-            SID_trap_error("Could not open file {%s}!", ERROR_IO_OPEN, filename_in);
+            SID_trap_error("Could not open file {%s}!", SID_ERROR_IO_OPEN, filename_in);
         else
             SID_log("Processing {%s}...", SID_LOG_OPEN, filename_in);
         n_bytes = file_stats.st_size;
         fp_in   = fopen(filename_in, "r");
 
         // Copy this input file to the output file in chunks ...
-        n_bytes_buffer = MIN(n_bytes, IO_BUFFER_SIZE);
+        n_bytes_buffer = GBP_MIN(n_bytes, SID_IO_BUFFER_SIZE);
         while(n_bytes_buffer > 0) {
             // Read
             r_val = fread_verify(buffer, 1, n_bytes_buffer, fp_in);
@@ -52,7 +52,7 @@ void SID_cat_files(const char *filename_out, int mode, int n_files, ...) {
             r_val = fwrite(buffer, 1, n_bytes_buffer, fp_out);
             // Adjust buffer size
             n_bytes -= n_bytes_buffer;
-            n_bytes_buffer = MIN(n_bytes, IO_BUFFER_SIZE);
+            n_bytes_buffer = GBP_MIN(n_bytes, SID_IO_BUFFER_SIZE);
         }
 
         // Close input file and remove it if asked to

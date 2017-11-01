@@ -5,15 +5,15 @@
 
 void SID_print_syntax(int argc, char *argv[], SID_args args[]) {
     int      i_char;
-    int      first1 = TRUE;
-    int      first2 = TRUE;
+    int      first1 = GBP_TRUE;
+    int      first2 = GBP_TRUE;
     int      i_args = 0;
     SID_arg *this_args;
-    int      flag = TRUE;
+    int      flag = GBP_TRUE;
 
     for(i_char = strlen(argv[0]) - 1; i_char > 0 && flag; i_char--) {
         if(argv[0][i_char] == '/')
-            flag = FALSE;
+            flag = GBP_FALSE;
     }
 
     fprintf(stderr, "\nSYNTAX: %s ", &(argv[0][i_char]));
@@ -23,7 +23,7 @@ void SID_print_syntax(int argc, char *argv[], SID_args args[]) {
         if(this_args->key != NULL && this_args->flag_required) {
             if(first1) {
                 fprintf(stderr, "-%c", ((char *)(this_args->key))[0]);
-                first1 = FALSE;
+                first1 = GBP_FALSE;
             } else
                 fprintf(stderr, "%c", ((char *)(this_args->key))[0]);
         }
@@ -35,8 +35,8 @@ void SID_print_syntax(int argc, char *argv[], SID_args args[]) {
         if(this_args->key != NULL && !this_args->flag_required) {
             if(first1) {
                 fprintf(stderr, "-[%c", ((char *)(this_args->key))[0]);
-                first1 = FALSE;
-                first2 = FALSE;
+                first1 = GBP_FALSE;
+                first2 = GBP_FALSE;
             } else {
                 if(first2)
                     fprintf(stderr, "[%c", ((char *)(this_args->key))[0]);

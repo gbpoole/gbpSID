@@ -17,7 +17,7 @@ size_t SID_fread_chunked(void *buffer, size_t n_x_read_local, size_t i_x_offset_
     for(i_chunk = 0, i_x_read_chunk = 0, i_x_chunk = i_x_offset_local + i_x_offset_global; i_chunk < fp->chunked_header.n_chunk; i_chunk++) {
         if(fp->i_x_start_chunk[i_chunk] <= i_x_chunk && fp->i_x_last_chunk[i_chunk] >= i_x_chunk) {
             n_skip    = i_x_chunk - fp->i_x_start_chunk[i_chunk];
-            n_x_chunk = MIN(n_x_read_local - i_x_read_chunk, fp->i_x_step_chunk[i_chunk] - n_skip);
+            n_x_chunk = GBP_MIN(n_x_read_local - i_x_read_chunk, fp->i_x_step_chunk[i_chunk] - n_skip);
         } else {
             n_x_chunk = 0;
             n_skip    = 0;

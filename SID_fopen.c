@@ -2,7 +2,7 @@
 #include <gbpSID.h>
 
 int SID_fopen(const char *filename, const char *mode, SID_fp *fp) {
-    int r_val = TRUE;
+    int r_val = GBP_TRUE;
 #if USE_MPI
 #if USE_MPI_IO
     FILE *fp_NFS_hack;
@@ -12,11 +12,11 @@ int SID_fopen(const char *filename, const char *mode, SID_fp *fp) {
     // This is a hack to fix a bug which can occur
     //   when trying to write to a new file over NFS
     filename_test_hack_length = strlen(filename) + 1; // +1 needed to catch the terminating /0 as well
-    MPI_Bcast(&filename_test_hack_length, 1, MPI_INT, MASTER_RANK, SID.COMM_WORLD);
+    MPI_Bcast(&filename_test_hack_length, 1, MPI_INT, SID_MASTER_RANK, SID.COMM_WORLD);
     filename_test_hack = (char *)malloc(sizeof(char) * filename_test_hack_length);
     if(SID.I_am_Master)
         strcpy(filename_test_hack, filename);
-    MPI_Bcast(filename_test_hack, filename_test_hack_length, MPI_CHAR, MASTER_RANK, SID.COMM_WORLD);
+    MPI_Bcast(filename_test_hack, filename_test_hack_length, MPI_CHAR, SID_MASTER_RANK, SID.COMM_WORLD);
     if(!strcmp(mode, "w")) {
         if(SID.I_am_Master || strcmp(filename, filename_test_hack) != 0) {
             if((fp_NFS_hack = fopen(filename, "r")) == NULL) {
@@ -46,23 +46,23 @@ int SID_fopen(const char *filename, const char *mode, SID_fp *fp) {
     } else if(!strcmp(mode, "a")) {
         r_val = !(MPI_File_open(SID.COMM_WORLD, filename, MPI_MODE_WRONLY | MPI_MODE_APPEND, SID.file_info, &(fp->fp)));
     } else {
-        r_val = FALSE;
+        r_val = GBP_FALSE;
     }
 #else
     (fp->fp) = fopen(filename, mode);
     if((fp->fp) != NULL)
-        r_val = TRUE;
+        r_val = GBP_TRUE;
     else
-        r_val = FALSE;
+        r_val = GBP_FALSE;
 #endif
 #else
     (fp->fp) = fopen(filename, mode);
     if((fp->fp) != NULL)
-        r_val = TRUE;
+        r_val = GBP_TRUE;
     else
-        r_val = FALSE;
+        r_val = GBP_FALSE;
 #endif
     if(fp->fp == NULL)
-        SID_trap_error("Could not open file {%s}.", ERROR_IO_OPEN, filename);
+        SID_trap_error("Could not open file {%s}.", SID_ERROR_IO_OPEN, filename);
     return (r_val);
 }

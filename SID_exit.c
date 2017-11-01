@@ -38,7 +38,7 @@ void SID_exit(int status) {
     // Clean-up any memory still allocated
 
     // Report execution statistics
-    if(status != ERROR_SYNTAX) {
+    if(status != SID_ERROR_SYNTAX) {
         if(SID.I_am_Master) {
             fprintf(SID.fp_log, "\n");
             fprintf(SID.fp_log, "Run statistics:\n");
@@ -61,43 +61,43 @@ void SID_exit(int status) {
           if(SID.n_proc>1){
             for(i_rank=0;i_rank<SID.n_proc;i_rank++){
               SID_max_RAM_local=SID.max_RAM_local;
-              if(i_rank!=MASTER_RANK)
+              if(i_rank!=SID_MASTER_RANK)
                 SID_Bcast(&SID_max_RAM_local,sizeof(size_t),i_rank,SID.COMM_WORLD);
               if(SID.I_am_Master){
                 if(SID.n_proc>1000){
-                  if((float)SID.max_RAM_local/(float)SIZE_OF_MEGABYTE>1.)
-                    fprintf(SID.fp_log,"Peak for rank %4d=%4.2lf Gb\n",i_rank,(float)SID_max_RAM_local/(float)SIZE_OF_GIGIBYTE);
-                  else if((float)SID.max_RAM_local/(float)SIZE_OF_KILOBYTE>1.)
-                    fprintf(SID.fp_log,"Peak for rank %4d=%4.2lf Mb\n",i_rank,(float)SID_max_RAM_local/(float)SIZE_OF_MEGABYTE);
+                  if((float)SID.max_RAM_local/(float)SID_SIZE_OF_MEGABYTE>1.)
+                    fprintf(SID.fp_log,"Peak for rank %4d=%4.2lf Gb\n",i_rank,(float)SID_max_RAM_local/(float)SID_SIZE_OF_GIGIBYTE);
+                  else if((float)SID.max_RAM_local/(float)SID_SIZE_OF_KILOBYTE>1.)
+                    fprintf(SID.fp_log,"Peak for rank %4d=%4.2lf Mb\n",i_rank,(float)SID_max_RAM_local/(float)SID_SIZE_OF_MEGABYTE);
                   else
-                    fprintf(SID.fp_log,"Peak for rank %4d=%4.2lf kb\n",i_rank,(float)SID_max_RAM_local/(float)SIZE_OF_KILOBYTE);
+                    fprintf(SID.fp_log,"Peak for rank %4d=%4.2lf kb\n",i_rank,(float)SID_max_RAM_local/(float)SID_SIZE_OF_KILOBYTE);
                   strcpy(spacer,"       ");
                 }
                 else if(SID.n_proc>100){
-                  if((float)SID.max_RAM_local/(float)SIZE_OF_MEGABYTE>1.)
-                    fprintf(SID.fp_log,"Peak for rank %3d=%4.2lf Gb\n",i_rank,(float)SID_max_RAM_local/(float)SIZE_OF_GIGIBYTE);
-                  else if((float)SID.max_RAM_local/(float)SIZE_OF_KILOBYTE>1.)
-                    fprintf(SID.fp_log,"Peak for rank %3d=%4.2lf Mb\n",i_rank,(float)SID_max_RAM_local/(float)SIZE_OF_MEGABYTE);
+                  if((float)SID.max_RAM_local/(float)SID_SIZE_OF_MEGABYTE>1.)
+                    fprintf(SID.fp_log,"Peak for rank %3d=%4.2lf Gb\n",i_rank,(float)SID_max_RAM_local/(float)SID_SIZE_OF_GIGIBYTE);
+                  else if((float)SID.max_RAM_local/(float)SID_SIZE_OF_KILOBYTE>1.)
+                    fprintf(SID.fp_log,"Peak for rank %3d=%4.2lf Mb\n",i_rank,(float)SID_max_RAM_local/(float)SID_SIZE_OF_MEGABYTE);
                   else
-                    fprintf(SID.fp_log,"Peak for rank %3d=%4.2lf kb\n",i_rank,(float)SID_max_RAM_local/(float)SIZE_OF_KILOBYTE);
+                    fprintf(SID.fp_log,"Peak for rank %3d=%4.2lf kb\n",i_rank,(float)SID_max_RAM_local/(float)SID_SIZE_OF_KILOBYTE);
                   strcpy(spacer,"      ");
                 }
                 else if(SID.n_proc>10){
-                  if((float)SID.max_RAM_local/(float)SIZE_OF_MEGABYTE>1.)
-                    fprintf(SID.fp_log,"Peak for rank %2d=%4.2lf Gb\n",i_rank,(float)SID_max_RAM_local/(float)SIZE_OF_GIGIBYTE);
-                  else if((float)SID.max_RAM_local/(float)SIZE_OF_KILOBYTE>1.)
-                    fprintf(SID.fp_log,"Peak for rank %2d=%4.2lf Mb\n",i_rank,(float)SID_max_RAM_local/(float)SIZE_OF_MEGABYTE);
+                  if((float)SID.max_RAM_local/(float)SID_SIZE_OF_MEGABYTE>1.)
+                    fprintf(SID.fp_log,"Peak for rank %2d=%4.2lf Gb\n",i_rank,(float)SID_max_RAM_local/(float)SID_SIZE_OF_GIGIBYTE);
+                  else if((float)SID.max_RAM_local/(float)SID_SIZE_OF_KILOBYTE>1.)
+                    fprintf(SID.fp_log,"Peak for rank %2d=%4.2lf Mb\n",i_rank,(float)SID_max_RAM_local/(float)SID_SIZE_OF_MEGABYTE);
                   else
-                    fprintf(SID.fp_log,"Peak for rank %2d=%4.2lf kb\n",i_rank,(float)SID_max_RAM_local/(float)SIZE_OF_KILOBYTE);
+                    fprintf(SID.fp_log,"Peak for rank %2d=%4.2lf kb\n",i_rank,(float)SID_max_RAM_local/(float)SID_SIZE_OF_KILOBYTE);
                   strcpy(spacer,"     ");
                 }
                 else{
-                  if((float)SID.max_RAM_local/(float)SIZE_OF_MEGABYTE>1.)
-                    fprintf(SID.fp_log,"Peak for rank %d=%4.2lf Gb\n",i_rank,(float)SID_max_RAM_local/(float)SIZE_OF_GIGIBYTE);
-                  else if((float)SID.max_RAM_local/(float)SIZE_OF_KILOBYTE>1.)
-                    fprintf(SID.fp_log,"Peak for rank %d=%4.2lf Mb\n",i_rank,(float)SID_max_RAM_local/(float)SIZE_OF_MEGABYTE);
+                  if((float)SID.max_RAM_local/(float)SID_SIZE_OF_MEGABYTE>1.)
+                    fprintf(SID.fp_log,"Peak for rank %d=%4.2lf Gb\n",i_rank,(float)SID_max_RAM_local/(float)SID_SIZE_OF_GIGIBYTE);
+                  else if((float)SID.max_RAM_local/(float)SID_SIZE_OF_KILOBYTE>1.)
+                    fprintf(SID.fp_log,"Peak for rank %d=%4.2lf Mb\n",i_rank,(float)SID_max_RAM_local/(float)SID_SIZE_OF_MEGABYTE);
                   else
-                    fprintf(SID.fp_log,"Peak for rank %d=%4.2lf kb\n",i_rank,(float)SID_max_RAM_local/(float)SIZE_OF_KILOBYTE);
+                    fprintf(SID.fp_log,"Peak for rank %d=%4.2lf kb\n",i_rank,(float)SID_max_RAM_local/(float)SID_SIZE_OF_KILOBYTE);
                   strcpy(spacer,"    ");
                 }
               }
@@ -109,12 +109,12 @@ void SID_exit(int status) {
           max_RAM=SID.max_RAM_local;
         #endif
         if(SID.I_am_Master){
-          if((float)max_RAM/(float)SIZE_OF_MEGABYTE>1.)
-            fprintf(SID.fp_log,"Peak total %s=%4.2lf Gb\n",spacer,(float)max_RAM/(float)SIZE_OF_GIGIBYTE);
-          else if((float)max_RAM/(float)SIZE_OF_KILOBYTE>1.)
-            fprintf(SID.fp_log,"Peak total %s=%4.2lf Mb\n",spacer,(float)max_RAM/(float)SIZE_OF_MEGABYTE);
+          if((float)max_RAM/(float)SID_SIZE_OF_MEGABYTE>1.)
+            fprintf(SID.fp_log,"Peak total %s=%4.2lf Gb\n",spacer,(float)max_RAM/(float)SID_SIZE_OF_GIGIBYTE);
+          else if((float)max_RAM/(float)SID_SIZE_OF_KILOBYTE>1.)
+            fprintf(SID.fp_log,"Peak total %s=%4.2lf Mb\n",spacer,(float)max_RAM/(float)SID_SIZE_OF_MEGABYTE);
           else
-            fprintf(SID.fp_log,"Peak total %s=%4.2lf kb\n",spacer,(float)max_RAM/(float)SIZE_OF_KILOBYTE);
+            fprintf(SID.fp_log,"Peak total %s=%4.2lf kb\n",spacer,(float)max_RAM/(float)SID_SIZE_OF_KILOBYTE);
         }
         */
     }

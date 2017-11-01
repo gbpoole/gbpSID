@@ -51,12 +51,12 @@ void SID_init(int *argc, char **argv[], SID_args args[], void *mpi_comm_as_void)
 #endif
 
     if(mpi_comm_as_void == NULL) {
-        flag_passed_comm = FALSE;
+        flag_passed_comm = GBP_FALSE;
         MPI_Init(argc, argv);
         MPI_Comm_dup(MPI_COMM_WORLD, &mpi_comm);
     } else {
         MPI_Comm_dup(*((MPI_Comm *)mpi_comm_as_void), &mpi_comm);
-        flag_passed_comm = TRUE;
+        flag_passed_comm = GBP_TRUE;
     }
 
     MPI_Comm_size(mpi_comm, &(SID.n_proc));
@@ -65,19 +65,19 @@ void SID_init(int *argc, char **argv[], SID_args args[], void *mpi_comm_as_void)
     SID.My_node = (char *)SID_malloc(SID_MAXLENGTH_PROCESSOR_NAME * sizeof(char));
     MPI_Get_processor_name(SID.My_node, &node_name_length);
     if(node_name_length >= SID_MAXLENGTH_PROCESSOR_NAME - 1)
-        SID_trap_error("SID_MAXLENGTH_PROCESSOR_NAME needs to be increased", ERROR_LOGIC);
+        SID_trap_error("SID_MAXLENGTH_PROCESSOR_NAME needs to be increased", SID_ERROR_LOGIC);
 
-    // Make my_rank=MASTER_RANK the master
-    if(SID.My_rank == MASTER_RANK)
-        SID.I_am_Master = TRUE;
+    // Make my_rank=SID_MASTER_RANK the master
+    if(SID.My_rank == SID_MASTER_RANK)
+        SID.I_am_Master = GBP_TRUE;
     else
-        SID.I_am_Master = FALSE;
+        SID.I_am_Master = GBP_FALSE;
 
     // Identify the last rank
     if(SID.My_rank == SID.n_proc - 1)
-        SID.I_am_last_rank = TRUE;
+        SID.I_am_last_rank = GBP_TRUE;
     else
-        SID.I_am_last_rank = FALSE;
+        SID.I_am_last_rank = GBP_FALSE;
 
 #if USE_MPI_IO
     // Fetch collective buffering defaults
@@ -101,16 +101,16 @@ void SID_init(int *argc, char **argv[], SID_args args[], void *mpi_comm_as_void)
         remove(".tmp.SID");
 
     // Set user-defined colective buffering optimizations
-    sprintf(nodes_string, "%d", MIN(SID.n_proc, N_IO_FILES_MAX));
+    sprintf(nodes_string, "%d", GBP_MIN(SID.n_proc, SID_N_IO_FILES_MAX));
     MPI_Info_set((SID.file_info), "cb_nodes", nodes_string);
     MPI_Info_set((SID.file_info), "cb_config_list", "*:1");
 #endif
 #else
     if(mpi_comm_as_void == NULL)
-        flag_passed_comm = FALSE;
+        flag_passed_comm = GBP_FALSE;
     else
-        flag_passed_comm = TRUE;
-    SID.My_rank = MASTER_RANK;
+        flag_passed_comm = GBP_TRUE;
+    SID.My_rank = SID_MASTER_RANK;
     SID.n_proc  = 1;
     SID.My_node = (char *)SID_malloc(SID_MAXLENGTH_PROCESSOR_NAME * sizeof(char));
     sprintf(SID.My_node, "localhost");
@@ -118,9 +118,9 @@ void SID_init(int *argc, char **argv[], SID_args args[], void *mpi_comm_as_void)
 
     /*
     #if !USE_MPI_IO
-        SID.n_groups=SID.n_proc/N_IO_FILES_MAX;
-        if(SID.n_proc%N_IO_FILES_MAX) SID.n_groups++;
-        SID.My_group=SID.My_rank/N_IO_FILES_MAX;
+        SID.n_groups=SID.n_proc/SID_N_IO_FILES_MAX;
+        if(SID.n_proc%SID_N_IO_FILES_MAX) SID.n_groups++;
+        SID.My_group=SID.My_rank/SID_N_IO_FILES_MAX;
     #endif
     */
 
@@ -141,7 +141,7 @@ void SID_init(int *argc, char **argv[], SID_args args[], void *mpi_comm_as_void)
         SID.time_stop_level[i_level]  = 0;
         SID.time_total_level[i_level] = 0;
         SID.IO_size[i_level]          = 0.;
-        SID.flag_use_timer[i_level]   = FALSE;
+        SID.flag_use_timer[i_level]   = GBP_FALSE;
     }
 
         // Initialize other log information
@@ -158,9 +158,9 @@ void SID_init(int *argc, char **argv[], SID_args args[], void *mpi_comm_as_void)
     else
         SID.fp_log = stderr;
     SID.level           = 0;
-    SID.indent          = TRUE;
-    SID.awake           = TRUE;
-    SID.flag_results_on = FALSE;
+    SID.indent          = GBP_TRUE;
+    SID.awake           = GBP_TRUE;
+    SID.flag_results_on = GBP_FALSE;
     SID.verbosity       = SID_LOG_MAX_LEVELS;
 
     // Store the name of the binary executable that brought us here
@@ -225,7 +225,7 @@ void SID_init(int *argc, char **argv[], SID_args args[], void *mpi_comm_as_void)
     SID.COMM_WORLD->comm    = NULL;
     SID.COMM_WORLD->group   = NULL;
     SID.COMM_WORLD->n_proc  = 1;
-    SID.COMM_WORLD->My_rank = MASTER_RANK;
+    SID.COMM_WORLD->My_rank = SID_MASTER_RANK;
 #endif
 
     // Start total-run-ime timer

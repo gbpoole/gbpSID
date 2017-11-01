@@ -3,7 +3,7 @@
 
 int SID_remove_chunked(char *filename_root) {
     int                 i_chunk;
-    int                 r_val = TRUE;
+    int                 r_val = GBP_TRUE;
     SID_fp              fp_temp;
     char                filename_temp[256];
     chunked_header_info header;

@@ -2,7 +2,7 @@
 #include <gbpSID.h>
 
 int SID_fclose(SID_fp *fp) {
-    int r_val = TRUE;
+    int r_val = GBP_TRUE;
 #if USE_MPI
 #if USE_MPI_IO
     MPI_File_sync(fp->fp);

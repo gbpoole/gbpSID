@@ -38,7 +38,7 @@ void SID_input(char *fmt, SID_Datatype type, void *input, ...) {
             fscanf(SID.fp_in, "%zd", (size_t *)input);
             printf(" {%zd}\n", ((size_t *)input)[0]);
         } else
-            SID_trap_error("Datatype is not a supported user-input type.", ERROR_LOGIC);
+            SID_trap_error("Datatype is not a supported user-input type.", SID_ERROR_LOGIC);
         fflush(stdout);
     }
 
@@ -47,19 +47,19 @@ void SID_input(char *fmt, SID_Datatype type, void *input, ...) {
     SID_Barrier(SID.COMM_WORLD);
     if(type == SID_CHAR) {
         char_length = strlen((char *)input) + 1;
-        SID_Bcast(&char_length, 1, SID_INTEGER, MASTER_RANK, SID.COMM_WORLD);
-        SID_Bcast(input, char_length, SID_CHAR, MASTER_RANK, SID.COMM_WORLD);
+        SID_Bcast(&char_length, 1, SID_INTEGER, SID_MASTER_RANK, SID.COMM_WORLD);
+        SID_Bcast(input, char_length, SID_CHAR, SID_MASTER_RANK, SID.COMM_WORLD);
     } else if(type == SID_DOUBLE)
-        SID_Bcast(input, 1, SID_DOUBLE, MASTER_RANK, SID.COMM_WORLD);
+        SID_Bcast(input, 1, SID_DOUBLE, SID_MASTER_RANK, SID.COMM_WORLD);
     else if(type == SID_FLOAT)
-        SID_Bcast(input, 1, SID_FLOAT, MASTER_RANK, SID.COMM_WORLD);
+        SID_Bcast(input, 1, SID_FLOAT, SID_MASTER_RANK, SID.COMM_WORLD);
     else if(type == SID_INT)
-        SID_Bcast(input, 1, SID_INT, MASTER_RANK, SID.COMM_WORLD);
+        SID_Bcast(input, 1, SID_INT, SID_MASTER_RANK, SID.COMM_WORLD);
     else if(type == SID_SIZE_T)
-        SID_Bcast(input, 1, SID_SIZE_T, MASTER_RANK, SID.COMM_WORLD);
+        SID_Bcast(input, 1, SID_SIZE_T, SID_MASTER_RANK, SID.COMM_WORLD);
     else
-        SID_trap_error("Datatype is not a supported user-input type.", ERROR_LOGIC);
+        SID_trap_error("Datatype is not a supported user-input type.", SID_ERROR_LOGIC);
 #endif
-    SID.flag_input_on = TRUE;
+    SID.flag_input_on = GBP_TRUE;
     va_end(vargs);
 }

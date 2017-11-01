@@ -10,5 +10,5 @@ void SID_Comm_init(SID_Comm **comm) {
     (*comm)->group = NULL;
 #endif
     (*comm)->n_proc  = 1;
-    (*comm)->My_rank = MASTER_RANK;
+    (*comm)->My_rank = SID_MASTER_RANK;
 }

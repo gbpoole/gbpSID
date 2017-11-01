@@ -20,7 +20,7 @@ void SID_fread_all_buffer(void *rval, size_t dtype_size, size_t n_items, SID_fp_
             memcpy(fp_buffer->buffer, &(fp_buffer->buffer[fp_buffer->n_bytes_buffer_processed]), fp_buffer->n_bytes_buffer_unprocessed);
         }
         // Set how many bytes we are going to read
-        size_t n_bytes_read = MIN((fp_buffer->n_bytes_unread), (fp_buffer->n_bytes_buffer_max) - fp_buffer->n_bytes_buffer_unprocessed);
+        size_t n_bytes_read = GBP_MIN((fp_buffer->n_bytes_unread), (fp_buffer->n_bytes_buffer_max) - fp_buffer->n_bytes_buffer_unprocessed);
         // Set the new buffer size
         fp_buffer->n_bytes_buffer = fp_buffer->n_bytes_buffer_unprocessed + n_bytes_read;
         // Perform read

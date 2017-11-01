@@ -4,7 +4,7 @@
 
 void SID_trap_error(const char *fmt, int r_val, ...) {
     char    temp_char[2];
-    int     flag_CR = FALSE;
+    int     flag_CR = GBP_FALSE;
     int     i;
     va_list vargs;
     va_start(vargs, r_val);

@@ -3,15 +3,8 @@
 #include <stdio.h>     // Needed for type FILE
 #include <sys/types.h> // Needed for type time_t
 #include <stdarg.h>
-
-#define DEFAULT_MAX_WALLCLOCK_TIME 172800
-
 #if USE_MPI
-#ifndef MPI_AWAKE
 #include <mpi.h>
-#else
-#define MPI_AWAKE
-#endif
 #endif
 
 #ifndef _FILE_H
@@ -26,54 +19,56 @@ _FILE_C_CLASS int b;
 #endif
 
 // TTPXX=Two-to-the-power-XX
-#define DEFAULT_MODE 0
-#define TTTP00 1
-#define TTTP01 2
-#define TTTP02 4
-#define TTTP03 8
-#define TTTP04 16
-#define TTTP05 32
-#define TTTP06 64
-#define TTTP07 128
-#define TTTP08 256
-#define TTTP09 512
-#define TTTP10 1024
-#define TTTP11 2048
-#define TTTP12 4096
-#define TTTP13 8192
-#define TTTP14 16384
-#define TTTP15 32768
-#define TTTP16 65536
-#define TTTP17 131072
-#define TTTP18 262144
-#define TTTP19 524288
-#define TTTP20 1048576
-#define TTTP21 2097152
-#define TTTP22 4194304
-#define TTTP23 8388608
-#define TTTP24 16777216
-#define TTTP25 33554432
-#define TTTP26 67108864
-#define TTTP27 134217728
-#define TTTP28 268435456
-#define TTTP29 536870912
-#define TTTP30 1073741824
-#define TTTP31 2147483648
-#define TTTP32 4294967296
+#define SID_DEFAULT_MODE 0
+#define SID_TTTP00 1
+#define SID_TTTP01 2
+#define SID_TTTP02 4
+#define SID_TTTP03 8
+#define SID_TTTP04 16
+#define SID_TTTP05 32
+#define SID_TTTP06 64
+#define SID_TTTP07 128
+#define SID_TTTP08 256
+#define SID_TTTP09 512
+#define SID_TTTP10 1024
+#define SID_TTTP11 2048
+#define SID_TTTP12 4096
+#define SID_TTTP13 8192
+#define SID_TTTP14 16384
+#define SID_TTTP15 32768
+#define SID_TTTP16 65536
+#define SID_TTTP17 131072
+#define SID_TTTP18 262144
+#define SID_TTTP19 524288
+#define SID_TTTP20 1048576
+#define SID_TTTP21 2097152
+#define SID_TTTP22 4194304
+#define SID_TTTP23 8388608
+#define SID_TTTP24 16777216
+#define SID_TTTP25 33554432
+#define SID_TTTP26 67108864
+#define SID_TTTP27 134217728
+#define SID_TTTP28 268435456
+#define SID_TTTP29 536870912
+#define SID_TTTP30 1073741824
+#define SID_TTTP31 2147483648
+#define SID_TTTP32 4294967296
 
-#define IO_BUFFER_SIZE 4096
-#define MAX_FILENAME_LENGTH 256
+// Some preferred sizes
+#define SID_IO_BUFFER_SIZE 4096
+#define SID_MAX_FILENAME_LENGTH 256
 
 // Storage sizes
-#define SIZE_OF_KILOBYTE 1024
-#define SIZE_OF_MEGABYTE 1048576
-#define SIZE_OF_GIGIBYTE 1073741824
+#define SID_SIZE_OF_KILOBYTE 1024
+#define SID_SIZE_OF_MEGABYTE 1048576
+#define SID_SIZE_OF_GIGIBYTE 1073741824
 
-#define TRUE 1
-#define FALSE 0
-#define MIN(A, B) ((A) < (B) ? (A) : (B))
-#define MAX(A, B) ((A) > (B) ? (A) : (B))
-#define IABS(A) ((A) < 0 ? -(A) : (A))
+// Some common macros
+#define GBP_TRUE 1
+#define GBP_FALSE 0
+#define GBP_MIN(A, B) ((A) < (B) ? (A) : (B))
+#define GBP_MAX(A, B) ((A) > (B) ? (A) : (B))
+#define GBP_IABS(A) ((A) < 0 ? -(A) : (A))
 
 // Compile flags to control large variables
 #if USE_DOUBLE
@@ -81,17 +76,11 @@ _FILE_C_CLASS int b;
 #else
 #define GBPREAL float
 #endif
-
 #define big_int long long
 #define id_int size_t
 
 // MPI
 #if USE_MPI
-#ifndef MPI_DEFINED
-#include <mpi.h>
-#else
-#define MPI_DEFINED 1
-#endif
 #if USE_DOUBLE
 #define MPI_MY_REAL MPI_DOUBLE
 #else
@@ -101,17 +90,17 @@ _FILE_C_CLASS int b;
 #endif
 
 // Error messages
-#define ERROR_NONE 0
-#define ERROR_SYNTAX TTTP01
-#define ERROR_LOGIC TTTP02
-#define ERROR_IO_OPEN TTTP03
-#define ERROR_IO_READ TTTP04
-#define ERROR_IO_WRITE TTTP05
-#define ERROR_MEMORY TTTP06
+#define SID_ERROR_NONE 0
+#define SID_ERROR_SYNTAX SID_TTTP01
+#define SID_ERROR_LOGIC SID_TTTP02
+#define SID_ERROR_IO_OPEN SID_TTTP03
+#define SID_ERROR_IO_READ SID_TTTP04
+#define SID_ERROR_IO_WRITE SID_TTTP05
+#define SID_ERROR_MEMORY SID_TTTP06
 
-#define MASTER_RANK 0
+#define SID_MASTER_RANK 0
 
-#define N_IO_FILES_MAX 64
+#define SID_N_IO_FILES_MAX 64
 
 #define SID_ERROR_HEADER "ERROR:"
 #define SID_WARNING_HEADER "WARNING:"
@@ -122,30 +111,30 @@ _FILE_C_CLASS int b;
 #define SID_FARG (void **)&
 
 #define SID_LOG_MAX_LEVELS 30
-#define SID_LOG_OPEN TTTP00
-#define SID_LOG_CLOSE TTTP01
-#define SID_LOG_TIMER TTTP02
-#define SID_LOG_CONTINUE TTTP03
-#define SID_LOG_IO_RATE TTTP04
-#define SID_LOG_COMMENT TTTP05
-#define SID_LOG_NOPRINT TTTP06
-#define SID_LOG_ALLRANKS TTTP07
-#define SID_LOG_CHECKPOINT TTTP08
+#define SID_LOG_OPEN SID_TTTP00
+#define SID_LOG_CLOSE SID_TTTP01
+#define SID_LOG_TIMER SID_TTTP02
+#define SID_LOG_CONTINUE SID_TTTP03
+#define SID_LOG_IO_RATE SID_TTTP04
+#define SID_LOG_COMMENT SID_TTTP05
+#define SID_LOG_NOPRINT SID_TTTP06
+#define SID_LOG_ALLRANKS SID_TTTP07
+#define SID_LOG_CHECKPOINT SID_TTTP08
 #define SID_LOG_SILENT_CLOSE SID_LOG_CLOSE | SID_LOG_NOPRINT
 
-#define SID_SET_VERBOSITY_DEFAULT DEFAULT_MODE
-#define SID_SET_VERBOSITY_ABSOLUTE TTTP00
-#define SID_SET_VERBOSITY_RELATIVE TTTP01
+#define SID_SET_VERBOSITY_DEFAULT SID_DEFAULT_MODE
+#define SID_SET_VERBOSITY_ABSOLUTE SID_TTTP00
+#define SID_SET_VERBOSITY_RELATIVE SID_TTTP01
 
-#define SID_INFO_RESULT TTTP01
-#define SID_INFO_MASTER TTTP02
+#define SID_INFO_RESULT SID_TTTP01
+#define SID_INFO_MASTER SID_TTTP02
 
-#define SID_PROFILE_DEFAULT TTTP01
-#define SID_PROFILE_MPIENABLED TTTP02
-#define SID_PROFILE_NOTMPIENABLED TTTP03
+#define SID_PROFILE_DEFAULT SID_TTTP01
+#define SID_PROFILE_MPIENABLED SID_TTTP02
+#define SID_PROFILE_NOTMPIENABLED SID_TTTP03
 
-#define SID_CAT_DEFAULT DEFAULT_MODE
-#define SID_CAT_CLEAN TTTP01
+#define SID_CAT_DEFAULT SID_DEFAULT_MODE
+#define SID_CAT_CLEAN SID_TTTP01
 
 #if USE_MPI
 #define SID_MAXLENGTH_PROCESSOR_NAME MPI_MAX_PROCESSOR_NAME
@@ -186,100 +175,25 @@ _FILE_C_CLASS int b;
 #define SID_COMM_NULL NULL
 #define SID_GROUP_EMPTY NULL
 #define SID_Datatype int
-#define SID_LONG_LONG TTTP01
-#define SID_LONG TTTP02
-#define SID_FLOAT TTTP03
-#define SID_DOUBLE TTTP04
-#define SID_INT TTTP05
-#define SID_UNSIGNED TTTP06
-#define SID_SIZE_T TTTP07
-#define SID_BYTE TTTP08
-#define SID_CHAR TTTP09
+#define SID_LONG_LONG SID_TTTP01
+#define SID_LONG SID_TTTP02
+#define SID_FLOAT SID_TTTP03
+#define SID_DOUBLE SID_TTTP04
+#define SID_INT SID_TTTP05
+#define SID_UNSIGNED SID_TTTP06
+#define SID_SIZE_T SID_TTTP07
+#define SID_BYTE SID_TTTP08
+#define SID_CHAR SID_TTTP09
 #define SID_Op int
-#define SID_SUM TTTP01
-#define SID_MAX TTTP02
-#define SID_MIN TTTP03
+#define SID_SUM SID_TTTP01
+#define SID_MAX SID_TTTP02
+#define SID_MIN SID_TTTP03
 #endif
 #if USE_DOUBLE
 #define SID_REAL SID_DOUBLE
 #else
 #define SID_REAL SID_FLOAT
 #endif
-
-// Variable limits
-#include <limits.h>
-#include <float.h>
-#define SID_MAX_DOUBLE DBL_MAX
-#define SID_MIN_DOUBLE DBL_MIN
-#define SID_MAX_FLOAT FLT_MAX
-#define SID_MIN_FLOAT FLT_MIN
-#define SID_MAX_INT INT_MAX
-#define SID_MIN_INT INT_MIN
-
-#define LOG_ZERO -1000.0
-
-#define FIVE_THIRDS 1.6666667
-#define THREE_HALVES 1.5
-#define TWO_THIRDS 0.6666667
-#define ONE_THIRD 0.3333333
-#define ONE_HALF 0.4999999
-#define ONE_QUARTER 0.25
-
-#define FOUR_THIRDS_PI 4.1887902
-#define PI 3.1415926
-#define HALF_PI 1.5707963
-#define THREE_QUARTERS_PI 2.3561944
-#define TWO_PI 6.2831853
-#define FOUR_PI 12.5663706
-#define LN_OF_10 2.30288509
-#define LOG10_OF_E 0.43429448
-#define SQRT_OF_2 1.41421356
-
-#define C_VACUUM 2.99792458E8         /* in m/s          */
-#define G_NEWTON 6.67428E-11          /* in m^3/(kg*s^2) */
-#define M_SOL 1.98892E30              /* in kilograms    */
-#define M_HYDROGEN 1.6735E-27         /* in kilograms    */
-#define M_PROTON 1.6726216E-27        /* in kilograms    */
-#define M_ELECTRON 9.10938188E-31     /* in kilograms    */
-#define SIGMA_THOMPSON 6.65245854E-29 /* in m^2          */
-#define M_PER_PC 3.08568025E16        /* in meters       */
-#define M_PER_KPC 3.08568025E19       /* in meters       */
-#define M_PER_MPC 3.08568025E22       /* in meters       */
-#ifndef CM_PER_MPC
-#define CM_PER_MPC 3.08568025E24 /* in cm           */
-#endif
-#define S_PER_YEAR 3.155693e+07
-#define S_PER_GYR 3.155693e+16    /* in seconds      */
-#define S_PER_MYR 3.155693e+13    /* in seconds      */
-#define S_PER_YR 3.155693e+7      /* in seconds      */
-#define K_BOLTZMANN 1.3806503E-23 /* in J per K      */
-#define H_PLANK 6.62606876E-34    /* in J*s          */
-#define LOG_M_P -57.075256        /* in log(M_sol)   */
-#define T_CMB 2.728               /* in Kelvin       */
-
-#define DEG_PER_RAD 5.72957795E+1
-#define DEG_PER_AMIN 3.43774677E+3
-#define DEG_PER_ASEC 4.84811331E-6
-#define RAD_PER_DEG 1.74532925E-2
-#define RAD_PER_AMIN 2.90888209E-4
-#define RAD_PER_ASEC 4.84811331E-6
-#define ASEC_PER_RAD 2.06265806E+5
-#define ASEC_PER_DEG 3.60000000E+3
-
-#define K_PER_KEV 1.1604447e7
-#define ERGS_PER_KEV 1.60217733000e-9
-#define ERGS_PER_J 1e7
-#define J_PER_KEV 1.60217646E-16
-#define SI_TO_MJY 1E29
-
-#define MU_MMW 0.597 /* Mean molecular weight      */
-#define XI 1.0878    /* Xi=1+Y/(4*(1-Y)) w/ Y=0.26 */
-#define XE 1.1756    /* Xe=1+Y/(2*(1-Y)) w/ Y=0.26 */
-#define NE_PER_RHOGAS XE / (MU_MMW * M_PROTON * (XI + XE))
-#define NH_PER_RHOGAS 1.0 / (MU_MMW * M_PROTON * (XI + XE))
-#define MU_E_MMW MU_MMW *(XI + XE) / XE
-#define GAMMA_ICM FIVE_THIRDS
-#define MSOL_KPCQU_PER_KG_MQU M_PER_KPC *M_PER_KPC *M_PER_KPC / M_SOL
 
 // Structures for parsing the command line
 typedef void **        SID_args;
@@ -294,10 +208,10 @@ struct SID_arg {
 };
 
 // Custom variadic arguments functions
-#define MAX_GBP_VA_ARGS_STREAM_SIZE 128
+#define SID_MAX_VARGS_STREAM_SIZE 128
 typedef struct gbp_va_list gbp_va_list;
 struct gbp_va_list {
-    char stream[MAX_GBP_VA_ARGS_STREAM_SIZE];
+    char stream[SID_MAX_VARGS_STREAM_SIZE];
     int  stream_position;
 };
 
@@ -352,15 +266,16 @@ struct SID_info {
     int My_group;
 #endif
     SID_args *args;
-    char      My_binary[MAX_FILENAME_LENGTH];
+    char      My_binary[SID_MAX_FILENAME_LENGTH];
     int *     arg_set;
     int *     arg_alloc;
 };
 
 // Default values
+#define DEFAULT_MAX_WALLCLOCK_TIME 31536000 // 1 year
 #ifdef _MAIN
-SID_info SID = {NULL,        NULL, FALSE, FALSE, 0,    0,    FALSE, MASTER_RANK, 1,    NULL,  TRUE,  TRUE, MASTER_RANK,
-                MASTER_RANK, 0,    0,     0,     NULL, NULL, NULL,  NULL,        NULL, FALSE, FALSE, 0,    0};
+SID_info SID = {NULL,        NULL, GBP_FALSE, GBP_FALSE, 0,    0,    GBP_FALSE, SID_MASTER_RANK, 1,    NULL,  GBP_TRUE,  GBP_TRUE, SID_MASTER_RANK,
+                SID_MASTER_RANK, 0,    0,     0,     NULL, NULL, NULL,  NULL,        NULL, GBP_FALSE, GBP_FALSE, 0,    0};
 #else
 extern SID_info SID;
 #endif
@@ -524,4 +439,5 @@ void SID_check_pcounter(pcounter_info *pcounter, size_t i);
 #ifdef __cplusplus
 }
 #endif
+
 #endif

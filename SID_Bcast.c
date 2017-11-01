@@ -1,6 +1,6 @@
 #include <gbpSID.h>
 
-#define MAX_SEND_LOCAL 10 * SIZE_OF_MEGABYTE
+#define MAX_SEND_LOCAL 10 * SID_SIZE_OF_MEGABYTE
 
 void SID_Bcast(void *buffer, int count, SID_Datatype datatype, SID_Comm *comm, int source_rank) {
 #if USE_MPI

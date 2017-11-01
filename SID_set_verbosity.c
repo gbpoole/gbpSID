@@ -15,7 +15,7 @@ void SID_set_verbosity(int mode, ...) {
     else if(check_mode_for_flag(mode, SID_SET_VERBOSITY_DEFAULT))
         SID.verbosity = SID_LOG_MAX_LEVELS;
     else
-        SID_trap_error("Invalid mode passed to SID_log_verbosity!", ERROR_LOGIC);
+        SID_trap_error("Invalid mode passed to SID_log_verbosity!", SID_ERROR_LOGIC);
     va_end(vargs);
 #endif
 }
