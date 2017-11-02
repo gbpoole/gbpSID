@@ -3,11 +3,17 @@
 
 .PHONY: test clean
 
-# Set the KCov token
+# Set the KCov token for this project
 KCOV_TOKEN="74c531b7-23f1-4914-bd15-36b32a6bf144"
+
+# List the executable tests that will be run
+EXE_TESTS = 
 
 # This ensures that we use standard (what is used in interactive shells) version of echo.
 ECHO = /bin/echo
+
+# Set the build directory
+BUILD_DIR = $(PWD)/build_test
 
 # Determine what sort of environment we're in (eg. OSX or Linux)
 # Set linux defaults
@@ -36,19 +42,16 @@ export _TRAVIS_BUILD
 # variable $(USE_FLAGS)
 test_build:
 	@$(ECHO) "Performing build test:"
-	@mkdir build_test                                   && \
-	cd build_test                                       && \
-	cmake .. $(USE_FLAGS) -DCMAKE_INSTALL_PREFIX=${PWD} && \
-	make install                                        && \
-	cd ..                                               && \
-	rm -rf build_test 
-	@echo "Build passed with USE_FLAGS={"$(USE_FLAGS)"}"
+	@mkdir -p $(BUILD_DIR)                                    && \
+	cd build_test                                             && \
+	cmake .. $(USE_FLAGS) -DCMAKE_INSTALL_PREFIX=$(BUILD_DIR) && \
+	make install 
+	@$(ECHO) "Build passed with USE_FLAGS={"$(USE_FLAGS)"}"
 
 # Execution tests
-EXE_TESTS = 
 $(EXE_TESTS):
-	@$(ECHO) -n "Running execution test: "$@
-	@$@
+	@$(ECHO) "Running execution test: "$@
+	@$(BUILD_DIR)/bin/$@
 	@$(ECHO) "Done."
 
 # Run all tests
@@ -80,4 +83,5 @@ kcov: kcov_exe
 
 # Clean-up
 clean:
-	@rm -rf build_test .test/kcov.tgz $(KCOV_DIR) .test/coverage
+	@rm -rf $(BUILD_DIR) .test/kcov.tgz $(KCOV_DIR) .test/coverage
+
