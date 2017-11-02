@@ -38,11 +38,6 @@ endif()
 message(STATUS "")
 message(STATUS "Initializing 3rd-party libraries...")
 
-#GSL
-find_package(GSL REQUIRED)
-include_directories(${GSL_INCLUDE_DIRS})
-link_libraries(${GSL_LIBRARIES})
-
 #MPI
 option(USE_MPI "Use MPI" OFF)
 if(USE_MPI)
@@ -52,55 +47,7 @@ if(USE_MPI)
     link_libraries(${MPI_C_LIBRARIES})
 endif()
 
-#LIBGD
-option(USE_GDLIB "Use libgd" ON)
-if(USE_GDLIB)
-    find_package(GD REQUIRED)
-    include_directories(${GD_INCLUDE_DIRS})
-    link_libraries(${GD_LIBRARIES})
-endif()
-
-#FITS
-option(USE_CFITSIO "Use CFITSIO" ON)
-if(USE_CFITSIO)
-    find_package(CFITSIO REQUIRED)
-    include_directories(${fits_INCLUDE_DIRS})
-endif()
-
-#HDF5
-option(USE_HDF5 "Use HDF5" ON)
-if(USE_HDF5)
-    find_package(HDF5 REQUIRED COMPONENTS C HL)
-    include_directories(${HDF5_INCLUDE_DIRS})
-    link_libraries(${HDF5_C_LIBRARIES} ${HDF5_C_HL_LIBRARIES})
-    add_definitions(${HDF5_DEFINITIONS})
-#THIS IS A TEMPORARY HACK TO OVERCOME A BUG IN SOME VERSIONS OF CMAKE
-    if(NOT (${HDF5_C_HL_LIBRARIES} MATCHES "libhdf5_hl"))
-        list(GET HDF5_C_LIBRARIES 0 HDF5_LIB)
-        get_filename_component(HDF5_LIBDIR ${HDF5_LIB} DIRECTORY)
-        link_libraries("${HDF5_LIBDIR}/libhdf5_hl.so")
-    endif()
-endif()
-
-#FFTW
-option(USE_FFTW "Use FFTW" ON)
-if(USE_FFTW)
-    add_definitions(-DUSE_FFTW)
-    find_package(FFTW REQUIRED)
-    include_directories(${FFTW_INCLUDES})
-    link_libraries(${FFTW_LIBRARIES})
-endif()
-
-#OpenMP
-option(USE_OPENMP "Use OpenMP" OFF)
-if(USE_OPENMP)
-    add_definitions(-DUSE_OPENMP)
-    find_package(OpenMP REQUIRED)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
-endif()
-
-#CUDA &    CUFFT
+#CUDA & CUFFT
 #Note that the CUDA version should be >= 7.5
 #because c++ 11 support is needed !
 option(USE_CUDA "Use CUDA" OFF)
@@ -112,7 +59,7 @@ if(USE_CUDA)
         add_definitions(-DUSE_CUFFT)
     endif()
 
-#Collect CUDA source code
+    #Collect CUDA source code
     file(GLOB SOURCES_CU core/*.cu *.hh)
     set(SOURCES ${SOURCES_C} ${SOURCES_CU})
 
