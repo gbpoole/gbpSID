@@ -54,7 +54,7 @@ $(EXE_TESTS):
 	@$(ECHO) "Done."
 
 # Run all tests
-test: test_build $(EXE_TESTS)
+tests: test_build $(EXE_TESTS)
 
 # Generate coverage information for executable tests
 .test/kcov.tgz:
