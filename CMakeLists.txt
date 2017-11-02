@@ -1,6 +1,6 @@
 #This is the CMakeList.txt file used by all gbpCode projects
 
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.2)
 
 #Include all the macros we will use
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_SOURCE_DIR}/.cmake;${CMAKE_SOURCE_DIR}")
