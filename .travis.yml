@@ -1,0 +1,36 @@
+# Configure TravisCI (https://travis-ci.org) tests
+
+language: c
+env:
+    - USE_FLAGS="-DUSE_MPI=0 -DUSE_CUDA=OFF"
+    - USE_FLAGS="-DUSE_MPI=1 -DUSE_CUDA=OFF"
+os:
+    - linux
+    - osx
+compiler:
+    - gcc
+    - clang
+
+# The following lines are needed by Codecov
+sudo: required
+addons:
+  apt:
+    packages:
+      - libcurl4-openssl-dev
+      - libelf-dev
+      - libdw-dev
+      - cmake
+
+# Make sure the home directory is set to
+# be the TravisCI project directory
+env:
+  HOME=${TRAVIS_BUILD_DIR}
+
+# All the tests will be run by this Makefile
+script: |
+    make -f .test/Makefile tests
+
+# Add the following lines to generate Codecov report
+after_success: |
+    make -f .test/Makefile kcov
+
