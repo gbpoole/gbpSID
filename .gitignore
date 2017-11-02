@@ -3,7 +3,7 @@
 *.dSYM
 *.pyc
 *.a.objsfile
-cmake-build-debug
+cmake-build-*
 .idea
 .install*
 .printed_status

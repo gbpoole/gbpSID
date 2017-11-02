@@ -9,7 +9,7 @@ void SID_profile_start(const char *function_name, int mode, ...) {
 
 #if USE_MPI
     if(check_mode_for_flag(mode, SID_PROFILE_NOTMPIENABLED)) {
-        SID_trap_error("MPI not supported in function %s!", SID_ERROR_LOGIC, function_name);
+        SID_exit_error("MPI not supported in function %s!", SID_ERROR_LOGIC, function_name);
     }
 #endif
 

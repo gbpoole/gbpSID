@@ -72,7 +72,7 @@ size_t SID_fwrite_ordered(void *buffer, size_t size_per_item, size_t n_items, SI
                 offset += (size_t)n_Sendrecv;
             }
             if(SID.I_am_Master && (r_val_i != (size_t)n_send || offset != n_send || n_unsent != 0))
-                SID_trap_error("Problem in SID_fwrite_ordered (rank=%d: %zu!=%zu || %zu!=%zu || %zu!=0).",
+                SID_exit_error("Problem in SID_fwrite_ordered (rank=%d: %zu!=%zu || %zu!=%zu || %zu!=0).",
                                SID_ERROR_IO_WRITE,
                                i_rank,
                                r_val_i,
@@ -85,7 +85,7 @@ size_t SID_fwrite_ordered(void *buffer, size_t size_per_item, size_t n_items, SI
         }
         SID_Barrier(SID.COMM_WORLD);
     }
-    SID_Bcast(&r_val, sizeof(size_t), SID_MASTER_RANK, SID.COMM_WORLD);
+    SID_Bcast(&r_val, 1, SID_SIZE_T, SID_MASTER_RANK, SID.COMM_WORLD);
     sync();
 #endif
 #else

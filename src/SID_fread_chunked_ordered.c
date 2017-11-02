@@ -22,7 +22,7 @@ size_t SID_fread_chunked_ordered(void *buffer, size_t n_x_read_local, SID_fp *fp
 #if USE_MPI
     for(i_rank = 0; i_rank < SID.n_proc; i_rank++) {
         n_x_read_local_bcast = n_x_read_local;
-        SID_Bcast(&n_x_read_local_bcast, sizeof(size_t), i_rank, SID.COMM_WORLD);
+        SID_Bcast(&n_x_read_local_bcast, 1, SID_SIZE_T, i_rank, SID.COMM_WORLD);
         if(i_rank < SID.My_rank)
             i_x_offset_local += n_x_read_local_bcast;
     }

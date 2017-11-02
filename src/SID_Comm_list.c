@@ -8,7 +8,7 @@ void SID_Comm_list(SID_Comm *comm_in,int comm_id,SID_Comm *comm_out){
   int       group_size;
   SID_Comm  comm_temp;
   if(comm_id<0 || comm_id>=comm_in->n_proc)
-    SID_trap_error("Invalid comm_id {%d} in SID_Comm_list",ERROR_LOGIC,comm_id);
+    SID_exit_error("Invalid comm_id {%d} in SID_Comm_list",ERROR_LOGIC,comm_id);
   membership=(int *)SID_malloc(sizeof(int)*comm_in->n_proc);
   for(i_rank=0,group_size=0;i_rank<comm_in->n_proc;i_rank++){
     if(comm_id==i_rank) flag_include_me=TRUE;

@@ -352,7 +352,7 @@ void   SID_Comm_free(SID_Comm **comm);
 void   SID_Comm_split(SID_Comm *comm_in, int colour, int key, SID_Comm *comm_out);
 int    SID_parse_args(int argc, char *argv[], SID_args args[]);
 void   SID_print_syntax(int argc, char *argv[], SID_args args[]);
-void   SID_Bcast(void *buffer, int count, SID_Datatype datatype, SID_Comm *comm, int source_rank);
+void   SID_Bcast(void *buffer, int count, SID_Datatype datatype, int source_rank, SID_Comm *comm);
 void   SID_Type_size(SID_Datatype type, int *size);
 void   SID_Reduce(void *sendbuf, void *recvbuf, int count, SID_Datatype datatype, SID_Op op, int root, SID_Comm *comm);
 void   SID_Allreduce(void *sendbuf, void *recvbuf, int count, SID_Datatype datatype, SID_Op op, SID_Comm *comm);
@@ -370,11 +370,7 @@ void   SID_Sendrecv(void *       sendbuf,
                     int          recvtag,
                     SID_Comm *   comm);
 void   SID_test(int val, char *fmt, ...);
-void   SID_barrier();
 void   SID_Barrier(SID_Comm *comm);
-void   SID_demote();
-void   SID_premote();
-void   SID_say(char *fmt, ...);
 void   SID_exit(int status);
 int    SID_fopen(const char *filename, const char *mode, SID_fp *fp);
 int    SID_fopen_chunked(const char *filename_root, const char *mode, SID_fp *fp, void *header, ...);

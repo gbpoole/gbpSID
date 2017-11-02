@@ -65,7 +65,7 @@ void SID_init(int *argc, char **argv[], SID_args args[], void *mpi_comm_as_void)
     SID.My_node = (char *)SID_malloc(SID_MAXLENGTH_PROCESSOR_NAME * sizeof(char));
     MPI_Get_processor_name(SID.My_node, &node_name_length);
     if(node_name_length >= SID_MAXLENGTH_PROCESSOR_NAME - 1)
-        SID_trap_error("SID_MAXLENGTH_PROCESSOR_NAME needs to be increased", SID_ERROR_LOGIC);
+        SID_exit_error("SID_MAXLENGTH_PROCESSOR_NAME needs to be increased", SID_ERROR_LOGIC);
 
     // Make my_rank=SID_MASTER_RANK the master
     if(SID.My_rank == SID_MASTER_RANK)

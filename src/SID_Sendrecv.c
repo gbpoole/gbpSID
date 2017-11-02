@@ -28,8 +28,7 @@ void SID_Sendrecv(void *       sendbuf,
         if(send_size == recv_size)
             memcpy(recvbuf, sendbuf, send_size);
         else
-            SID_exit_error("Send/Receive buffer size mismatch (i.e. %lld!=%lld) in SID_Sendrecv", SID_ERROR_LOGIC,
-                           send_size, recv_size);
+            SID_exit_error("Send/Receive buffer size mismatch (i.e. %lld!=%lld) in SID_Sendrecv", SID_ERROR_LOGIC, send_size, recv_size);
     }
 #endif
 }
