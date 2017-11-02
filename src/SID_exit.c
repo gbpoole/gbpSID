@@ -5,16 +5,13 @@
 #include <gbpSID.h>
 
 void SID_exit(int status) {
-    int    i_args = 0;
     int    n_days;
     int    n_hrs;
     int    n_mins;
-    int    n_secs;
     size_t max_RAM;
     size_t SID_max_RAM_local;
     int    i_rank;
     char   spacer[10];
-    char   time_string[48];
 
     // Deal with I/O channels
     fflush(SID.fp_log);
@@ -24,6 +21,7 @@ void SID_exit(int status) {
 
     // Clean-up argument stuff
     if(SID.args != NULL) {
+        int i_args = 0;
         while((SID_arg *)(SID.args[i_args]) != NULL) {
             if(SID.arg_alloc[i_args])
                 free(((SID_arg *)(SID.args[i_args]))->val);
@@ -40,11 +38,12 @@ void SID_exit(int status) {
     // Report execution statistics
     if(status != SID_ERROR_SYNTAX) {
         if(SID.I_am_Master) {
+            char time_string[48];
             fprintf(SID.fp_log, "\n");
             fprintf(SID.fp_log, "Run statistics:\n");
             fprintf(SID.fp_log, "--------------\n");
             (void)time(&(SID.time_stop));
-            n_secs = (int)(SID.time_stop - SID.time_start);
+            int n_secs = (int)(SID.time_stop - SID.time_start);
             seconds2ascii(n_secs, time_string);
             fprintf(SID.fp_log, "Time elapsed=%s.\n", time_string);
         }

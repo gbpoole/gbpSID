@@ -5,25 +5,21 @@
 
 void SID_log(const char *fmt, int mode, ...) {
     int     flag_write_time = GBP_FALSE;
-    int     flag_print      = GBP_TRUE;
-    int     i_level;
     int     level_next;
-    char    time_string[48];
-    double  IO_size;
     va_list vargs;
     va_start(vargs, mode);
 
     if(SID.awake && (SID.I_am_Master || check_mode_for_flag(mode, SID_LOG_ALLRANKS)) && (SID.fp_log != NULL)) {
         if(SID.level < SID_LOG_MAX_LEVELS) {
             // If SID_LOG_NOPRINT is set, do not write anything (useful for changing indenting)
+            int flag_print = GBP_TRUE;
             if(check_mode_for_flag(mode, SID_LOG_NOPRINT))
                 flag_print = GBP_FALSE;
 
             // If SID_LOG_IO_RATE is set, the first varg is the IO size
+            double IO_size=0;
             if(check_mode_for_flag(mode, SID_LOG_IO_RATE))
                 IO_size = (double)((size_t)va_arg(vargs, size_t)) / (double)SID_SIZE_OF_MEGABYTE;
-            else
-                IO_size = 0.;
 
             // Close a log bracket
             if(check_mode_for_flag(mode, SID_LOG_CLOSE)) {
@@ -65,7 +61,7 @@ void SID_log(const char *fmt, int mode, ...) {
                           SID.indent=GBP_FALSE;
                 */
                 if(SID.indent) {
-                    for(i_level = 0; i_level < SID.level; i_level++)
+                    for(int i_level = 0; i_level < SID.level; i_level++)
                         fprintf(SID.fp_log, "%s", SID_LOG_INDENT_STRING);
                 }
 
@@ -76,6 +72,7 @@ void SID_log(const char *fmt, int mode, ...) {
                 if(check_mode_for_flag(mode, SID_LOG_CLOSE) || check_mode_for_flag(mode, SID_LOG_COMMENT)) {
                     // Write time elapsed if SID_LOG_TIMER was set on opening
                     if(flag_write_time) {
+                        char time_string[48];
                         seconds2ascii(SID.time_total_level[SID.level], time_string);
                         fprintf(SID.fp_log, " (%s", time_string);
                         if(SID.IO_size[SID.level] > 0.)

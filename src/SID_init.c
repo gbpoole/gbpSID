@@ -10,12 +10,10 @@ void strip_path_local(char *string) {
     int  i_char;
     int  j_char;
     int  i_start;
-    int  string_size;
-    char temp_char[2];
 
-    string_size = strlen(string);
+    int string_size = strlen(string);
     for(i_char = 0, i_start = 0; i_char < string_size; i_char++) {
-        strncpy(temp_char, &(string[i_char]), 1);
+        char temp_char[2];
         sprintf(temp_char, "%c", string[i_char]);
         if(!strcmp(temp_char, "/"))
             i_start = i_char + 1;
