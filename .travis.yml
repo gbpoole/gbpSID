@@ -5,7 +5,7 @@ env:
     # Make sure the home directory is set to
     # be the TravisCI project directory
     - USE_FLAGS="-DUSE_MPI=0 -DUSE_CUDA=OFF" HOME=${TRAVIS_BUILD_DIR}
-    - USE_FLAGS="-DUSE_MPI=1 -DUSE_CUDA=OFF" HOME=${TRAVIS_BUILD_DIR}
+      #- USE_FLAGS="-DUSE_MPI=1 -DUSE_CUDA=OFF" HOME=${TRAVIS_BUILD_DIR}
 os:
     - linux
     - osx
