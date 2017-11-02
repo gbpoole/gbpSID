@@ -36,13 +36,11 @@ export _TRAVIS_BUILD
 # variable $(USE_FLAGS)
 test_build:
 	@$(ECHO) "Performing build test:"
-	@mkdir build_test      && \
-	cd build_test          && \
-	echo $(PWD)            && \
-	echo $(USE_FLAGS)      && \
-	cmake .. $(USE_FLAGS)  && \
-	make install           && \
-	cd ..                  && \
+	@mkdir build_test                                   && \
+	cd build_test                                       && \
+	cmake .. $(USE_FLAGS) -DCMAKE_INSTALL_PREFIX=${PWD} && \
+	make install                                        && \
+	cd ..                                               && \
 	rm -rf build_test 
 	@echo "Build passed with USE_FLAGS={"$(USE_FLAGS)"}"
 
