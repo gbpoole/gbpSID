@@ -20,3 +20,4 @@ myLib
 .cshrc.myCode
 .bashrc.myCode
 build*
+mpich

@@ -10,6 +10,10 @@ include("macros")
 set(CMAKE_C_COMPILER   "gcc")
 set(CMAKE_CXX_COMPILER "g++")
 
+# In case this is a TravisCI build, we need to add our 
+# custom-installed MPI distribution to the search path
+list(APPEND MPI_HINT_DIRS "${CMAKE_SOURCE_DIR}/mpich" )
+
 #Declare the project name
 project (gbpCode)
 

@@ -13,7 +13,7 @@ EXE_TESTS =
 ECHO = /bin/echo
 
 # Set the build directory
-BUILD_DIR = $(PWD)/build_test
+BUILD_DIR = $(PWD)/build-test
 
 # Determine what sort of environment we're in (eg. OSX or Linux)
 # Set linux defaults
@@ -37,14 +37,95 @@ export KCOV_EXE
 export _MAC_BUILD
 export _TRAVIS_BUILD
 
+# Set USE_XXX values
+USE_FLAGS := ""
+
+ifndef USE_MPI
+  USE_MPI=0
+endif
+ifeq ($(USE_MPI),ON)
+  USE_MPI=1
+else
+  USE_MPI=0
+endif
+ifeq ($(USE_MPI),1)
+	USE_FLAGS := $(USE_FLAGS) "-DUSE_MPI=ON"
+else
+	USE_FLAGS := $(USE_FLAGS) "-DUSE_MPI=OFF"
+endif
+export USE_MPI
+
+ifndef USE_MPI_IO
+  USE_MPI_IO=0
+endif
+ifeq ($(USE_MPI_IO),ON)
+  USE_MPI_IO=1
+else
+  USE_MPI_IO=0
+endif
+ifeq ($(USE_MPI_IO),1)
+	USE_FLAGS := $(USE_FLAGS) "-DUSE_MPI_IO=ON"
+else
+	USE_FLAGS := $(USE_FLAGS) "-DUSE_MPI_IO=OFF"
+endif
+export USE_MPI_IO
+
+ifndef USE_CUDA
+  USE_CUDA=0
+endif
+ifeq ($(USE_CUDA),ON)
+  USE_CUDA=1
+else
+  USE_CUDA=0
+endif
+ifeq ($(USE_CUDA),1)
+	USE_FLAGS := $(USE_FLAGS) "-DUSE_CUDA=ON"
+else
+	USE_FLAGS := $(USE_FLAGS) "-DUSE_CUDA=OFF"
+endif
+export USE_CUDA
+
+# Build mpi if needed and not found
+mpi:
+ifeq ($(USE_MPI),1)
+ifneq (, $(shell which mpicc))
+	@$(ECHO) "mpicc found."
+else
+	@$(ECHO) "Building MPI..."
+	@$(ECHO) -n "   Fetching MPI..."
+	@wget http://www.mpich.org/static/downloads/3.2/mpich-3.2.tar.gz 
+	@tar xfz mpich-3.2.tar.gz 
+	@rm mpich-3.2.tar.gz 
+	@$(ECHO) "Done."
+	@$(ECHO) -n "   Configuring and building..."
+	@cd mpich-3.2               && \
+	./configure                    \
+	   --prefix=`pwd`/../mpich-3.2 \
+	   --enable-static=false       \
+	   --enable-alloca=true        \
+	   --disable-long-double       \
+	   --enable-threads=single     \
+	   --enable-fortran=no         \
+	   --enable-fast=all           \
+	   --enable-g=none             \
+	   --enable-timing=none     && \
+	make -j4                    && \
+	make install                && \
+	cd -                        && \
+	rm -rf mpich-3.2
+	@$(ECHO) "Done."
+	@$(ECHO) "Done."
+endif
+endif
+
 # Generate build tests for the CI service.  This assumes that
 # all wanted build flags have been set in the environment
 # variable $(USE_FLAGS)
 test_build:
 	@$(ECHO) "Performing build test:"
-	@mkdir -p $(BUILD_DIR)                                    && \
-	cd build_test                                             && \
-	cmake .. $(USE_FLAGS) -DCMAKE_INSTALL_PREFIX=$(BUILD_DIR) && \
+	@mkdir -p $(BUILD_DIR)                                      && \
+	cd $(BUILD_DIR)                                             && \
+	cmake .. -DCMAKE_INSTALL_PREFIX=$(BUILD_DIR) "$(USE_FLAGS)" && \
 	make install 
 	@$(ECHO) "Build passed with USE_FLAGS={"$(USE_FLAGS)"}"
 
@@ -55,7 +136,7 @@ $(EXE_TESTS):
 	@$(ECHO) "Done."
 
 # Run all tests
-tests: test_build $(EXE_TESTS)
+tests: mpi test_build $(EXE_TESTS)
 
 # Generate coverage information for executable tests
 .test/kcov.tgz:
@@ -83,5 +164,5 @@ kcov: kcov_exe
 
 # Clean-up
 clean:
-	@rm -rf $(BUILD_DIR) .test/kcov.tgz $(KCOV_DIR) .test/coverage
+	@rm -rf $(BUILD_DIR) .test/kcov.tgz $(KCOV_DIR) .test/coverage mpich-3.2 
 
