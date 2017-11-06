@@ -21,3 +21,4 @@ myLib
 .bashrc.myCode
 build*
 mpich
+docs/build/*
