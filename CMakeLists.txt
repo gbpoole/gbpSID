@@ -90,14 +90,9 @@ if(USE_CUDA)
     #endif()
 endif()
 
-# Doxygen
-# TODO: Add a cmake version check here (needs to be 3.9)
-# TODO: Add checks to make sure all doc build tools are found (Doxygen, Breathe, Sphinx, pdflatex)
-# TODO: Dont add custom targets if they are not found
-find_package(Doxygen REQUIRED)
-
-# Sphinx
-find_package(Sphinx REQUIRED)
+# Initialize the libraries needed for 
+# documentation generation
+find_package(GBP_DOCS_BUILD)
 
 message(STATUS "Finished initializeing 3rd-party libraries.")
 message(STATUS "")
@@ -112,78 +107,14 @@ process_targets( ${CMAKE_SOURCE_DIR} )
 message(STATUS "")
 message(STATUS "Adding custom targets...")
 
-# Create a master list of all source and header files
-set(ALL_FILES_PROJECT "" )
-list(APPEND ALL_FILES_PROJECT ${INC_FILES_PROJECT} )
-list(APPEND ALL_FILES_PROJECT ${SRC_FILES_PROJECT} )
+# Load the list of default availabel custom targets
+include ("custom_targets")
 
-# Clang-format
-add_custom_target(
-    clang-format
-    COMMAND clang-format
-    -style=file
-    -i
-    ${ALL_FILES_PROJECT}
-)
-message(STATUS "  -> clang-format       ; apply the project style standards using clang-tidy")
+# Add clang-format, clang-tidy, etc
+add_custom_clang()
 
-# Clang-tidy
-add_custom_target(
-    clang-tidy-suggest
-    COMMAND clang-tidy
-    -p ${CMAKE_CURRENT_BINARY_DIR}
-    ${SRC_FILES_PROJECT}
-)
-message(STATUS "  -> clang-tidy-suggest ; write clang-tidy suggestions to stdout")
-add_custom_target(
-    clang-tidy-fix
-    COMMAND clang-tidy
-    -p ${CMAKE_CURRENT_BINARY_DIR}
-    -fix
-    ${SRC_FILES_PROJECT}
-)
-message(STATUS "  -> clang-tidy-fix     ; apply all clang-tidy suggestions in-place ... BE CAREFUL WITH THIS!")
-
-# Generate the overall project documentation with Sphinx
-add_custom_target(
-    docs-breathe
-    COMMAND mkdir -p ${SPHINX_BUILD_DIR}/breathe
-    COMMENT "Perform initialization for Breathe")
-add_custom_target(
-    docs-html 
-    COMMAND ${SPHINX_EXECUTABLE}
-        -q -b html 
-        -c "${SPHINX_BUILD_DIR}"
-        -d "${SPHINX_CACHE_DIR}"
-        "${CMAKE_CURRENT_SOURCE_DIR}"
-        "${SPHINX_RESULTS_DIR}/html"
-    COMMENT "Building HTML documentation with Sphinx")
-message(STATUS "  -> docs-html          ; generate HTML version of project documentation using Doxygen and Sphinx")
-add_custom_target(
-    docs-pdf
-    COMMAND ${SPHINX_EXECUTABLE}
-        -q -b latex
-        -c "${SPHINX_BUILD_DIR}"
-        -d "${SPHINX_CACHE_DIR}"
-        "${CMAKE_CURRENT_SOURCE_DIR}"
-        "${SPHINX_LATEX_DIR}"
-    COMMAND mkdir -p ${SPHINX_RESULTS_DIR}
-    COMMAND echo ${SPHINX_RESULTS_DIR}
-    COMMAND cd ${SPHINX_LATEX_DIR} && pdflatex ${CMAKE_PROJECT_NAME}
-    COMMAND mv "${SPHINX_LATEX_DIR}/${CMAKE_PROJECT_NAME}.pdf" ${SPHINX_RESULTS_DIR}
-    COMMENT "Building PDF documentation with Sphinx")
-message(STATUS "  -> docs-pdf           ; generate PDF version of project documentation using Doxygen and Sphinx")
-
-# Generate Doxygen documentation for C/C++ code
-set(DOXYGEN_GENERATE_XML   YES)
-set(DOXYGEN_GENERATE_LATEX  NO)
-set(DOXYGEN_GENERATE_HTML   NO)
-set(DOXYGEN_GENERATE_MAN    NO)
-set(DOXYGEN_OUTPUT_DIRECTORY ${SPHINX_BUILD_DIR}/doxygen )
-doxygen_add_docs(docs-doxygen ${ALL_FILES_PROJECT} )
-add_dependencies(docs-html docs-doxygen )
-add_dependencies(docs-pdf docs-doxygen )
-add_dependencies(docs-doxygen docs-breathe )
+# Add documentation build
+add_custom_docs()
 
 message(STATUS "Finished initializing custom targets.")
 message(STATUS "")

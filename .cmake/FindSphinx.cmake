@@ -7,17 +7,19 @@ find_program(SPHINX_EXECUTABLE NAMES sphinx-build
     PATH_SUFFIXES bin
     DOC "Sphinx documentation generator"
 )
- 
+
+# Handle REQUIRED, QUIET and set <packagename>_FOUND
 include(FindPackageHandleStandardArgs)
- 
 find_package_handle_standard_args(Sphinx DEFAULT_MSG
     SPHINX_EXECUTABLE
 )
 
+# Pass an optional theme
 if(NOT DEFINED SPHINX_THEME)
     set(SPHINX_THEME default)
 endif()
  
+# Pass an optional theme location
 if(NOT DEFINED SPHINX_THEME_DIR)
     set(SPHINX_THEME_DIR)
 endif()
