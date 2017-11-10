@@ -20,7 +20,7 @@ project (gbpSID)
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_SOURCE_DIR}/.cmake;${CMAKE_SOURCE_DIR}")
 
 # Load all macros and functions
-message(STATUS "Loading macros...")
+message(STATUS "Loading macros & functions...")
 include ("build")          # Main build macros
 include ("3rd_party")      # Party library support functions
 include ("custom_targets") # Custom-target macros
@@ -41,6 +41,7 @@ if(USE_DOUBE)
 endif()
 
 #=========== Add 3rd-party libraries ===========
+# (look in .cmake/3rd_party.cmake for a list of supported libraries)
 message(STATUS "")
 message(STATUS "Initializing 3rd-party libraries...")
 
@@ -57,7 +58,7 @@ message(STATUS "Finished initializing 3rd-party libraries.")
 message(STATUS "")
 
 # ============= Process the project =============
-# (look in .cmake/macros_build.cmake for these functions)
+# (look in .cmake/build.cmake for these functions)
 
 # Generate the list of directories where header files
 # are located, as well as a list of all header files
@@ -67,7 +68,7 @@ process_headers( ${CMAKE_SOURCE_DIR} )
 process_targets( ${CMAKE_SOURCE_DIR} )
 
 # ============= Add custom targets ==============
-# (look in .cmake/macros_custom_targets.cmake for these functions)
+# (look in .cmake/custom_targets.cmake for these functions)
 
 # Print status message
 message(STATUS "")
