@@ -1,10 +1,6 @@
 # This file contains all the macros that are used
-#   by cmake to build, debug, etc. this project
-message(STATUS "Loading macros...")
-
-# Set a varibale that we can check to make
-#   sure that we have access to these macros
-set(MACROS_LOADED ON)
+#   by cmake to build header directory lists as 
+#   well as all library and executable targets
 
 # Macro to get all the information we
 #    need about a given directory
@@ -185,7 +181,11 @@ macro(build_executables cur_dir )
 
         # Add executable to the target list
         message(STATUS "Adding executable " ${_exe_name} " (dependencies: " "${_DEPLIST_REV}" ")")
-        add_executable(${_exe_name} ${_exe_file} ${INC_FILES_PROJECT})
+        if(USE_CUDA)
+            cuda_add_executable(${_exe_name} ${_exe_file} ${INC_FILES_PROJECT})
+        else()
+            add_executable(${_exe_name} ${_exe_file} ${INC_FILES_PROJECT})
+        endif()
         target_compile_options(${_exe_name} PRIVATE -DGBP_DATA_DIR=\"${DATADIR}\" )
         install(TARGETS ${_exe_name} DESTINATION bin )
 
@@ -282,4 +282,3 @@ macro(print_all_variables)
     message(STATUS "print_all_variables------------------------------------------}")
 endmacro()
 
-message(STATUS "Macros loaded.")

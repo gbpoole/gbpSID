@@ -2,6 +2,7 @@
 *.a
 *.dSYM
 *.pyc
+.DS_Store
 *.a.objsfile
 cmake-build-*
 .idea
@@ -21,4 +22,4 @@ myLib
 .bashrc.myCode
 build*
 mpich
-docs/build/*
+docs/templates/*

@@ -22,7 +22,7 @@ import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
 # Add it to the project path
-breathe_directory = "@SPHINX_BUILD_DIR@/breathe/"
+breathe_directory = "@Sphinx_BUILD_DIR@/breathe/"
 sys.path.append( breathe_directory )
 
 # -- General configuration ------------------------------------------------
@@ -45,7 +45,7 @@ extensions = ['sphinx.ext.autodoc',
     'breathe']
 
 # Some things that Breathe needs
-breathe_projects        = { "gbpSID": "@SPHINX_BUILD_DIR@/doxygen/xml/" }
+breathe_projects        = { "gbpSID": "@Sphinx_BUILD_DIR@/doxygen/xml/" }
 breathe_default_project =   "gbpSID"
 
 # Add any paths that contain templates here, relative to this directory.

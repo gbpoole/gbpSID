@@ -1,9 +1,9 @@
 # This package file was obtained from a blog entry by Eric Scott Barr here:
 #   https://eb2.co/blog/2012/03/sphinx-and-cmake-beautiful-documentation-for-c---projects/
 
-find_program(SPHINX_EXECUTABLE NAMES sphinx-build
+find_program(Sphinx_EXECUTABLE NAMES sphinx-build
     HINTS
-    $ENV{SPHINX_DIR}
+    $ENV{Sphinx_DIR}
     PATH_SUFFIXES bin
     DOC "Sphinx documentation generator"
 )
@@ -11,35 +11,40 @@ find_program(SPHINX_EXECUTABLE NAMES sphinx-build
 # Handle REQUIRED, QUIET and set <packagename>_FOUND
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(Sphinx DEFAULT_MSG
-    SPHINX_EXECUTABLE
+    Sphinx_EXECUTABLE
 )
 
 # Pass an optional theme
-if(NOT DEFINED SPHINX_THEME)
-    set(SPHINX_THEME default)
+if(NOT DEFINED Sphinx_THEME)
+    set(Sphinx_THEME default)
 endif()
  
 # Pass an optional theme location
-if(NOT DEFINED SPHINX_THEME_DIR)
-    set(SPHINX_THEME_DIR)
+if(NOT DEFINED Sphinx_THEME_DIR)
+    set(Sphinx_THEME_DIR)
 endif()
  
 # Configured documentation tools, intermediate build results, etc.
-set(SPHINX_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/build-docs")
-set(SPHINX_LATEX_DIR "${SPHINX_BUILD_DIR}/latex")
+set(Sphinx_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/build-docs")
+set(Sphinx_LATEX_DIR "${Sphinx_BUILD_DIR}/latex")
  
 # Sphinx cache with pickled ReST documents
-set(SPHINX_CACHE_DIR "${SPHINX_BUILD_DIR}/sphinx_cache")
+set(Sphinx_CACHE_DIR "${Sphinx_BUILD_DIR}/sphinx_cache")
  
 # Directory where all final generated documents will be stored
-set(SPHINX_RESULTS_DIR "${CMAKE_CURRENT_BINARY_DIR}/docs")
+set(Sphinx_RESULTS_DIR "${CMAKE_CURRENT_BINARY_DIR}/docs")
 
 # Perform variable substitution into the Sphinx config file
 set(PRJ_DOCS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/docs )
 configure_file(
     "${PRJ_DOCS_DIR}/conf.py.in"
-    "${SPHINX_BUILD_DIR}/conf.py"
+    "${Sphinx_BUILD_DIR}/conf.py"
     @ONLY)
 
-mark_as_advanced(SPHINX_EXECUTABLE)
+SET(Sphinx_EXECUTABLE  "${Sphinx_EXECUTABLE}"   CACHE INTERNAL "Sphinx executable")
+SET(Sphinx_BUILD_DIR   "${Sphinx_BUILD_DIR}"    CACHE INTERNAL "Sphinx build directory")
+SET(Sphinx_LATEX_DIR   "${Sphinx_LATEX_DIR}"    CACHE INTERNAL "Sphinx latex build directory")
+SET(Sphinx_CACHE_DIR   "${Sphinx_CACHE_DIR}"    CACHE INTERNAL "Sphinx cache directory")
+SET(Sphinx_RESULTS_DIR "${Sphinx_RESULTS_DIR}"  CACHE INTERNAL "Sphinx results directory")
+SET(PRJ_DOCS_DIR       "${PRJ_DOCS_DIR}"        CACHE INTERNAL "Documentation root source directory")
 

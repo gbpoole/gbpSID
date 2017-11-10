@@ -3,12 +3,14 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-gbpSID's documentation!
-=======================
+gbpSID Documentation
+====================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+
+.. include:: install.rst
 
 .. doxygenfunction:: SID_init
    :project: gbpSID

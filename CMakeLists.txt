@@ -1,114 +1,77 @@
-#This is the CMakeList.txt file used by all gbpCode projects
-
+# This is the CMakeList.txt file used to build the project
 cmake_minimum_required(VERSION 3.2)
 
-#Include all the macros we will use
-set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_SOURCE_DIR}/.cmake;${CMAKE_SOURCE_DIR}")
-include("macros")
-
-#Set default compilers(must come before project line)
+# Set default compilers(must come before project line)
 set(CMAKE_C_COMPILER   "gcc")
 set(CMAKE_CXX_COMPILER "g++")
+
+# Compiler flags
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
+set(CMAKE_CXX_FLAGS "-std=c++11")
 
 # In case this is a TravisCI build, we need to add our 
 # custom-installed MPI distribution to the search path
 list(APPEND MPI_HINT_DIRS "${CMAKE_SOURCE_DIR}/mpich" )
 
-#Declare the project name
+# Declare the project name
 project (gbpSID)
 
-#Compiler flags
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
-set(CMAKE_CXX_FLAGS "-std=c++11")
+# Add the '.cmake' directory in the project directory to the module path
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_SOURCE_DIR}/.cmake;${CMAKE_SOURCE_DIR}")
 
-#The following line is needed to deal with this annoying problem:
-#https: // developers.redhat.com/blog/2015/02/05/gcc5-and-the-c11-abi/
+# Load all macros and functions
+message(STATUS "Loading macros...")
+include ("build")          # Main build macros
+include ("3rd_party")      # Party library support functions
+include ("custom_targets") # Custom-target macros
+message(STATUS "Done.")
+
+# The following line is needed to deal with this annoying problem:
+# https: // developers.redhat.com/blog/2015/02/05/gcc5-and-the-c11-abi/
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=0")
 
-#Uncomment for a verbose run
-#set(CMAKE_VERBOSE_MAKEFILE ON)
-
-#Generate compile commands.json file
-#(nneded by things like clang - tidy)
+# Generate compile commands.json file
+# (needed by things like clang - tidy)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-#Use double precision liberally ?
+# Use double precision liberally ?
 option(USE_DOUBLE "Use double liberally" OFF)
 if(USE_DOUBE)
     add_definitions(-DUSE_DOUBLE)
 endif()
 
-#== == == == == = Add 3rd - party libraries == == == == == =
+#=========== Add 3rd-party libraries ===========
 message(STATUS "")
 message(STATUS "Initializing 3rd-party libraries...")
 
-#MPI
-option(USE_MPI "Use MPI" OFF)
-if(USE_MPI)
-    add_definitions(-DUSE_MPI)
-    find_package(MPI REQUIRED)
-    include_directories(${MPI_INCLUDE_PATH})
-    link_libraries(${MPI_C_LIBRARIES})
-endif()
+# List of *required* 3rd-Party libraries
+#set_3rd_party_required("XXX")
 
-#CUDA & CUFFT
-#Note that the CUDA version should be >= 7.5
-#because c++ 11 support is needed !
-option(USE_CUDA "Use CUDA" OFF)
-if(USE_CUDA)
-    find_package(CUDA REQUIRED)
-    add_definitions(-DUSE_CUDA)
-    option(USE_CUFFT "Use cuFFT" OFF)
-    if(USE_CUFFT)
-        add_definitions(-DUSE_CUFFT)
-    endif()
+# List of *optional* 3rd-Party libraries (and their defaults)
+set_3rd_party_optional("GBP_DOCS_BUILD" ON)
+set_3rd_party_optional("MPI"            ON)
+set_3rd_party_optional("CUDA"           OFF)
 
-    #Collect CUDA source code
-    file(GLOB SOURCES_CU core/*.cu *.hh)
-    set(SOURCES ${SOURCES_C} ${SOURCES_CU})
-
-    # Pass options to NVCC
-    set(CUDA_HOST_COMPILER ${CMAKE_CXX_COMPILER})
-    set(CUDA_PROPAGATE_HOST_FLAGS ON)
-    set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -arch=sm_30")
-
-    ################################################################################
-    # This ugly hack is needed to work around a bug in the fftw3.h header file
-    #    see the following for a discussion: https://github.com/FFTW/fftw3/issues/18
-    set(CUDA_NVCC_FLAGS "${CUDA_NVCC_FLAGS} -D__INTEL_COMPILER")
-    ################################################################################
-
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${CUDA_C_FLAGS}")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${CUDA_EXE_LINKER_FLAGS}")
-
-    ## Add an executable to the project
-    #cuda_add_executable(target ${SOURCES})
-
-    ## CUFFT
-    #if(USE_CUFFT)
-    #    CUDA_ADD_CUFFT_TO_TARGET(target)
-    #endif()
-endif()
-
-# Initialize the libraries needed for 
-# documentation generation
-find_package(GBP_DOCS_BUILD)
-
-message(STATUS "Finished initializeing 3rd-party libraries.")
+# Print status message
+message(STATUS "Finished initializing 3rd-party libraries.")
 message(STATUS "")
-# ======= End of 3rd party initialization =======
 
 # ============= Process the project =============
-# (look in .cmake/macros.cmake for these functions)
+# (look in .cmake/macros_build.cmake for these functions)
+
+# Generate the list of directories where header files
+# are located, as well as a list of all header files
 process_headers( ${CMAKE_SOURCE_DIR} )
+
+# Generate all library and executable targets
 process_targets( ${CMAKE_SOURCE_DIR} )
 
-# =========== Add some custom targets ===========
+# ============= Add custom targets ==============
+# (look in .cmake/macros_custom_targets.cmake for these functions)
+
+# Print status message
 message(STATUS "")
 message(STATUS "Adding custom targets...")
-
-# Load the list of default availabel custom targets
-include ("custom_targets")
 
 # Add clang-format, clang-tidy, etc
 add_custom_clang()
@@ -116,7 +79,7 @@ add_custom_clang()
 # Add documentation build
 add_custom_docs()
 
+# Print status message
 message(STATUS "Finished initializing custom targets.")
 message(STATUS "")
-# ============ End of custom targets ============
 

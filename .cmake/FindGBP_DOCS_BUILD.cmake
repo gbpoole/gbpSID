@@ -20,6 +20,7 @@ endif()
 include(FindPackageHandleStandardArgs)
 find_package_handle_standard_args(GBP_DOCS_BUILD DEFAULT_MSG
     DOXYGEN_FOUND
-    SPHINX_FOUND
+    Sphinx_FOUND
 )
+SET(GBP_DOCS_BUILD_FOUND "${GBP_DOCS_BUILD_FOUND}" CACHE INTERNAL "GBP_DOCS_BUILD_FOUND")
 
