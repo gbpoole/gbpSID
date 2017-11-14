@@ -17,7 +17,7 @@ BUILD_DIR = $(PWD)/build-test
 
 # Determine what sort of environment we're in (eg. OSX or Linux)
 # Set linux defaults
-KCOV_DIR='.test/kcov-master'
+KCOV_DIR='test/kcov-master'
 KCOV_EXE=$(KCOV_DIR)'/build/src/kcov'
 _MAC_BUILD=0
 _TRAVIS_BUILD=0
@@ -96,11 +96,12 @@ else
 	@wget http://www.mpich.org/static/downloads/3.2/mpich-3.2.tar.gz 
 	@tar xfz mpich-3.2.tar.gz 
 	@rm mpich-3.2.tar.gz 
+	@mv mpich-3.2 mpich
 	@$(ECHO) "Done."
 	@$(ECHO) -n "   Configuring and building..."
-	@cd mpich-3.2               && \
+	@cd mpich                   && \
 	./configure                    \
-	   --prefix=`pwd`/../mpich-3.2 \
+	   --prefix=`pwd`              \
 	   --enable-static=false       \
 	   --enable-alloca=true        \
 	   --disable-long-double       \
@@ -141,10 +142,10 @@ tests: mpi test_build $(EXE_TESTS)
 # Generate coverage information for executable tests
 .test/kcov.tgz:
 	@$(ECHO) -n "Downloading kcov code..."
-	@wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz -O .test/kcov.tgz
-	@tar xfz .test/kcov.tgz -C .test
+	@wget https://github.com/SimonKagstrom/kcov/archive/master.tar.gz -O test/kcov.tgz
+	@tar xfz test/kcov.tgz -C test
 	@$(ECHO) "Done."
-$(KCOV_EXE): .test/kcov.tgz
+$(KCOV_EXE): test/kcov.tgz
 ifeq ($(_MAC_BUILD),1)
 	@cd $(KCOV_DIR);mkdir build;cd build;cmake -G Xcode .. ;xcodebuild -configuration Release
 else
@@ -152,7 +153,7 @@ else
 endif
 $(TEST_LIST): $(KCOV_EXE)
 	@$(ECHO) -n "Generating coverage report for execution test: "$@"..."
-	@$(KCOV_EXE) .test/coverage $@
+	@$(KCOV_EXE) test/coverage $@
 	@$(ECHO) "Done."
 kcov_exe: $(EXE_TESTS)
 
@@ -164,5 +165,5 @@ kcov: kcov_exe
 
 # Clean-up
 clean:
-	@rm -rf $(BUILD_DIR) .test/kcov.tgz $(KCOV_DIR) .test/coverage mpich-3.2 
+	@rm -rf $(BUILD_DIR) test/kcov.tgz $(KCOV_DIR) test/coverage mpich-3.2 
 
