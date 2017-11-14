@@ -44,7 +44,7 @@ void SID_exit(int status) {
             fprintf(SID.fp_log, "--------------\n");
             (void)time(&(SID.time_stop));
             int n_secs = (int)(SID.time_stop - SID.time_start);
-            seconds2ascii(n_secs, time_string);
+            SID_seconds2ascii(n_secs, time_string);
             fprintf(SID.fp_log, "Time elapsed=%s.\n", time_string);
         }
 

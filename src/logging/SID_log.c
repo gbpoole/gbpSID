@@ -73,7 +73,7 @@ void SID_log(const char *fmt, int mode, ...) {
                     // Write time elapsed if SID_LOG_TIMER was set on opening
                     if(flag_write_time) {
                         char time_string[48];
-                        seconds2ascii(SID.time_total_level[SID.level], time_string);
+                        SID_seconds2ascii(SID.time_total_level[SID.level], time_string);
                         fprintf(SID.fp_log, " (%s", time_string);
                         if(SID.IO_size[SID.level] > 0.)
                             fprintf(SID.fp_log, "; %3.1lf Mb/s", SID.IO_size[SID.level] / (double)SID.time_total_level[SID.level]);

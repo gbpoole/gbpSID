@@ -14,20 +14,21 @@ set(DATASUBDIR "" )
 
 # Add directories that contribute source files 
 # eg. list(APPEND SRCDIRS "dir" )
-list(APPEND SRCDIRS "core" )
-list(APPEND SRCDIRS "malloc" )
-list(APPEND SRCDIRS "logging" )
-list(APPEND SRCDIRS "mpi" )
-list(APPEND SRCDIRS "file_io" )
-list(APPEND SRCDIRS "development" )
+# -- NONE FOR THIS DIR --
 
 # Add header files
 # eg. list(APPEND INCFILES "file" )
-list(APPEND INCFILES "gbpSID" )
+list(APPEND INCFILES "gbpSID_logging.h")
 
 # Add source files
 # eg. list(APPEND SRCFILES "file" )
-# -- NONE FOR THIS DIR --
+list(APPEND SRCFILES "SID_log.c")
+list(APPEND SRCFILES "SID_log_error.c")
+list(APPEND SRCFILES "SID_log_set_fp.c")
+list(APPEND SRCFILES "SID_log_warning.c")
+list(APPEND SRCFILES "SID_set_verbosity.c")
+list(APPEND SRCFILES "SID_init_pcounter.c")
+list(APPEND SRCFILES "SID_check_pcounter.c")
 
 # Add executable source files (those with a main())
 # eg. list(APPEND EXEFILES "file" )
