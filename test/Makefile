@@ -88,7 +88,7 @@ export USE_CUDA
 # Build mpi if needed and not found
 mpi:
 ifeq ($(USE_MPI),1)
-ifneq (, $(shell which mpiccZZ))
+ifneq (, $(shell which mpicc))
 	@$(ECHO) "mpicc found."
 else
 	@$(ECHO) "Building MPI..."
