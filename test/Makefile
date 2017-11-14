@@ -88,7 +88,7 @@ export USE_CUDA
 # Build mpi if needed and not found
 mpi:
 ifeq ($(USE_MPI),1)
-ifneq (, $(shell which mpicc))
+ifneq (, $(shell which mpiccZZ))
 	@$(ECHO) "mpicc found."
 else
 	@$(ECHO) "Building MPI..."
@@ -96,12 +96,11 @@ else
 	@wget http://www.mpich.org/static/downloads/3.2/mpich-3.2.tar.gz 
 	@tar xfz mpich-3.2.tar.gz 
 	@rm mpich-3.2.tar.gz 
-	@mv mpich-3.2 mpich
 	@$(ECHO) "Done."
 	@$(ECHO) -n "   Configuring and building..."
-	@cd mpich                   && \
+	@cd mpich-3.2               && \
 	./configure                    \
-	   --prefix=`pwd`              \
+	   --prefix=`pwd`/../mpich     \
 	   --enable-static=false       \
 	   --enable-alloca=true        \
 	   --disable-long-double       \
