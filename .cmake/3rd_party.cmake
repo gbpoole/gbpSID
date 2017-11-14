@@ -109,6 +109,21 @@ function(init_3rd_party_MPI lib_name required_in)
     endif()
 endfunction()
 
+# Initialize MPI_IO
+function(init_3rd_party_MPI_IO lib_name required_in)
+    set_required_variables(${required_in})
+    if(USE_${lib_name})
+        if(NOT USE_MPI)
+            message(FATAL_ERROR "${required_txt} library ${lib_name} can not be initialized without MPI.")
+        endif()
+
+        # Check status and print message    
+        check_3rd_party_status( TRUE )
+    else()
+        skip_3rd_party_status(required_in)
+    endif()
+endfunction()
+
 # Initialize CUDA
 function(init_3rd_party_CUDA lib_name required_in)
     set_required_variables(${required_in})
@@ -149,7 +164,7 @@ function(init_3rd_party_CUFFT lib_name required_in)
         if(USE_CUDA)
             CUDA_ADD_CUFFT_TO_TARGET(target)
         else()
-            message(FATAL_ERROR "${required_txt} library CUFFT can not be initialized without CUDA.")
+            message(FATAL_ERROR "${required_txt} library ${lib_name} can not be initialized without CUDA.")
         endif()
 
         # Check status and print message    

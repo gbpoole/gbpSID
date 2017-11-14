@@ -51,6 +51,7 @@ message(STATUS "Initializing 3rd-party libraries...")
 # List of *optional* 3rd-Party libraries (and their defaults)
 set_3rd_party_optional("GBP_DOCS_BUILD" ON)
 set_3rd_party_optional("MPI"            ON)
+set_3rd_party_optional("MPI_IO"         OFF)
 set_3rd_party_optional("CUDA"           OFF)
 
 # Print status message

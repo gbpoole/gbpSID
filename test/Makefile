@@ -38,56 +38,57 @@ export _MAC_BUILD
 export _TRAVIS_BUILD
 
 # Set USE_XXX values
-USE_FLAGS := ""
+# There should be a block here for every optional
+# environment variable affecting the build
+USE_FLAGS := 
 
+# USE_MPI
 ifndef USE_MPI
-  USE_MPI=0
+	USE_MPI := ON
 endif
 ifeq ($(USE_MPI),ON)
-  USE_MPI=1
+	USE_FLAGS := $(USE_FLAGS) -DUSE_MPI=ON
 else
-  USE_MPI=0
+	override USE_MPI := OFF
+	USE_FLAGS := $(USE_FLAGS) -DUSE_MPI=OFF
 endif
-ifeq ($(USE_MPI),1)
-	USE_FLAGS := $(USE_FLAGS) "-DUSE_MPI=ON"
-else
-	USE_FLAGS := $(USE_FLAGS) "-DUSE_MPI=OFF"
-endif
-export USE_MPI
 
+# USE_MPI_IO
 ifndef USE_MPI_IO
-  USE_MPI_IO=0
+	USE_MPI_IO := OFF
 endif
 ifeq ($(USE_MPI_IO),ON)
-  USE_MPI_IO=1
+	USE_FLAGS := $(USE_FLAGS) -DUSE_MPI_IO=ON
 else
-  USE_MPI_IO=0
+	override USE_MPI_IO := OFF
+	USE_FLAGS := $(USE_FLAGS) -DUSE_MPI_IO=OFF
 endif
-ifeq ($(USE_MPI_IO),1)
-	USE_FLAGS := $(USE_FLAGS) "-DUSE_MPI_IO=ON"
-else
-	USE_FLAGS := $(USE_FLAGS) "-DUSE_MPI_IO=OFF"
-endif
-export USE_MPI_IO
 
+# USE_CUDA
 ifndef USE_CUDA
-  USE_CUDA=0
+	USE_CUDA := OFF
 endif
 ifeq ($(USE_CUDA),ON)
-  USE_CUDA=1
+	USE_FLAGS := $(USE_FLAGS) -DUSE_CUDA=ON
 else
-  USE_CUDA=0
+	override USE_CUDA := OFF
+	USE_FLAGS := $(USE_FLAGS) -DUSE_CUDA=OFF
 endif
-ifeq ($(USE_CUDA),1)
-	USE_FLAGS := $(USE_FLAGS) "-DUSE_CUDA=ON"
+
+# USE_DOUBLE
+ifndef USE_DOUBLE
+	USE_DOUBLE := OFF
+endif
+ifeq ($(USE_DOUBLE),ON)
+	USE_FLAGS := $(USE_FLAGS) -DUSE_DOUBLE=ON
 else
-	USE_FLAGS := $(USE_FLAGS) "-DUSE_CUDA=OFF"
+	override USE_DOUBLE := OFF
+	USE_FLAGS := $(USE_FLAGS) -DUSE_DOUBLE=OFF
 endif
-export USE_CUDA
 
 # Build mpi if needed and not found
 mpi:
-ifeq ($(USE_MPI),1)
+ifeq ($(USE_MPI),ON)
 ifneq (, $(shell which mpicc))
 	@$(ECHO) "mpicc found."
 else
@@ -123,9 +124,9 @@ endif
 # variable $(USE_FLAGS)
 test_build:
 	@$(ECHO) "Performing build test:"
-	@mkdir -p $(BUILD_DIR)                                      && \
-	cd $(BUILD_DIR)                                             && \
-	cmake .. -DCMAKE_INSTALL_PREFIX=$(BUILD_DIR) "$(USE_FLAGS)" && \
+	@mkdir -p $(BUILD_DIR)                                    && \
+	cd $(BUILD_DIR)                                           && \
+	cmake .. $(USE_FLAGS) -DCMAKE_INSTALL_PREFIX=$(BUILD_DIR) && \
 	make install 
 	@$(ECHO) "Build passed with USE_FLAGS={"$(USE_FLAGS)"}"
 
