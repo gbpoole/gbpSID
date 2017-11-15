@@ -11,8 +11,9 @@ function(set_3rd_party_required lib_name)
 endfunction()
 
 # Declare that a 3rd-party library is *optional*
+# Build will *fail* if val is 'ON' and package load fails
 function(set_3rd_party_optional lib_name val)
-    option(USE_${lib_name} "Use ${lib_name}" ${val})
+    option(USE_${lib_name} "Use ${lib_name} (If ON, build will fail if library load fails)" ${val})
     if(USE_${lib_name})
         eval("init_3rd_party_${lib_name}(${lib_name} \"SELECTED\" )")
     else()
@@ -20,6 +21,16 @@ function(set_3rd_party_optional lib_name val)
     endif()
 endfunction()
 
+# Declare that a 3rd-party library is *requested*
+# Build will *continue* if val is 'ON' and package load fails
+function(set_3rd_party_requested lib_name val)
+    option(USE_${lib_name} "Use ${lib_name} (If ON, build will continue if library load fails)" ${val})
+    if(USE_${lib_name})
+        eval("init_3rd_party_${lib_name}(${lib_name} \"REQUESTED\" )")
+    else()
+        eval("init_3rd_party_${lib_name}(${lib_name} \"SKIPPED\" )")
+    endif()
+endfunction()
 
 # =================== Some helper functions ==================
 
@@ -50,11 +61,20 @@ endmacro(eval)
 # and the varibable 'required_txt' to something we 
 # will use to print a status message
 macro(set_required_variables required_in)
-    set(required     "")
-    set(required_txt "Optional")
     if(required_in STREQUAL "REQUIRED" )
         set(required     "REQUIRED")
         set(required_txt "Required")
+    elseif(required_in STREQUAL "REQUESTED" )
+        set(required     "")
+        set(required_txt "Requested")
+    elseif(required_in STREQUAL "SELECTED" )
+        set(required     "")
+        set(required_txt "Optional")
+    elseif(required_in STREQUAL "SKIPPED" )
+        set(required     "")
+        set(required_txt "Optional")
+    else()
+        message(FATAL_ERROR "Invalid input to 'set_required_variables': " ${required_in} )
     endif()
 endmacro()
 
@@ -63,7 +83,11 @@ macro(check_3rd_party_status success )
     if(${success})
         message(STATUS "   -> ${required_txt} library initialized:  ${lib_name}")
     else()
-        message(FATAL_ERROR "${required_txt} library initialization failed: ${lib_name}")
+        if(required STREQUAL "REQUIRED" )
+            message(FATAL_ERROR "${required_txt} library initialization failed: ${lib_name}")
+        else()
+            message(STATUS "${required_txt} library initialization failed: ${lib_name}")
+        endif()
     endif()
 endmacro()
 macro(skip_3rd_party_status required_in)
@@ -81,7 +105,7 @@ endmacro()
 function(init_3rd_party_GBP_DOCS_BUILD lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
-        find_package(${lib_name} REQUIRED)
+        find_package(${lib_name} ${required})
 
         # Check status and print message    
         check_3rd_party_status( ${GBP_DOCS_BUILD_FOUND} )
@@ -95,8 +119,13 @@ endfunction()
 function(init_3rd_party_MPI lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
+
+        # In case we need to use a custom build, 
+        # we need to add it to the search path
+        list(APPEND MPI_HINT_DIRS "${CMAKE_SOURCE_DIR}/mpich" )
+
         add_definitions(-DUSE_${lib_name})
-        find_package(${lib_name} REQUIRED)
+        find_package(${lib_name} ${required})
 
         # Check status and print message    
         check_3rd_party_status( ${MPI_CXX_FOUND} AND ${MPI_C_FOUND} )
@@ -129,7 +158,7 @@ function(init_3rd_party_CUDA lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
         add_definitions(-DUSE_${lib_name})
-        find_package(${lib_name} REQUIRED)
+        find_package(${lib_name} ${required})
 
         # Check status and print message
         check_3rd_party_status( ${CUDA_FOUND} AND ${CUDA_FOUND} )
@@ -179,7 +208,7 @@ function(init_3rd_party_GD lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
         add_definitions(-DUSE_${lib_name})
-        find_package(${lib_name} REQUIRED)
+        find_package(${lib_name} ${required})
 
         # Check status and print message    
         check_3rd_party_status( GD_FOUND )
@@ -197,7 +226,7 @@ function(init_3rd_party_CFITSIO lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
         add_definitions(-DUSE_${lib_name})
-        find_package(${lib_name} REQUIRED)
+        find_package(${lib_name} ${required})
 
         # Check status and print message    
         check_3rd_party_status( Cfitsio_FOUND )
@@ -215,7 +244,7 @@ function(init_3rd_party_HDF5 lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
         add_definitions(-DUSE_${lib_name})
-        find_package(${lib_name} REQUIRED COMPONENTS C HL)
+        find_package(${lib_name} ${required} COMPONENTS C HL)
 
         # Check status and print message    
         check_3rd_party_status( HDF5_FOUND )
@@ -241,7 +270,7 @@ function(init_3rd_party_FFTW lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
         add_definitions(-DUSE_${lib_name})
-        find_package(${lib_name} REQUIRED)
+        find_package(${lib_name} ${required})
 
         # Check status and print message    
         check_3rd_party_status( FFTW_FOUND )
@@ -259,7 +288,7 @@ function(init_3rd_party_OpenMP lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
         add_definitions(-DUSE_${lib_name})
-        find_package(${lib_name} REQUIRED)
+        find_package(${lib_name} ${required})
 
         # Check status and print message    
         check_3rd_party_status( OpenMP_FOUND )

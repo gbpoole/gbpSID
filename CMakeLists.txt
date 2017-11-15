@@ -9,10 +9,6 @@ set(CMAKE_CXX_COMPILER "g++")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
 set(CMAKE_CXX_FLAGS "-std=c++11")
 
-# In case this is a TravisCI build, we need to add our 
-# custom-installed MPI distribution to the search path
-list(APPEND MPI_HINT_DIRS "${CMAKE_SOURCE_DIR}/mpich" )
-
 # Declare the project name
 project (gbpSID)
 
@@ -40,6 +36,12 @@ if(USE_DOUBE)
     add_definitions(-DUSE_DOUBLE)
 endif()
 
+# These options specify when (if ever) missing libraries
+#   should be installed automatically by this build script
+# !!! Not implemented yet
+#option(INSTALL_FORCE   "Install all libraries automatically? (overrides INSTALL_MISSING)") 
+#option(INSTALL_MISSING "Install missing libraries?") 
+
 #=========== Add 3rd-party libraries ===========
 # (look in .cmake/3rd_party.cmake for a list of supported libraries)
 message(STATUS "")
@@ -48,11 +50,13 @@ message(STATUS "Initializing 3rd-party libraries...")
 # List of *required* 3rd-Party libraries
 #set_3rd_party_required("XXX")
 
+# List of *requested* 3rd-Party libraries (and their defaults)
+set_3rd_party_requested("GBP_DOCS_BUILD" ON)
+
 # List of *optional* 3rd-Party libraries (and their defaults)
-set_3rd_party_optional("GBP_DOCS_BUILD" ON)
-set_3rd_party_optional("MPI"            ON)
-set_3rd_party_optional("MPI_IO"         OFF)
-set_3rd_party_optional("CUDA"           OFF)
+set_3rd_party_optional("MPI"    ON)
+set_3rd_party_optional("MPI_IO" OFF)
+set_3rd_party_optional("CUDA"   OFF)
 
 # Print status message
 message(STATUS "Finished initializing 3rd-party libraries.")
