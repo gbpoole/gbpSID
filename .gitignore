@@ -22,4 +22,4 @@ myLib
 .bashrc.myCode
 build-*
 mpich
-docs/templates/*
+docs/themes/*
