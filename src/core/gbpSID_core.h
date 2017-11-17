@@ -3,7 +3,8 @@
 
 #include <stdio.h>          // Needed for type FILE
 #include <sys/types.h>      // Needed for type time_t
-#include <gbpSID_file_io.h> // Needed for type time_t
+#include <gbpSID_file_io.h>
+#include <gbpSID_mpi.h>
 
 #if USE_MPI
 #include <mpi.h>
@@ -96,21 +97,6 @@ struct SID_arg {
     int   type;
     int   flag_required;
     void *val;
-};
-
-// This datastructure keeps track of quantities
-// relevant to MPI communicators
-typedef struct SID_Comm SID_Comm;
-struct SID_Comm {
-#if USE_MPI
-    MPI_Comm  comm;
-    MPI_Group group;
-#else
-    char *comm;
-    char *group;
-#endif
-    int n_proc;
-    int My_rank;
 };
 
 // Custom variadic arguments functions

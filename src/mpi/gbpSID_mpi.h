@@ -70,6 +70,21 @@
 #define SID_REAL SID_FLOAT
 #endif
 
+// This datastructure keeps track of quantities
+// relevant to MPI communicators
+typedef struct SID_Comm SID_Comm;
+struct SID_Comm {
+#if USE_MPI
+    MPI_Comm  comm;
+    MPI_Group group;
+#else
+    char *comm;
+    char *group;
+#endif
+    int n_proc;
+    int My_rank;
+};
+
 // Function declarations
 #ifdef __cplusplus
 extern "C" {
