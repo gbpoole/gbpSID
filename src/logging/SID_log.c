@@ -110,7 +110,7 @@ void SID_log(const char *fmt, int mode, ...) {
 
 #if USE_MPI
     if(check_mode_for_flag(mode, SID_LOG_CHECKPOINT))
-        SID_Barrier(SID.COMM_WORLD);
+        SID_Barrier(SID_COMM_WORLD);
 #endif
 
     va_end(vargs);

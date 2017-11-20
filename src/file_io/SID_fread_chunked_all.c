@@ -21,7 +21,7 @@ size_t SID_fread_chunked_all(void *buffer, size_t n_x_read, SID_fp *fp) {
             n_x_chunk = 0;
             n_skip    = 0;
         }
-        SID_Allreduce(&n_x_chunk, &n_x_chunk_max, 1, SID_SIZE_T, SID_MAX, SID.COMM_WORLD);
+        SID_Allreduce(&n_x_chunk, &n_x_chunk_max, 1, SID_SIZE_T, SID_MAX, SID_COMM_WORLD);
         if(n_x_chunk_max > 0) {
             sprintf(filename_chunk, "%s.%d", fp->filename_root, i_chunk);
             SID_fopen(filename_chunk, "r", fp);

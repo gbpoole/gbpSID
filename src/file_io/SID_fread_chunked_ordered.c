@@ -22,7 +22,7 @@ size_t SID_fread_chunked_ordered(void *buffer, size_t n_x_read_local, SID_fp *fp
 #if USE_MPI
     for(i_rank = 0; i_rank < SID.n_proc; i_rank++) {
         n_x_read_local_bcast = n_x_read_local;
-        SID_Bcast(&n_x_read_local_bcast, 1, SID_SIZE_T, i_rank, SID.COMM_WORLD);
+        SID_Bcast(&n_x_read_local_bcast, 1, SID_SIZE_T, i_rank, SID_COMM_WORLD);
         if(i_rank < SID.My_rank)
             i_x_offset_local += n_x_read_local_bcast;
     }
@@ -37,7 +37,7 @@ size_t SID_fread_chunked_ordered(void *buffer, size_t n_x_read_local, SID_fp *fp
             n_x_chunk = 0;
             n_skip    = 0;
         }
-        SID_Allreduce(&n_x_chunk, &n_x_chunk_max, 1, SID_SIZE_T, SID_MAX, SID.COMM_WORLD);
+        SID_Allreduce(&n_x_chunk, &n_x_chunk_max, 1, SID_SIZE_T, SID_MAX, SID_COMM_WORLD);
         if(n_x_chunk_max > 0) {
             sprintf(filename_chunk, "%s.%d", fp->filename_root, i_chunk);
 #if !USE_MPI_IO
@@ -54,12 +54,12 @@ size_t SID_fread_chunked_ordered(void *buffer, size_t n_x_read_local, SID_fp *fp
                     SID_fclose(fp);
 #if !USE_MPI_IO
                 }
-                SID_Barrier(SID.COMM_WORLD);
+                SID_Barrier(SID_COMM_WORLD);
             }
 #endif
         }
     }
-    SID_Allreduce(&i_x_chunk, &(fp->last_item), 1, SID_SIZE_T, SID_MAX, SID.COMM_WORLD);
+    SID_Allreduce(&i_x_chunk, &(fp->last_item), 1, SID_SIZE_T, SID_MAX, SID_COMM_WORLD);
     // fp->last_item--;
     return (r_val);
 }

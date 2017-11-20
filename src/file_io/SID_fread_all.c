@@ -23,11 +23,11 @@ size_t SID_fread_all(void *buffer, size_t size_per_item, size_t n_items, SID_fp 
         size_offset = 0;
         while(size_left > 0) {
             size_send = GBP_MIN(size_left, MAX_SEND_LOCAL);
-            SID_Bcast(&(((char *)buffer)[size_offset]), size_send, SID_BYTE, SID_MASTER_RANK, SID.COMM_WORLD);
+            SID_Bcast(&(((char *)buffer)[size_offset]), size_send, SID_BYTE, SID_MASTER_RANK, SID_COMM_WORLD);
             size_left -= size_send;
             size_offset += size_send;
         }
-        SID_Bcast(&r_val, sizeof(size_t), SID_BYTE, SID_MASTER_RANK, SID.COMM_WORLD);
+        SID_Bcast(&r_val, sizeof(size_t), SID_BYTE, SID_MASTER_RANK, SID_COMM_WORLD);
     } else
         r_val = 0;
 #endif

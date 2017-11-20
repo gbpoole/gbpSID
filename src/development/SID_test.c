@@ -15,6 +15,6 @@ void SID_test(int val, char *fmt, ...) {
 #endif
     vfprintf(SID.fp_log, fmt, vargs);
     fprintf(SID.fp_log, "\n");
-    SID_Barrier(SID.COMM_WORLD);
+    SID_Barrier(SID_COMM_WORLD);
     va_end(vargs);
 }

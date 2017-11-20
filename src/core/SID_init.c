@@ -209,21 +209,21 @@ void SID_init(int *argc, char **argv[], SID_args args[], void *mpi_comm_as_void)
 #endif
 
     // Create private COMM_WORLD
-    SID_Comm_init(&(SID.COMM_WORLD));
+    SID_Comm_init(&(SID_COMM_WORLD));
 #if USE_MPI
-    MPI_Comm_dup(mpi_comm, &((SID.COMM_WORLD)->comm));
-    MPI_Comm_group((SID.COMM_WORLD)->comm, &((SID.COMM_WORLD)->group));
-    MPI_Comm_size(SID.COMM_WORLD->comm, &((SID.COMM_WORLD)->n_proc));
-    MPI_Comm_rank(SID.COMM_WORLD->comm, &((SID.COMM_WORLD)->My_rank));
+    MPI_Comm_dup(mpi_comm, &((SID_COMM_WORLD)->comm));
+    MPI_Comm_group((SID_COMM_WORLD)->comm, &((SID_COMM_WORLD)->group));
+    MPI_Comm_size(SID_COMM_WORLD->comm, &((SID_COMM_WORLD)->n_proc));
+    MPI_Comm_rank(SID_COMM_WORLD->comm, &((SID_COMM_WORLD)->My_rank));
 
     // We have duplicated our duplicate mpi communicator - now we can free the
     // original duplicate
     MPI_Comm_free(&mpi_comm);
 #else
-    SID.COMM_WORLD->comm    = NULL;
-    SID.COMM_WORLD->group   = NULL;
-    SID.COMM_WORLD->n_proc  = 1;
-    SID.COMM_WORLD->My_rank = SID_MASTER_RANK;
+    SID_COMM_WORLD->comm    = NULL;
+    SID_COMM_WORLD->group   = NULL;
+    SID_COMM_WORLD->n_proc  = 1;
+    SID_COMM_WORLD->My_rank = SID_MASTER_RANK;
 #endif
 
     // Start total-run-ime timer
