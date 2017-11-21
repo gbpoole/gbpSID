@@ -9,20 +9,20 @@ void SID_log(const char *fmt, int mode, ...) {
     va_list vargs;
     va_start(vargs, mode);
 
-    if(SID.awake && (SID.I_am_Master || check_mode_for_flag(mode, SID_LOG_ALLRANKS)) && (SID.fp_log != NULL)) {
+    if(SID.awake && (SID.I_am_Master || SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_ALLRANKS)) && (SID.fp_log != NULL)) {
         if(SID.level < SID_LOG_MAX_LEVELS) {
             // If SID_LOG_NOPRINT is set, do not write anything (useful for changing indenting)
             int flag_print = GBP_TRUE;
-            if(check_mode_for_flag(mode, SID_LOG_NOPRINT))
+            if(SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_NOPRINT))
                 flag_print = GBP_FALSE;
 
             // If SID_LOG_IO_RATE is set, the first varg is the IO size
             double IO_size=0;
-            if(check_mode_for_flag(mode, SID_LOG_IO_RATE))
+            if(SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_IO_RATE))
                 IO_size = (double)((size_t)va_arg(vargs, size_t)) / (double)SID_SIZE_OF_MEGABYTE;
 
             // Close a log bracket
-            if(check_mode_for_flag(mode, SID_LOG_CLOSE)) {
+            if(SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_CLOSE)) {
                 SID.level = GBP_MAX(0, SID.level - 1);
                 if(SID.level < SID_LOG_MAX_LEVELS) {
                     if(SID.flag_use_timer[SID.level]) {
@@ -36,7 +36,7 @@ void SID_log(const char *fmt, int mode, ...) {
                 }
             }
             // Set timer for comments
-            else if(check_mode_for_flag(mode, SID_LOG_COMMENT) && check_mode_for_flag(mode, SID_LOG_TIMER)) {
+            else if(SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_COMMENT) && SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_TIMER)) {
                 if(SID.level > 0 && SID.level < SID_LOG_MAX_LEVELS) {
                     if(SID.flag_use_timer[SID.level - 1]) {
                         (void)time(&(SID.time_stop_level[SID.level - 1]));
@@ -49,15 +49,15 @@ void SID_log(const char *fmt, int mode, ...) {
 
             if(SID.level <= SID.verbosity && flag_print) {
                 // Write indenting text
-                if(check_mode_for_flag(mode, SID_LOG_OPEN) && !SID.indent) {
+                if(SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_OPEN) && !SID.indent) {
                     fprintf(SID.fp_log, "\n");
                     SID.indent = GBP_TRUE;
-                } else if(check_mode_for_flag(mode, SID_LOG_COMMENT) && !SID.indent) {
+                } else if(SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_COMMENT) && !SID.indent) {
                     fprintf(SID.fp_log, "\n");
                     SID.indent = GBP_TRUE;
                 }
                 /*
-                        else if(check_mode_for_flag(mode,SID_LOG_CONTINUE))
+                        else if(SID_CHECK_BITFIELD_SWITCH(mode,SID_LOG_CONTINUE))
                           SID.indent=GBP_FALSE;
                 */
                 if(SID.indent) {
@@ -69,7 +69,7 @@ void SID_log(const char *fmt, int mode, ...) {
                 vfprintf(SID.fp_log, fmt, vargs);
 
                 // Write closing text
-                if(check_mode_for_flag(mode, SID_LOG_CLOSE) || check_mode_for_flag(mode, SID_LOG_COMMENT)) {
+                if(SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_CLOSE) || SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_COMMENT)) {
                     // Write time elapsed if SID_LOG_TIMER was set on opening
                     if(flag_write_time) {
                         char time_string[48];
@@ -83,7 +83,7 @@ void SID_log(const char *fmt, int mode, ...) {
                 }
 
                 // Determine if the next log entry needs to be indented or not
-                if(check_mode_for_flag(mode, SID_LOG_CONTINUE) || check_mode_for_flag(mode, SID_LOG_OPEN))
+                if(SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_CONTINUE) || SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_OPEN))
                     SID.indent = GBP_FALSE;
                 else {
                     SID.indent = GBP_TRUE;
@@ -91,9 +91,9 @@ void SID_log(const char *fmt, int mode, ...) {
             }
 
             // Open a new indent bracket
-            if(check_mode_for_flag(mode, SID_LOG_OPEN)) {
+            if(SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_OPEN)) {
                 if(SID.level < SID_LOG_MAX_LEVELS - 1) {
-                    if(check_mode_for_flag(mode, SID_LOG_TIMER)) {
+                    if(SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_TIMER)) {
                         SID.flag_use_timer[SID.level] = GBP_TRUE;
                         (void)time(&(SID.time_start_level[SID.level]));
                         SID.IO_size[SID.level] = IO_size;
@@ -109,7 +109,7 @@ void SID_log(const char *fmt, int mode, ...) {
     }
 
 #if USE_MPI
-    if(check_mode_for_flag(mode, SID_LOG_CHECKPOINT))
+    if(SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_CHECKPOINT))
         SID_Barrier(SID_COMM_WORLD);
 #endif
 

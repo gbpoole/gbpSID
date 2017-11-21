@@ -8,7 +8,7 @@ void SID_profile_start(const char *function_name, int mode, ...) {
     va_start(vargs, mode);
 
 #if USE_MPI
-    if(check_mode_for_flag(mode, SID_PROFILE_NOTMPIENABLED)) {
+    if(SID_CHECK_BITFIELD_SWITCH(mode, SID_PROFILE_NOTMPIENABLED)) {
         SID_exit_error("MPI not supported in function %s!", SID_ERROR_LOGIC, function_name);
     }
 #endif

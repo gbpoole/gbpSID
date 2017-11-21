@@ -70,6 +70,7 @@ _FILE_C_CLASS int b;
 #define GBP_MIN(A, B) ((A) < (B) ? (A) : (B))
 #define GBP_MAX(A, B) ((A) > (B) ? (A) : (B))
 #define GBP_IABS(A) ((A) < 0 ? -(A) : (A))
+#define SID_CHECK_BITFIELD_SWITCH(bitfield,flag)(((bitfield & flag) == flag))
 
 // Use double precision judiciously?
 #if USE_DOUBLE
@@ -171,7 +172,6 @@ void SID_exit_error(const char *fmt, int r_val, ...);
 void SID_print_syntax(int argc, char *argv[], SID_args args[]);
 void SID_seconds2ascii(int n_secs, char *string);
 
-int  check_mode_for_flag(int mode, int flag);
 void gbp_va_start(gbp_va_list *vargs);
 void gbp_add_va_arg(gbp_va_list *vargs, size_t size, void *ptr);
 void gbp_fetch_va_arg(gbp_va_list *vargs, size_t size, void *ptr);

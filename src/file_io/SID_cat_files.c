@@ -17,7 +17,7 @@ void SID_cat_files(const char *filename_out, int mode, int n_files, ...) {
     SID_log("Concatinating %d files to output {%s}...", SID_LOG_OPEN | SID_LOG_TIMER, n_files, filename_out);
 
     // Interpret mode
-    if(check_mode_for_flag(mode, SID_CAT_CLEAN))
+    if(SID_CHECK_BITFIELD_SWITCH(mode, SID_CAT_CLEAN))
         flag_clean = GBP_TRUE;
     else
         flag_clean = GBP_FALSE;
