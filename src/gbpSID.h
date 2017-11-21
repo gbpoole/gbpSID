@@ -6,6 +6,6 @@
 #include <malloc/gbpSID_malloc.h>
 #include <file_io/gbpSID_file_io.h>
 #include <mpi/gbpSID_mpi.h>
-#include <development/gbpSID_development.h>
+#include <dev/gbpSID_dev.h>
 
 #endif
