@@ -23,7 +23,7 @@ list(APPEND SRCDIRS "dev" )
 
 # Add header files
 # eg. list(APPEND INCFILES "file" )
-list(APPEND INCFILES "gbpSID" )
+list(APPEND INCFILES "gbpSID.h" )
 
 # Add source files
 # eg. list(APPEND SRCFILES "file" )
