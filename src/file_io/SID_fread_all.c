@@ -32,7 +32,7 @@ size_t SID_fread_all(void *buffer, size_t size_per_item, size_t n_items, SID_fp 
         r_val = 0;
 #endif
 #else
-    r_val = fread_verify(buffer, size_per_item, n_items, fp->fp);
+    r_val = SID_fread_verify(buffer, size_per_item, n_items, fp->fp);
 #endif
     return (r_val);
 }

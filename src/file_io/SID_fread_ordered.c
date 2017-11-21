@@ -13,7 +13,7 @@ size_t SID_fread_ordered(void *buffer, size_t size_per_item, size_t n_items, SID
     r_val = SID_fread_verify(buffer, size_per_item, n_items, fp->fp);
 #endif
 #else
-    r_val = fread_verify(buffer, size_per_item, n_items, fp->fp);
+    r_val = SID_fread_verify(buffer, size_per_item, n_items, fp->fp);
 #endif
     return (r_val);
 }
