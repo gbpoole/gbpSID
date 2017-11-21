@@ -23,8 +23,12 @@
 #define SID_MAXLENGTH_PROCESSOR_NAME 64
 #endif
 
-#if USE_MPI
+// Set an alias to the SID communicator so that
+//    the API meets the principle of being a 
+//    MPI->SID drop-in replacement.
 #define SID_COMM_WORLD (SID.COMM_WORLD)
+
+#if USE_MPI
 #define SID_IN_PLACE MPI_IN_PLACE
 #define SID_COMM_NULL MPI_COMM_NULL
 #define SID_GROUP_EMPTY MPI_GROUP_EMPTY
@@ -43,7 +47,6 @@
 #define SID_MAX MPI_MAX
 #define SID_MIN MPI_MIN
 #else
-#define SID_COMM_WORLD NULL
 #define SID_IN_PLACE NULL
 #define SID_COMM_NULL NULL
 #define SID_GROUP_EMPTY NULL
