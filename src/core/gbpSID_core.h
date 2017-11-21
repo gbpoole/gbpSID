@@ -169,12 +169,11 @@ extern "C" {
 void SID_init(int *argc, char **argv[], SID_args args[], void *mpi_comm_as_void);
 void SID_exit(int status);
 void SID_exit_error(const char *fmt, int r_val, ...);
-void SID_print_syntax(int argc, char *argv[], SID_args args[]);
 void SID_seconds2ascii(int n_secs, char *string);
 
-void gbp_va_start(gbp_va_list *vargs);
-void gbp_add_va_arg(gbp_va_list *vargs, size_t size, void *ptr);
-void gbp_fetch_va_arg(gbp_va_list *vargs, size_t size, void *ptr);
+void SID_va_start(gbp_va_list *vargs);
+void SID_add_va_arg(gbp_va_list *vargs, size_t size, void *ptr);
+void SID_fetch_va_arg(gbp_va_list *vargs, size_t size, void *ptr);
 
 #ifdef __cplusplus
 }
