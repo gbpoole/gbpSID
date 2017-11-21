@@ -10,7 +10,7 @@ size_t SID_fread(void *buffer, size_t size_per_item, size_t n_items, SID_fp *fp)
     MPI_Get_count(&status, MPI_BYTE, &r_val_i);
     r_val = (size_t)(r_val_i) / size_per_item;
 #else
-    r_val = fread_verify(buffer, size_per_item, n_items, fp->fp);
+    r_val = SID_fread_verify(buffer, size_per_item, n_items, fp->fp);
 #endif
 #else
     r_val = fread_verify(buffer, size_per_item, n_items, fp->fp);

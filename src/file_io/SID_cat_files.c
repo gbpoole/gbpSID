@@ -44,7 +44,7 @@ void SID_cat_files(const char *filename_out, int mode, int n_files, ...) {
         n_bytes_buffer = GBP_MIN(n_bytes, SID_IO_BUFFER_SIZE);
         while(n_bytes_buffer > 0) {
             // Read
-            r_val = fread_verify(buffer, 1, n_bytes_buffer, fp_in);
+            r_val = SID_fread_verify(buffer, 1, n_bytes_buffer, fp_in);
             // Write
             r_val = fwrite(buffer, 1, n_bytes_buffer, fp_out);
             // Adjust buffer size
