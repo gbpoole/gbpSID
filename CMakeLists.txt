@@ -1,6 +1,9 @@
 # This is the CMakeList.txt file used to build the project
 cmake_minimum_required(VERSION 3.2)
 
+# Declare the project name
+project (gbpSID)
+
 # Set default compilers(must come before project line)
 set(CMAKE_C_COMPILER   "gcc")
 set(CMAKE_CXX_COMPILER "g++")
@@ -8,9 +11,6 @@ set(CMAKE_CXX_COMPILER "g++")
 # Compiler flags
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
 set(CMAKE_CXX_FLAGS "-std=c++11")
-
-# Declare the project name
-project (gbpSID)
 
 # Add the 'cmake' directory in the project directory to the module path
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_SOURCE_DIR}/cmake;${CMAKE_SOURCE_DIR}")

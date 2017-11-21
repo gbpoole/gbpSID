@@ -7,7 +7,7 @@ extern "C" {
 #endif
 
 void SID_mpi_gdb_here();
-void SID_test(int val, char *fmt, ...);
+void SID_test(int val, const char *fmt, ...);
 
 #ifdef __cplusplus
 }
