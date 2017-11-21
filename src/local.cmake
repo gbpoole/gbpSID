@@ -19,7 +19,7 @@ list(APPEND SRCDIRS "malloc" )
 list(APPEND SRCDIRS "logging" )
 list(APPEND SRCDIRS "mpi" )
 list(APPEND SRCDIRS "file_io" )
-list(APPEND SRCDIRS "development" )
+list(APPEND SRCDIRS "dev" )
 
 # Add header files
 # eg. list(APPEND INCFILES "file" )

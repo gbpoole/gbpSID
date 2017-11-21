@@ -4,7 +4,7 @@
 #include <gbpSID.h>
 
 void SID_set_verbosity(int mode, ...) {
-#if !USE_DEBUGGER
+#if !SID_DEBUG
     int     i_level;
     va_list vargs;
     va_start(vargs, mode);

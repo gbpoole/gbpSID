@@ -36,6 +36,9 @@ if(USE_DOUBE)
     add_definitions(-DUSE_DOUBLE)
 endif()
 
+# Turn on debugging mode
+option(SID_DEBUG "Enable SID debugging information" OFF)
+
 # These options specify when (if ever) missing libraries
 #   should be installed automatically by this build script
 # !!! Not implemented yet

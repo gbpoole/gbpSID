@@ -23,8 +23,6 @@ list(APPEND INCFILES "gbpSID_development.h")
 # Add source files
 # eg. list(APPEND SRCFILES "file" )
 list(APPEND SRCFILES "SID_mpi_gdb_here.c")
-list(APPEND SRCFILES "SID_profile_start.c")
-list(APPEND SRCFILES "SID_profile_stop.c")
 list(APPEND SRCFILES "SID_test.c")
 
 # Add executable source files (those with a main())
