@@ -189,11 +189,6 @@ void SID_Init(int *argc, char **argv[], void *mpi_comm_as_void) {
     SID_fclose(&fp_tmp);
     if(SID.I_am_Master)
         remove(".tmp.SID");
-#else
-#if USE_MPI
-    if(SID.I_am_Master)
-        fprintf(stdout, "MPI-I/O switched off.\n\n");
-#endif
 #endif
 
     // Create private COMM_WORLD

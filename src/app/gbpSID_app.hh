@@ -90,9 +90,12 @@ namespace gbpSID {
             // Execute the application if things
             //   have run cleanly until now.
             if(r_val == SID_ERROR_NONE) {
-                // TODO: Report syntax, run config, etc.
+                // Write the details of the run, etc. to log
+                SID_log_header();
+                // Execute functionality of application
                 r_val |= execute();
-                // TODO: Report run summary, etc.
+                // Write summary of run statistics
+                SID_log_footer();
             }
 
             // Display syntax information if needed
