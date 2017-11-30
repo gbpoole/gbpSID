@@ -27,7 +27,7 @@ list(APPEND SRCFILES "SID_log_error.c")
 list(APPEND SRCFILES "SID_log_set_fp.c")
 list(APPEND SRCFILES "SID_log_warning.c")
 list(APPEND SRCFILES "SID_set_verbosity.c")
-list(APPEND SRCFILES "SID_init_pcounter.c")
+list(APPEND SRCFILES "SID_Init_pcounter.c")
 list(APPEND SRCFILES "SID_check_pcounter.c")
 
 # Add executable source files (those with a main())

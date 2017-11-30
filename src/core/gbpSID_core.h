@@ -1,8 +1,8 @@
 #ifndef GBPSID_CORE_H
 #define GBPSID_CORE_H
 
-#include <stdio.h>          // Needed for type FILE
-#include <sys/types.h>      // Needed for type time_t
+#include <stdio.h>     // Needed for type FILE
+#include <sys/types.h> // Needed for type time_t
 #include <gbpSID_file_io.h>
 #include <gbpSID_mpi.h>
 
@@ -22,7 +22,7 @@ _FILE_C_CLASS int b;
 #endif
 
 // TTPXX=Two-to-the-power-XX
-// These are useful for setting 
+// These are useful for setting
 // switches on bit fields
 #define SID_DEFAULT_MODE 0
 #define SID_TTTP00 1
@@ -70,7 +70,8 @@ _FILE_C_CLASS int b;
 #define GBP_MIN(A, B) ((A) < (B) ? (A) : (B))
 #define GBP_MAX(A, B) ((A) > (B) ? (A) : (B))
 #define GBP_IABS(A) ((A) < 0 ? -(A) : (A))
-#define SID_CHECK_BITFIELD_SWITCH(bitfield,flag)(((bitfield & flag) == flag))
+#define SID_CHECK_BITFIELD_SWITCH(bitfield, flag) (((bitfield & flag) == flag))
+#define SID_DISABLE_BITFIELD_SWITCH(bitfield, flag) ((bitfield=(bitfield && !flag)))
 
 // Use double precision judiciously?
 #if USE_DOUBLE
@@ -79,14 +80,23 @@ _FILE_C_CLASS int b;
 #define GBPREAL float
 #endif
 
+// This is not ment as an error code per se but
+//   signals that the syntax message should
+//   be (or has been) printed.  This may just
+//   be because the user has requested it.
+//   Once syntax is printed, this message
+//   should be removed.
+#define SID_ERROR_PRINT_SYNTAX SID_TTTP01
+
 // Error codes
 #define SID_ERROR_NONE 0
-#define SID_ERROR_SYNTAX SID_TTTP01
 #define SID_ERROR_LOGIC SID_TTTP02
 #define SID_ERROR_IO_OPEN SID_TTTP03
 #define SID_ERROR_IO_READ SID_TTTP04
 #define SID_ERROR_IO_WRITE SID_TTTP05
 #define SID_ERROR_MEMORY SID_TTTP06
+#define SID_ERROR_SYNTAX SID_TTTP07
+
 
 // Structures for parsing the command line
 typedef void **        SID_args;
@@ -145,10 +155,9 @@ struct SID_info {
     int n_groups;
     int My_group;
 #endif
-    SID_args *args;
-    char      My_binary[SID_MAX_FILENAME_LENGTH];
-    int *     arg_set;
-    int *     arg_alloc;
+    char My_binary[SID_MAX_FILENAME_LENGTH];
+    int *arg_set;
+    int *arg_alloc;
 };
 
 // Default values
@@ -156,7 +165,15 @@ struct SID_info {
 #ifdef _MAIN
 SID_info SID = {
     NULL, NULL, GBP_FALSE, GBP_FALSE, 0,    0,    GBP_FALSE, SID_MASTER_RANK, 1, NULL, GBP_TRUE, GBP_TRUE, SID_MASTER_RANK, SID_MASTER_RANK, 0, 0,
-    0,    NULL, NULL,      NULL,      NULL, NULL, GBP_FALSE, GBP_FALSE,       0, 0};
+    0,    NULL, NULL,      NULL,      NULL, NULL, GBP_FALSE, GBP_FALSE,       0, 0,
+#if USE_MPI
+    0,
+#endif
+    NULL,
+#if !USE_MPI_IO
+    1,    1,
+#endif
+    "",   NULL, NULL};
 #else
 extern SID_info SID;
 #endif
@@ -166,8 +183,8 @@ extern SID_info SID;
 extern "C" {
 #endif
 
-void SID_init(int *argc, char **argv[], SID_args args[], void *mpi_comm_as_void);
-void SID_exit(int status);
+void SID_Init(int *argc, char **argv[], void *mpi_comm_as_void);
+void SID_Finalize();
 void SID_exit_error(const char *fmt, int r_val, ...);
 void SID_seconds2ascii(int n_secs, char *string);
 

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <gbpSID.h>
 
-void SID_init_pcounter(pcounter_info *pcounter, size_t n_i, int n_report) {
+void SID_Init_pcounter(pcounter_info *pcounter, size_t n_i, int n_report) {
     // Initialize
     pcounter->n_report = n_report;
     pcounter->i_report = 0;

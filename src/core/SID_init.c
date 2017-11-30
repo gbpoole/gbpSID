@@ -25,7 +25,7 @@ void strip_path_local(char *string) {
     }
 }
 
-void SID_init(int *argc, char **argv[], SID_args args[], void *mpi_comm_as_void) {
+void SID_Init(int *argc, char **argv[], void *mpi_comm_as_void) {
     int status;
     int i_level;
     int i_char;
@@ -164,18 +164,6 @@ void SID_init(int *argc, char **argv[], SID_args args[], void *mpi_comm_as_void)
     // Store the name of the binary executable that brought us here
     strcpy(SID.My_binary, (*argv)[0]);
     strip_path_local(SID.My_binary);
-
-    // Initialize argument information
-    /*
-    if(args!=NULL){
-      if((status=SID_parse_args(*argc,*argv,args))>0){
-        SID_print_syntax(*argc,*argv,args);
-        SID_exit(status);
-      }
-    }
-    else
-    */
-    SID.args = NULL;
 
 #if USE_MPI_IO
     if(SID.I_am_Master) {

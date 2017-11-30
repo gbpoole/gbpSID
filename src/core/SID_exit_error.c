@@ -1,5 +1,6 @@
 #include <string.h>
 #include <stdarg.h>
+#include <stdlib.h>
 #include <gbpSID.h>
 
 void SID_exit_error(const char *fmt, int r_val, ...) {
@@ -15,5 +16,6 @@ void SID_exit_error(const char *fmt, int r_val, ...) {
     vfprintf(SID.fp_log, fmt, vargs);
     fprintf(SID.fp_log, "\n");
     va_end(vargs);
-    SID_exit(r_val);
+    SID_Finalize();
+    exit(r_val);
 }

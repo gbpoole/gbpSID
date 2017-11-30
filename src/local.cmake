@@ -14,6 +14,7 @@ set(DATASUBDIR "" )
 
 # Add directories that contribute source files 
 # eg. list(APPEND SRCDIRS "dir" )
+list(APPEND SRCDIRS "app" )
 list(APPEND SRCDIRS "core" )
 list(APPEND SRCDIRS "malloc" )
 list(APPEND SRCDIRS "logging" )

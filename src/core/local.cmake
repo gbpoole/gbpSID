@@ -20,10 +20,14 @@ set(DATASUBDIR "" )
 # eg. list(APPEND INCFILES "file" )
 list(APPEND INCFILES "gbpSID_core.h")
 
+# Add this file to the list of files that
+#    get compiled when applications are created
+#set(EXEFILES_APPLICATION "${local_dir}/gbpApp.cc")
+
 # Add source files
 # eg. list(APPEND SRCFILES "file" )
-list(APPEND SRCFILES "SID_init.c")
-list(APPEND SRCFILES "SID_exit.c")
+list(APPEND SRCFILES "SID_Init.c")
+list(APPEND SRCFILES "SID_Finalize.c")
 list(APPEND SRCFILES "SID_exit_error.c")
 list(APPEND SRCFILES "SID_seconds2ascii.c")
 list(APPEND SRCFILES "SID_va_start.c")
