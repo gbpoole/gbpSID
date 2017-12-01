@@ -32,6 +32,17 @@ function(set_3rd_party_requested lib_name val)
     endif()
 endfunction()
 
+# Add a github submodule.  This is meant to be called from 'extern.cmake' files.
+function( add_external_submodule cur_dir submodule_name filename_check )
+    # Make sure we have updated the Clara submodule
+    if(NOT EXISTS "${filename_check}")
+        message(STATUS "  -> Checking out submodule: ${submodule_name}")
+        execute_process(COMMAND git submodule update --init WORKING_DIRECTORY ${cur_dir})
+    else()
+        message(STATUS "  -> ${submodule_name} submodule has already been checked out")
+    endif()
+endfunction()
+
 # =================== Some helper functions ==================
 
 # Evaluate expression
