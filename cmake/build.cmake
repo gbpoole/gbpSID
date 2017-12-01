@@ -228,21 +228,18 @@ endmacro()
 macro(process_externs cur_dir )
 
     if( ${cur_dir} STREQUAL ${CMAKE_SOURCE_DIR} )
+        message(STATUS "" )
         message(STATUS "Checking for external dependencies..." )
     endif()
 
     # Check if the current directory has an 'extern.cmake' file
     if(EXISTS "${cur_dir}/extern.cmake")
-        # Write a status message
-        message(STATUS "" )
-        message(STATUS "  Processing external dependencies for: " ${cur_dir} )
-
-        # Collect the sources for the library
         include( ${cur_dir}/extern.cmake )
-
+        local_extern( ${cur_dir} )
     endif()
 
     # Recurse through all directories
+    set_dir_state(${cur_dir})
     foreach(_dir_name ${ALLDIRS} )
         process_externs( ${cur_dir}/${_dir_name} ) 
     endforeach()
@@ -257,6 +254,7 @@ endmacro()
 macro(process_headers cur_dir )
     # Perform some initialization on the first call
     if( ${cur_dir} STREQUAL ${CMAKE_SOURCE_DIR} )
+        message(STATUS "" )
         message(STATUS "Assembling a list of project header directories..." )
         set(INC_DIRS_PROJECT "" )
         set(INC_FILES_PROJECT "" )
