@@ -17,21 +17,31 @@ namespace gbpSID {
         clara::Parser cli;
 
       public:
+        // These two virtual functions must be personalised for every application:
+        // ----------------------------------------------------------------------
+        // 1) This function defines the application-specific command line arguments
+        virtual void define_arguments(){};
+        // 2) This function executes the application.  Make sure to return SID_ERROR_NONE if no error.
+        virtual int execute() {
+            return (SID_ERROR_NONE);
+        };
+        // ----------------------------------------------------------------------
+
         // Initialize the argument parser
-        void init_arguments(){
+        void init_arguments() {
             // Add executable name to Clara parser
             std::string pname(_argv[0]);
-            cli |= clara::ExeName( pname );
+            cli |= clara::ExeName(pname);
         }
 
         // Finalize the argument parser
-        void finalize_arguments(){
+        void finalize_arguments() {
             // Add 'help' to the parser
             cli |= clara::Help(_print_syntax);
         }
 
         // Application constructor
-        application(int argc, char **argv) : _argc(argc), _argv(argv), _print_syntax(GBP_FALSE) {
+        application(int argc, char *argv[]) : _argc(argc), _argv(argv), _print_syntax(GBP_FALSE) {
             // Initialize SID
             SID_Init(&_argc, &_argv, NULL);
 
@@ -44,33 +54,24 @@ namespace gbpSID {
             SID_Finalize();
         }
 
-        // These two virtual functions must be personalised for
-        // every application:
-
-        // 1) This function defines the application-specific command line arguments
-        virtual void define_arguments() = 0;
-
-        // 2) This function executes the application
-        virtual int execute() = 0;
-
         // This function performs the final command-line parsing
         int parse_arguments() {
-            int r_val = SID_ERROR_NONE;
+            int  r_val  = SID_ERROR_NONE;
             auto result = cli.parse(clara::Args(_argc, _argv));
             if(!result) {
-                if(SID.I_am_Master){
+                if(SID.I_am_Master) {
                     std::cerr << "SYNTAX ERROR in {";
-                    int i_arg=0;
+                    int i_arg = 0;
                     std::cerr << std::string(_argv[i_arg++]);
-                    for(;i_arg<_argc;i_arg++)
+                    for(; i_arg < _argc; i_arg++)
                         std::cerr << " " << std::string(_argv[i_arg]);
                     std::cerr << "}" << std::endl << std::endl;
                 }
-                r_val|=SID_ERROR_SYNTAX|SID_ERROR_PRINT_SYNTAX;
+                r_val |= SID_ERROR_SYNTAX | SID_ERROR_PRINT_SYNTAX;
             }
             if(_print_syntax)
-                r_val|=SID_ERROR_PRINT_SYNTAX;
-            return(r_val);
+                r_val |= SID_ERROR_PRINT_SYNTAX;
+            return (r_val);
         }
 
         // This is the meat of the application
