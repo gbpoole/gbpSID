@@ -23,7 +23,7 @@ list(APPEND SRCDIRS "src" )
 #    It is a "simple to use, composable, command line parser for
 #    C++ 11 and beyond".  See the following talk for more info:
 #    https://www.youtube.com/watch?v=Od4bjLfwI-A
-list(APPEND INCFILES "3rd_party/Clara/include/clara.hpp" )
+list(APPEND INCFILES   "extern/Clara/include/clara.hpp" )
 
 # Add source files
 # eg. list(APPEND SRCFILES "file" )

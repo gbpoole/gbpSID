@@ -10,7 +10,8 @@ set(CMAKE_CXX_COMPILER "g++")
 
 # Compiler flags
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
-set(CMAKE_CXX_FLAGS "-std=c++11")
+#set(CMAKE_CXX_FLAGS "-std=c++11")
+set(CMAKE_CXX_STANDARD 11)
 
 # Add the 'cmake' directory in the project directory to the module path
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_SOURCE_DIR}/cmake;${CMAKE_SOURCE_DIR}")
@@ -63,10 +64,12 @@ set_3rd_party_optional("CUDA"   OFF)
 
 # Print status message
 message(STATUS "Finished initializing 3rd-party libraries.")
-message(STATUS "")
 
 # ============= Process the project =============
 # (look in cmake/build.cmake for these functions)
+
+# Initialize &/or build any needed external libraries
+process_externs( ${CMAKE_SOURCE_DIR} )
 
 # Generate the list of directories where header files
 # are located, as well as a list of all header files
