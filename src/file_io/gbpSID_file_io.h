@@ -100,7 +100,7 @@ void   SID_fskip_chunked(size_t n_x_skip_local, SID_fp *fp);
 size_t SID_fwrite_chunked(void *buffer, size_t n_x_write_local, size_t i_x_offset_local, SID_fp *fp);
 int    SID_remove_chunked(char *filename_root);
 void   SID_cat_files(const char *filename_out, int mode, int n_files, ...);
-void   SID_Init_fp_buffer(SID_fp *fp, size_t n_bytes_to_read, size_t n_bytes_buffer_max, SID_fp_buffer **fp_buffer);
+void   SID_init_fp_buffer(SID_fp *fp, size_t n_bytes_to_read, size_t n_bytes_buffer_max, SID_fp_buffer **fp_buffer);
 void   SID_reset_fp_buffer(SID_fp_buffer **fp_buffer);
 void   SID_free_fp_buffer(SID_fp_buffer **fp_buffer);
 size_t SID_fread_verify(void *ptr, size_t size, size_t count, FILE *stream);

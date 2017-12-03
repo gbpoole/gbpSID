@@ -2,7 +2,7 @@
 
 // Inititialize the read buffer
 // IMPORTANT: n_bytes_buffer_max must be bigger than any single buffered read you will need!
-void SID_Init_fp_buffer(SID_fp *fp, size_t n_bytes_to_read, size_t n_bytes_buffer_max, SID_fp_buffer **fp_buffer) {
+void SID_init_fp_buffer(SID_fp *fp, size_t n_bytes_to_read, size_t n_bytes_buffer_max, SID_fp_buffer **fp_buffer) {
     if((*fp_buffer) == NULL)
         (*fp_buffer) = (SID_fp_buffer *)SID_malloc(sizeof(SID_fp_buffer));
     else
