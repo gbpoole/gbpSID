@@ -19,7 +19,7 @@ build*
 # Used for testing
 mpich
 
-# Ignor Sphynx themes (for now)
+# Ignore Sphynx themes (for now)
 docs/themes/*
 
 #Miscillaneous
