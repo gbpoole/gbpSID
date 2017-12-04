@@ -1,3 +1,7 @@
 [submodule "extern/Clara"]
 	path = extern/Clara
 	url = https://github.com/philsquared/Clara.git
+[submodule "gbpBuild"]
+	path = extern/gbpBuild
+	url = https://github.com/gbpoole/gbpBuild.git
+	branch = master
