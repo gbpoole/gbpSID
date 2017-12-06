@@ -6,6 +6,10 @@ cmake_minimum_required(VERSION 3.2)
 # Declare the project name
 project (gbpSID)
 
+# Clear default install directory (user should use
+# DESTDIR with make to set installation directory)
+set( CMAKE_INSTALL_PREFIX "" )
+
 # Set default compilers(must come before project line)
 set(CMAKE_C_COMPILER   "gcc")
 set(CMAKE_CXX_COMPILER "g++")

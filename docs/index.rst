@@ -12,8 +12,7 @@ gbpSID Documentation
 
 .. include:: install.rst
 
-.. doxygenfunction:: SID_Init
-   :project: gbpSID
+.. include:: API.rst
 
 Indices and tables
 ==================
