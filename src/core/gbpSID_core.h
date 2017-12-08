@@ -154,7 +154,7 @@ struct gbp_va_list {
 // Default values
 #ifdef _MAIN
 SID_info SID = {
-    NULL, NULL, 0,    1,    GBP_TRUE, SID_LOG_MAX_LEVELS, 0, GBP_TRUE, GBP_TRUE, GBP_TRUE, SID_MASTER_RANK, SID_MASTER_RANK, 0, 0, NULL, NULL,
+    NULL, NULL, 0,    1,    GBP_TRUE, 0, 0, GBP_TRUE, GBP_TRUE, GBP_TRUE, SID_MASTER_RANK, SID_MASTER_RANK, 0, 0, NULL, NULL,
     NULL, NULL, NULL, NULL, "",
 #if USE_MPI
     0,

@@ -24,6 +24,8 @@ gbpSID
 
 .. include:: API.rst
 
+.. include:: execs.rst
+
 Indices and tables
 ==================
 
