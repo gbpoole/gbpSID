@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdarg.h>
 
+//! Set a gdb breakpoint
 void SID_mpi_gdb_here() {
     int  i = 0;
     char hostname[256];

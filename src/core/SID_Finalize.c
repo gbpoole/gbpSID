@@ -4,6 +4,7 @@
 #include <time.h>
 #include <gbpSID.h>
 
+//! Clean-up a SID runtime configuration
 void SID_Finalize() {
     int    n_days;
     int    n_hrs;
@@ -16,8 +17,6 @@ void SID_Finalize() {
     // Deal with I/O channels
     fflush(SID.fp_log);
     SID_Barrier(SID_COMM_WORLD);
-    if(SID.fp_in != stdin && SID.fp_in != NULL)
-        fclose(SID.fp_in);
 
     // Free some arrays
     SID_free(SID_FARG SID.time_start_level);

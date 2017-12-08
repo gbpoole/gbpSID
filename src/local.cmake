@@ -1,3 +1,9 @@
+# The following directive is used to organise
+# how the Doxygen groups defined by this project
+# will be organised in the documentation:
+#
+# set_active_API_module src
+
 # Set empty defaults
 set(LIBDIRS    "" )
 set(SRCDIRS    "" )
@@ -14,8 +20,8 @@ set(DATASUBDIR "" )
 
 # Add directories that contribute source files 
 # eg. list(APPEND SRCDIRS "dir" )
-list(APPEND SRCDIRS "app" )
 list(APPEND SRCDIRS "core" )
+list(APPEND SRCDIRS "app" )
 list(APPEND SRCDIRS "malloc" )
 list(APPEND SRCDIRS "logging" )
 list(APPEND SRCDIRS "mpi" )

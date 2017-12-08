@@ -1,8 +1,6 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <sys/types.h>
 #include <gbpSID.h>
 
 void strip_path_local(char *string);
@@ -25,12 +23,13 @@ void strip_path_local(char *string) {
     }
 }
 
+//! Initialize the SID run-time environment
+//! \param argc A pointer to the argument count passed to main()
+//! \param argv A pointer to the argument list passed to main()
+//! \param mpi_comm_as_void An optional MPI communicator to inherit from.  Set to NULL to ignore.
+//!
+//! This function should be called as soon as possible for any project utilizing *gbpSID*.  It takes pointers to the run-time arguments passed to main() and an optional communicator to inherit from as parameters
 void SID_Init(int *argc, char **argv[], void *mpi_comm_as_void) {
-    int status;
-    int i_level;
-    int i_char;
-    int flag_continue;
-    int flag_passed_comm;
 
     // MPI-specific things
 #if USE_MPI
@@ -48,18 +47,21 @@ void SID_Init(int *argc, char **argv[], void *mpi_comm_as_void) {
     MPI_Info info_disp;
 #endif
 
-    if(mpi_comm_as_void == NULL) {
-        flag_passed_comm = GBP_FALSE;
+    // Create a SID communicator from MPI_COMM_WORLD
+    // or from an optional given communicator
+    int flag_passed_comm = (mpi_comm_as_void != NULL);
+    if(flag_passed_comm) {
         MPI_Init(argc, argv);
         MPI_Comm_dup(MPI_COMM_WORLD, &mpi_comm);
     } else {
         MPI_Comm_dup(*((MPI_Comm *)mpi_comm_as_void), &mpi_comm);
-        flag_passed_comm = GBP_TRUE;
     }
 
+    // Fetch communicator's size and each process' rank on it
     MPI_Comm_size(mpi_comm, &(SID.n_proc));
     MPI_Comm_rank(mpi_comm, &(SID.My_rank));
 
+    // Fetch each rank's processor name
     SID.My_node = (char *)SID_malloc(SID_MAXLENGTH_PROCESSOR_NAME * sizeof(char));
     MPI_Get_processor_name(SID.My_node, &node_name_length);
     if(node_name_length >= SID_MAXLENGTH_PROCESSOR_NAME - 1)
@@ -114,14 +116,6 @@ void SID_Init(int *argc, char **argv[], void *mpi_comm_as_void) {
     sprintf(SID.My_node, "localhost");
 #endif
 
-    /*
-    #if !USE_MPI_IO
-        SID.n_groups=SID.n_proc/SID_N_IO_FILES_MAX;
-        if(SID.n_proc%SID_N_IO_FILES_MAX) SID.n_groups++;
-        SID.My_group=SID.My_rank/SID_N_IO_FILES_MAX;
-    #endif
-    */
-
     // Set ranks to the left and right
     SID.rank_to_right = (SID.My_rank + 1) % SID.n_proc;
     SID.rank_to_left  = SID.My_rank - 1;
@@ -134,7 +128,7 @@ void SID_Init(int *argc, char **argv[], void *mpi_comm_as_void) {
     SID.time_total_level = (int *)SID_malloc(sizeof(int) * SID_LOG_MAX_LEVELS);
     SID.IO_size          = (double *)SID_malloc(sizeof(double) * SID_LOG_MAX_LEVELS);
     SID.flag_use_timer   = (int *)SID_malloc(sizeof(int) * SID_LOG_MAX_LEVELS);
-    for(i_level = 0; i_level < SID_LOG_MAX_LEVELS; i_level++) {
+    for(int i_level = 0; i_level < SID_LOG_MAX_LEVELS; i_level++) {
         SID.time_start_level[i_level] = 0;
         SID.time_stop_level[i_level]  = 0;
         SID.time_total_level[i_level] = 0;
@@ -142,23 +136,14 @@ void SID_Init(int *argc, char **argv[], void *mpi_comm_as_void) {
         SID.flag_use_timer[i_level]   = GBP_FALSE;
     }
 
-        // Initialize other log information
-#if USE_MPI
-    if(*argc > 1)
-        SID.fp_in = fopen((*argv)[1], "r");
-    else
-        SID.fp_in = NULL;
-#else
-    SID.fp_in = stdin;
-#endif
+    // Initialize other log information
     if(flag_passed_comm)
         SID.fp_log = NULL;
     else
         SID.fp_log = stderr;
     SID.level           = 0;
     SID.indent          = GBP_TRUE;
-    SID.awake           = GBP_TRUE;
-    SID.flag_results_on = GBP_FALSE;
+    SID.logging_active           = GBP_TRUE;
     SID.verbosity       = SID_LOG_MAX_LEVELS;
 
     // Store the name of the binary executable that brought us here
@@ -212,6 +197,4 @@ void SID_Init(int *argc, char **argv[], void *mpi_comm_as_void) {
     // Start total-run-ime timer
     (void)time(&(SID.time_start));
 
-    // Default max wallclock
-    SID.max_wallclock = DEFAULT_MAX_WALLCLOCK_TIME;
 }

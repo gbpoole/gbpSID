@@ -17,7 +17,7 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
-# import os
+import os
 import sys
 # sys.path.insert(0, os.path.abspath('.'))
 
@@ -49,7 +49,7 @@ breathe_projects        = { "gbpSID": "@Sphinx_BUILD_DIR@/doxygen/xml/" }
 breathe_default_project =   "gbpSID"
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['docs/templates']
+templates_path = ['@PRJ_DOCS_DIR@/templates']
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
@@ -57,8 +57,12 @@ templates_path = ['docs/templates']
 # source_suffix = ['.rst', '.md']
 source_suffix = '.rst'
 
+# Parse the project
+from subprocess import call
+call(['python', '@PRJ_DOCS_DIR@/generate_API.rst.py','@PRJ_DOCS_DIR@','@Sphinx_BUILD_DIR@'])
+
 # The master toctree document.
-master_doc = 'docs/index'
+master_doc = 'index'
 
 # General information about the project.
 project = 'gbpSID'

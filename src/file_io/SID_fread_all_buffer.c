@@ -1,10 +1,11 @@
 #include <string.h>
 #include <gbpSID.h>
 
+
 void SID_fread_all_buffer(void *rval, size_t dtype_size, size_t n_items, SID_fp_buffer *fp_buffer) {
     // Set the requested total return size
     size_t data_size = dtype_size * n_items;
-    // Check if we need to peroform the next read
+    // Check if we need to perform the next read
     if((fp_buffer->n_bytes_buffer_unprocessed) < data_size) {
         // Deal with any unfinished parts of the last-read chunk
         if((fp_buffer->n_bytes_buffer_unprocessed) > 0) {

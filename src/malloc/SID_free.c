@@ -5,7 +5,6 @@
 
 void SID_free(void **ptr) {
     if((*ptr) != NULL) {
-        SID.RAM_local -= sizeof((*ptr));
         free((*ptr));
         (*ptr) = NULL;
     }
