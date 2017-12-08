@@ -1,7 +1,8 @@
-.. gbpSID documentation master file, created by
-   sphinx-quickstart on Mon Nov  6 11:17:11 2017.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. gbpSID documentation master file
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
 
 gbpSID
 ======
@@ -14,11 +15,7 @@ gbpSID
 
 * MPI wrappers permitting serial execution of parallel applictions in the absence of an MPI installation;
 
-* a C++ application class which reduces application boiler-plate for projects developed with gbpSID, provides uniform treatment of command-line arguments using the Clara library, and ensures project-wide handling of exceptions and application-level RAII (and subsequent garbage collection).
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+* a C++ application class which provides uniform treatment of command-line arguments (and their documentation) using the Clara library and ensures top-level exception handling and RAII garbage collection.
 
 .. include:: install.rst
 
