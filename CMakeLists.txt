@@ -18,8 +18,11 @@ set(CMAKE_CXX_COMPILER "g++")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
 set(CMAKE_CXX_STANDARD 11)
 
+# Set the location of the gbpBuild submodule
+set(GBP_BUILD_DIR "${CMAKE_SOURCE_DIR}/extern/gbpBuild" )
+
 # Add the 'cmake' directory in the project directory to the module path
-set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_SOURCE_DIR};${CMAKE_SOURCE_DIR}/extern/gbpBuild/cmake")
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_SOURCE_DIR};${GBP_BUILD_DIR}/cmake")
 
 # Load all macros and functions
 message(STATUS "Loading macros & functions...")

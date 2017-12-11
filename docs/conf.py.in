@@ -16,10 +16,13 @@
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
-#
+
 import os
 import sys
-from   subprocess import call
+
+# Add gbpBuild python code to path and import it
+sys.path.append("@GBP_BUILD_DIR@/docs/")
+import gbpBuild_docs as gbpDocs
 
 # Add it to the project path
 breathe_directory = "@Sphinx_BUILD_DIR@/breathe/"
@@ -58,8 +61,8 @@ templates_path = ['@PRJ_DOCS_DIR@/templates']
 source_suffix = '.rst'
 
 # Generate project .rst files
-call(['python', '@PRJ_DOCS_DIR@/generate_API.rst.py','@PRJ_DOCS_DIR@','@Sphinx_BUILD_DIR@'])
-call(['python', '@PRJ_DOCS_DIR@/generate_execs.rst.py','@PRJ_DOCS_DIR@','@Sphinx_BUILD_DIR@'])
+gbpDocs.generate_API_rst('@PRJ_DOCS_DIR@','@Sphinx_BUILD_DIR@','@PROJECT_NAME@','@CMAKE_SRC_DIR@')
+gbpDocs.generate_execs_rst('@PRJ_DOCS_DIR@','@Sphinx_BUILD_DIR@','@PROJECT_NAME@','@CMAKE_SRC_DIR@')
 
 # The master toctree document.
 master_doc = 'index'
