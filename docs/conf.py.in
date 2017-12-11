@@ -61,8 +61,8 @@ templates_path = ['@PRJ_DOCS_DIR@/templates']
 source_suffix = '.rst'
 
 # Generate project .rst files
-gbpDocs.generate_API_rst('@PRJ_DOCS_DIR@','@Sphinx_BUILD_DIR@','@PROJECT_NAME@','@CMAKE_SRC_DIR@')
-gbpDocs.generate_execs_rst('@PRJ_DOCS_DIR@','@Sphinx_BUILD_DIR@','@PROJECT_NAME@','@CMAKE_SRC_DIR@')
+gbpDocs.generate_API_rst('@PRJ_DOCS_DIR@','@Sphinx_BUILD_DIR@','@PROJECT_NAME@','@CMAKE_SOURCE_DIR@')
+gbpDocs.generate_execs_rst('@PRJ_DOCS_DIR@','@Sphinx_BUILD_DIR@','@PROJECT_NAME@','@CMAKE_SOURCE_DIR@')
 
 # The master toctree document.
 master_doc = 'index'
