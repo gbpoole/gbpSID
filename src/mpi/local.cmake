@@ -2,7 +2,7 @@
 # how the Doxygen groups defined by this project
 # will be organised in the documentation:
 #
-# set_active_API_module mpi
+# set_active_API_module      mpi Message Passing Interface (MPI)
 
 # Set empty defaults
 set(LIBDIRS    "" )

@@ -2,7 +2,7 @@
 # how the Doxygen groups defined by this project
 # will be organised in the documentation:
 #
-# set_active_API_module app
+# set_active_API_module   app     The Application Class
 
 # Set empty defaults
 set(LIBDIRS    "" )

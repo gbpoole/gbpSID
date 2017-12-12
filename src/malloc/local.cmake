@@ -2,7 +2,7 @@
 # how the Doxygen groups defined by this project
 # will be organised in the documentation:
 #
-# set_active_API_module malloc
+# set_active_API_module      malloc   Memory managment
 
 # Set empty defaults
 set(LIBDIRS    "" )

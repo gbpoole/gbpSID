@@ -2,7 +2,7 @@
 # how the Doxygen groups defined by this project
 # will be organised in the documentation:
 #
-# set_active_API_module core
+# set_active_API_module      core Core
 
 # Set empty defaults
 set(LIBDIRS    "" )
