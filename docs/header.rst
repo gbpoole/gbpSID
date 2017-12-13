@@ -1,9 +1,3 @@
-.. gbpSID documentation master file
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
-
 gbpSID
 ======
 
@@ -16,15 +10,3 @@ gbpSID
 * MPI wrappers permitting serial execution of parallel applictions in the absence of an MPI installation;
 
 * a C++ application class which provides uniform treatment of command-line arguments (and their documentation) using the Clara library and ensures top-level exception handling and RAII garbage collection.
-
-.. include:: install.rst
-
-.. include:: API.rst
-
-.. include:: execs.rst
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`search`
