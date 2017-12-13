@@ -23,7 +23,8 @@ namespace gbpApp {
         // Define command line options for this application
         void define_arguments() {
             cli |= clara::Opt([&](bool) { args.enthusiastic = GBP_TRUE; })["-e"]["--enthusiastic"]("add enthusiasm to the message") |
-                   clara::Arg(args.sender, "sender")("message sender");
+                   clara::Arg(args.sender, "sender")("message sender").required();
+            instructions_text += "This program demonstrates how to configure and use an application program with the gbpApp class.";
         }
 
         // This method executes the application's logic

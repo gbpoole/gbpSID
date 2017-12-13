@@ -15,6 +15,7 @@ namespace gbpSID {
 
         // Command-line parser
         clara::Parser cli;
+        std::string   instructions_text;
 
       public:
         // These two virtual functions must be personalised for every application:
@@ -114,8 +115,14 @@ namespace gbpSID {
         //    based on what is defined in the derived class'
         //    'parse_arguments()' function.
         void display_help() {
-            if(SID.I_am_Master)
+            if(SID.I_am_Master){
+                // Display usage
                 cli.writeToStream(std::cout);
+                // The following space is needed for parsing in Sphinx docs
+                std::cout << "\n";
+                // Display instructions
+                std::cout << instructions_text << std::endl;
+            }
         }
     };
 
