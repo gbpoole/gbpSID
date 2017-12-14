@@ -9,4 +9,4 @@ gbpSID
 
 * MPI wrappers permitting serial execution of parallel applictions in the absence of an MPI installation;
 
-* a C++ application class which provides uniform treatment of command-line arguments (and their documentation) using the Clara library and ensures top-level exception handling and RAII garbage collection.
+* a C++ application class which provides uniform treatment of command-line arguments (and their documentation) using the Clara library and top-level exception handling.

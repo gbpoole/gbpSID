@@ -20,7 +20,10 @@ namespace gbpApp {
     // the base class defined in "gbpApp.hh".
     class application : public gbpSID::application {
       public:
-        // Define command line options for this application
+        // Build command-line parser for this application.
+        // Note that options for help and the executable name
+        // are added to the parser by default.  No need to 
+        // worry about either of those.
         void define_arguments() {
             cli |= clara::Opt([&](bool) { args.enthusiastic = GBP_TRUE; })["-e"]["--enthusiastic"]("add enthusiasm to the message") |
                    clara::Arg(args.sender, "sender")("message sender").required();
