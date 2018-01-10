@@ -14,7 +14,10 @@ else
     $(error Invalid build mode {$(mode)} specified.)
 endif
 
-.PHONY: cmake build.c_cpp docs.c_cpp install.c_cpp test.c_cpp coverage.c_pp
+# Supported 'cmake' targets
+CMAKE_TARGETS = clang-format clang-format-fix clang-tidy clang-tidy-fix
+
+.PHONY: cmake build-c docs-c install-c test-c coverage-c clean-c lint-c $(CMAKE_TARGETS)
 
 # This '.DIR' trick is needed to avoid
 # conflicts with the 'build' target.
@@ -28,27 +31,40 @@ cmake:  $(BUILD_DIR).DIR
 	@$(ECHO) "Running 'cmake'..."
 	@cd $(BUILD_DIR);cmake ..
 	@$(ECHO) "Done."
-build.c_cpp: cmake
+build-c: cmake
 	@$(ECHO) "Running 'make'..."
 	@cd $(BUILD_DIR);make
 	@$(ECHO) "Done."
-docs.c_cpp:
+docs-c:
 	@$(ECHO) "Generating project docs..."
 	@cd $(BUILD_DIR);make docs
 	@$(ECHO) "Done."
-install.c_cpp: build.c_cpp
+install-c: build-c
 	@$(ECHO) "Installing C/C++ code..."
 	@cd $(BUILD_DIR);make DESTDIR=$(PREFIX) install
 	@$(ECHO) "Done."
-test.c_cpp: build.c_cpp
+test-c: build-c
 	@$(ECHO) "Running C/C++ tests..."
 	@make -f test/Makefile tests
 	@$(ECHO) "Done."
-coverage.c_cpp: build.c_cpp
+coverage-c: build-c
 	@$(ECHO) "Generating C/C++ test coverage report..."
 	@make -f test/Makefile kcov
 	@$(ECHO) "Done."
-clean.c_cpp:
+clean-c:
 	@$(ECHO) -n "Cleaning-up build directory '"$(BUILD_DIR)"'..."
 	@rm -rf $(BUILD_DIR)
+	@$(ECHO) "Done."
+lint-c:
+	@$(ECHO) -n "Linting C/C++ code..."
+	@cd $(BUILD_DIR);make clang-format
+	@cd $(BUILD_DIR);make clang-tidy
+	@$(ECHO) "Done."
+lint-fix-c:
+	@$(ECHO) -n "Applying linting suggestions to C/C++ code..."
+	@cd $(BUILD_DIR);make clang-format
+	@$(ECHO) "Done."
+$(CMAKE_TARGETS): cmake
+	@$(ECHO) -n "Running cmake target '"$@"'..."
+	@cd $(BUILD_DIR);make $@
 	@$(ECHO) "Done."

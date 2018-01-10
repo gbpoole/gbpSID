@@ -30,26 +30,29 @@ DOCS_LIST =
 INSTALL_LIST = 
 TEST_LIST = 
 CLEAN_LIST = 
+LINT_LIST = 
 
 # Add appropriate targets if C/C++ is supported by this project
-ifneq ($(wildcard .Makefile.c_cpp),)
-	include .Makefile.c_cpp
-	BUILD_LIST := $(BUILD_LIST) build.c_cpp
-	DOCS_LIST := $(DOCS_LIST) docs.c_cpp
-	INSTALL_LIST := $(INSTALL_LIST) install.c_cpp
-	TEST_LIST := $(TEST_LIST) test.c_cpp
-	CLEAN_LIST := $(CLEAN_LIST) clean.c_cpp
+ifneq ($(wildcard .Makefile-c),)
+	include .Makefile-c
+	BUILD_LIST := $(BUILD_LIST) build-c
+	DOCS_LIST := $(DOCS_LIST) docs-c
+	INSTALL_LIST := $(INSTALL_LIST) install-c
+	TEST_LIST := $(TEST_LIST) test-c
+	CLEAN_LIST := $(CLEAN_LIST) clean-c
+	LINT_LIST := $(LINT_LIST) lint-c
 	USE_C_CPP := ON
 endif
 
 # Add appropriate targets if Python is supported by this project
-ifneq ($(wildcard .Makefile.python),)
-	include .Makefile.python
-	BUILD_LIST := $(BUILD_LIST) build.python
-	DOCS_LIST := $(DOCS_LIST) docs.python
-	INSTALL_LIST := $(INSTALL_LIST) install.python
-	TEST_LIST := $(TEST_LIST) test.python
-	CLEAN_LIST := $(CLEAN_LIST) clean.python
+ifneq ($(wildcard .Makefile-py),)
+	include .Makefile-py
+	BUILD_LIST := $(BUILD_LIST) build-py
+	DOCS_LIST := $(DOCS_LIST) docs-py
+	INSTALL_LIST := $(INSTALL_LIST) install-py
+	TEST_LIST := $(TEST_LIST) test-py
+	CLEAN_LIST := $(CLEAN_LIST) clean-py
+	LINT_LIST := $(LINT_LIST) lint-py
 	USE_PYTHON := ON
 endif
 
