@@ -1,0 +1,54 @@
+# Makefile for C/C++ code
+
+# Set the build directory based on the variable 'mode'
+ifndef mode
+    mode=release
+endif
+ifeq ($(mode),release)
+    BUILD_DIR:=build
+else ifeq ($(mode),debug)
+    BUILD_DIR:=build-debug
+else ifeq ($(mode),test)
+    BUILD_DIR:=build-test
+else 
+    $(error Invalid build mode {$(mode)} specified.)
+endif
+
+.PHONY: cmake build.c_cpp docs.c_cpp install.c_cpp test.c_cpp coverage.c_pp
+
+# This '.DIR' trick is needed to avoid
+# conflicts with the 'build' target.
+$(BUILD_DIR).DIR:
+ifeq ($(wildcard $(BUILD_DIR)),)
+	@$(ECHO) -n "Making build directory {"$(basename $@)"}..."
+	@mkdir $(basename $@)
+	@$(ECHO) "Done."
+endif
+cmake:  $(BUILD_DIR).DIR
+	@$(ECHO) "Running 'cmake'..."
+	@cd $(BUILD_DIR);cmake ..
+	@$(ECHO) "Done."
+build.c_cpp: cmake
+	@$(ECHO) "Running 'make'..."
+	@cd $(BUILD_DIR);make
+	@$(ECHO) "Done."
+docs.c_cpp:
+	@$(ECHO) "Generating project docs..."
+	@cd $(BUILD_DIR);make docs
+	@$(ECHO) "Done."
+install.c_cpp: build.c_cpp
+	@$(ECHO) "Installing C/C++ code..."
+	@cd $(BUILD_DIR);make DESTDIR=$(PREFIX) install
+	@$(ECHO) "Done."
+test.c_cpp: build.c_cpp
+	@$(ECHO) "Running C/C++ tests..."
+	@make -f test/Makefile tests
+	@$(ECHO) "Done."
+coverage.c_cpp: build.c_cpp
+	@$(ECHO) "Generating C/C++ test coverage report..."
+	@make -f test/Makefile kcov
+	@$(ECHO) "Done."
+clean.c_cpp:
+	@$(ECHO) -n "Cleaning-up build directory '"$(BUILD_DIR)"'..."
+	@rm -rf $(BUILD_DIR)
+	@$(ECHO) "Done."
