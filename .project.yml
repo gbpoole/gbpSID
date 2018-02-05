@@ -1,0 +1,7 @@
+# Build configuration parameters for project: gbpSID
+- project_name: gbpSID
+- project_author: Gregory B. Poole
+- project_email: gbpoole@gmail.com
+- project_description: One line description of project.
+- kcov_token: unset
+- gbpbuild_rel_path: .

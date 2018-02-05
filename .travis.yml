@@ -4,6 +4,7 @@ language: c
 env:
     # Set a grid of environment variables to test
     # Make sure the home directory is set to be the TravisCI project directory
+    # The following set of lines serve as an example
     #- USE_MPI=ON  USE_MPI_IO=OFF USE_CUDA=OFF USE_DOUBLE=OFF HOME=${TRAVIS_BUILD_DIR}
     #- USE_MPI=ON  USE_MPI_IO=OFF USE_CUDA=OFF USE_DOUBLE=ON  HOME=${TRAVIS_BUILD_DIR}
     #- USE_MPI=ON  USE_MPI_IO=ON  USE_CUDA=OFF USE_DOUBLE=OFF HOME=${TRAVIS_BUILD_DIR}

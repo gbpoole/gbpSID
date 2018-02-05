@@ -6,7 +6,7 @@
 default: build
 
 # Extract the project name from the parent directory
-PRJ_DIR=$(dir $(realpath $(firstword $(MAKEFILE_LIST))))
+PRJ_DIR=$(PWD)
 PRJ_NAME=$(shell basename $(PRJ_DIR))
 
 # Get git hash
@@ -25,6 +25,7 @@ ECHO = /bin/echo
 export ECHO
 
 # List of common targets requiring specialized action for each language separately
+INIT_LIST = 
 BUILD_LIST = 
 DOCS_LIST = 
 INSTALL_LIST = 
@@ -36,37 +37,63 @@ LINT_LIST =
 ifneq ($(wildcard .Makefile-c),)
 	include .Makefile-c
 	BUILD_LIST := $(BUILD_LIST) build-c
-	DOCS_LIST := $(DOCS_LIST) docs-c
+	DOCS_LIST := $(DOCS_LIST) build docs-c
 	INSTALL_LIST := $(INSTALL_LIST) install-c
-	TEST_LIST := $(TEST_LIST) test-c
+	TEST_LIST := $(TEST_LIST) tests-c
 	CLEAN_LIST := $(CLEAN_LIST) clean-c
 	LINT_LIST := $(LINT_LIST) lint-c
-	USE_C_CPP := ON
 endif
 
 # Add appropriate targets if Python is supported by this project
 ifneq ($(wildcard .Makefile-py),)
 	include .Makefile-py
+	INIT_LIST := $(INIT_LIST) init-py
 	BUILD_LIST := $(BUILD_LIST) build-py
 	DOCS_LIST := $(DOCS_LIST) docs-py
 	INSTALL_LIST := $(INSTALL_LIST) install-py
-	TEST_LIST := $(TEST_LIST) test-py
+	TEST_LIST := $(TEST_LIST) tests-py
 	CLEAN_LIST := $(CLEAN_LIST) clean-py
 	LINT_LIST := $(LINT_LIST) lint-py
-	USE_PYTHON := ON
 endif
 
 ################################
 # TARGETS and RULES BEGIN HERE #
 ################################
 
-.PHONY: all build docs test install clean
-all:	 build docs
+.PHONY: init build tests lint install clean
+init:	 .print_status submodules $(INIT_LIST)
 build:	 .print_status $(BUILD_LIST)
-docs:	 .print_status $(DOCS_LIST)
-test:	 .print_status $(TEST_LIST)
+tests:	 .print_status build $(TEST_LIST)
+lint:	 .print_status $(LINT_LIST)
 install: .print_status $(INSTALL_LIST)
 clean:	 .print_status $(CLEAN_LIST)
+
+# Update API documentation
+#
+# Note that 'build' is a dependancy
+# because builds which depend on 'Doxygen'
+# or 'sphinx-apidoc' to generate API
+# documentation need to have a build
+# in place in order to generate executable
+# syntax documentation.
+.PHONY: docs-update
+docs-update: build
+	@$(ECHO) "Updating API documenation..."
+	@python python/$(PRJ_NAME)_dev/$(PRJ_NAME)_dev/scripts/update_$(PRJ_NAME)_docs.py
+	@$(ECHO) "Done."
+
+.PHONY: docs
+docs: docs-update
+	@$(ECHO) "Building documenation..."
+	@cd docs;sphinx-build . build
+	@$(ECHO) "Done."
+
+# Make sure all submodules are up-to-date
+.PHONY: submodules
+submodules:
+	@$(ECHO) "Checking that all git submodules are up-to-date..."
+	@git submodule update --recursive
+	@$(ECHO) "Done."
 
 # Print a status message
 .print_status: .printed_status
@@ -76,16 +103,6 @@ clean:	 .print_status $(CLEAN_LIST)
 	@$(ECHO) "Project name:     "$(PRJ_NAME)
 	@$(ECHO) "Project version:  "$(PRJ_VERSION)
 	@$(ECHO) "Git hash (short): "$(GIT_HASH)
-ifeq ($(USE_C_CPP),ON)
-	@$(ECHO) "C/C++  support:   ON"
-else
-	@$(ECHO) "C/C++  support:   OFF"
-endif
-ifeq ($(USE_PYTHON),ON)
-	@$(ECHO) "Python support:   ON"
-else
-	@$(ECHO) "Python support:   OFF"
-endif
 	@$(ECHO)
 	@rm -rf .printed_status
 .printed_status:

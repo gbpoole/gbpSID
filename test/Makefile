@@ -1,10 +1,9 @@
 # This makefile deals with all CI processing 
-# of the gbpHome repository
 
 .PHONY: test clean
 
 # Set the KCov token for this project
-KCOV_TOKEN="74c531b7-23f1-4914-bd15-36b32a6bf144"
+KCOV_TOKEN="unset"
 
 # List the executable tests that will be run
 EXE_TESTS = 

@@ -35,36 +35,37 @@ build-c: cmake
 	@$(ECHO) "Running 'make'..."
 	@cd $(BUILD_DIR);make
 	@$(ECHO) "Done."
-docs-c:
+docs-c: .print_status
 	@$(ECHO) "Generating project docs..."
 	@cd $(BUILD_DIR);make docs
 	@$(ECHO) "Done."
-install-c: build-c
+install-c: .print_status build-c
 	@$(ECHO) "Installing C/C++ code..."
 	@cd $(BUILD_DIR);make DESTDIR=$(PREFIX) install
 	@$(ECHO) "Done."
-test-c: build-c
+test-c: .print_status build-c
 	@$(ECHO) "Running C/C++ tests..."
 	@make -f test/Makefile tests
 	@$(ECHO) "Done."
-coverage-c: build-c
+coverage-c: .print_status build-c
 	@$(ECHO) "Generating C/C++ test coverage report..."
 	@make -f test/Makefile kcov
 	@$(ECHO) "Done."
-clean-c:
+clean-c: .print_status
 	@$(ECHO) -n "Cleaning-up build directory '"$(BUILD_DIR)"'..."
 	@rm -rf $(BUILD_DIR)
 	@$(ECHO) "Done."
-lint-c:
-	@$(ECHO) -n "Linting C/C++ code..."
+lint-c: .print_status
+	@$(ECHO) "Linting C/C++ code..."
 	@cd $(BUILD_DIR);make clang-format
 	@cd $(BUILD_DIR);make clang-tidy
 	@$(ECHO) "Done."
-lint-fix-c:
-	@$(ECHO) -n "Applying linting suggestions to C/C++ code..."
-	@cd $(BUILD_DIR);make clang-format
+lint-fix-c: .print_status
+	@$(ECHO) "Applying linting suggestions to C/C++ code..."
+	@cd $(BUILD_DIR);make clang-format-fix
+	@cd $(BUILD_DIR);make clang-tidy-fix
 	@$(ECHO) "Done."
-$(CMAKE_TARGETS): cmake
-	@$(ECHO) -n "Running cmake target '"$@"'..."
+$(CMAKE_TARGETS): .print_status cmake
+	@$(ECHO) "Running cmake target '"$@"'..."
 	@cd $(BUILD_DIR);make $@
 	@$(ECHO) "Done."
