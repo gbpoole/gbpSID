@@ -127,8 +127,8 @@ todo_include_todos = True
 html_theme_path =['themes']
 html_theme = 'gbp_theme'
 html_show_sourcelink = False
-html_favicon = '%s/static/favicon.ico'%(this_project.dir_root)
-html_logo = '%s/static/logo.gif'%(this_project.dir_root)
+html_favicon = '%s/static/favicon.ico'%(this_project.params['dir_docs'])
+html_logo = '%s/static/logo.png'%(this_project.params['dir_docs'])
 
 html_sidebars = { '**': ['globaltoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html'], }
 
