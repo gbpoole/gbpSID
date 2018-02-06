@@ -83,7 +83,7 @@ Functions
 .. doxygenfunction:: SID_set_verbosity
    :project: gbpSID
 
-.. doxygenfunction:: SID_init_pcounter
+.. doxygenfunction:: SID_Init_pcounter
    :project: gbpSID
 
 .. doxygenfunction:: SID_check_pcounter
@@ -210,7 +210,7 @@ Functions
 .. doxygenfunction:: SID_cat_files
    :project: gbpSID
 
-.. doxygenfunction:: SID_init_fp_buffer
+.. doxygenfunction:: SID_Init_fp_buffer
    :project: gbpSID
 
 .. doxygenfunction:: SID_reset_fp_buffer

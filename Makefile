@@ -71,10 +71,8 @@ clean:	 .print_status $(CLEAN_LIST)
 # Update API documentation
 #
 # Note that 'build' is a dependancy
-# because builds which depend on 'Doxygen'
-# or 'sphinx-apidoc' to generate API
-# documentation need to have a build
-# in place in order to generate executable
+# because a build needs to be in place
+# in order to generate executable
 # syntax documentation.
 .PHONY: docs-update
 docs-update: build
@@ -83,7 +81,7 @@ docs-update: build
 	@$(ECHO) "Done."
 
 .PHONY: docs
-docs: docs-update
+docs: $(DOCS_LIST) docs-update
 	@$(ECHO) "Building documenation..."
 	@cd docs;sphinx-build . build
 	@$(ECHO) "Done."

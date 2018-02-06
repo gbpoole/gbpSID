@@ -1,3 +1,0 @@
-install.rst
-API.rst
-execs.rst

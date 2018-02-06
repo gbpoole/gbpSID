@@ -37,7 +37,7 @@ build-c: cmake
 	@$(ECHO) "Done."
 docs-c: .print_status
 	@$(ECHO) "Generating project docs..."
-	@cd $(BUILD_DIR);make docs
+	@cd $(BUILD_DIR);make docs-api
 	@$(ECHO) "Done."
 install-c: .print_status build-c
 	@$(ECHO) "Installing C/C++ code..."

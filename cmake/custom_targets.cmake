@@ -16,7 +16,7 @@ macro(add_custom_clang)
         -i
         ${ALL_FILES_PROJECT}
     )
-    message(STATUS "   -> clang-format       ; apply the project style standards using clang-tidy")
+    message(STATUS "   -> clang-format       ; apply the project style standards using clang-format")
     
     # Clang-tidy
     add_custom_target(
@@ -52,7 +52,7 @@ macro(add_custom_docs)
         list(APPEND DOXYGEN_EXCLUDE_PATTERNS "*/README.md" )
 
         # Finish Doxygen configuration
-        set(DOXYGEN_OUTPUT_DIRECTORY ${Sphinx_BUILD_DIR}/doxygen )
+        set(DOXYGEN_OUTPUT_DIRECTORY ${PRJ_DOCS_DIR}/build/doxygen )
         doxygen_add_docs(docs-doxygen ${ALL_FILES_PROJECT} )
     
         # Convert Doxygen xml to rst for Sphinx
@@ -60,47 +60,16 @@ macro(add_custom_docs)
             docs-breathe
             COMMENT "Perform initialization for Breathe")
     
-        # Perform Spinx HTML build
+        # Generate API documentation files
         add_custom_target(
-            docs-html 
-            COMMAND ${Sphinx_EXECUTABLE}
-                -q -b html 
-                -c "${Sphinx_BUILD_DIR}"
-                -d "${Sphinx_CACHE_DIR}"
-                "${Sphinx_BUILD_DIR}"
-                "${Sphinx_RESULTS_DIR}/html"
-            COMMENT "Building HTML documentation with Sphinx")
-    
-        # Perform Spinx PDF build
-        add_custom_target(
-            docs-pdf
-            COMMAND ${Sphinx_EXECUTABLE}
-                -q -b latex
-                -c "${Sphinx_BUILD_DIR}"
-                -d "${Sphinx_CACHE_DIR}"
-                "${Sphinx_BUILD_DIR}"
-                "${Sphinx_LATEX_DIR}"
-            COMMAND mkdir -p ${Sphinx_RESULTS_DIR}
-            COMMAND cd ${Sphinx_LATEX_DIR} && pdflatex ${CMAKE_PROJECT_NAME}
-            COMMAND mv "${Sphinx_LATEX_DIR}/${CMAKE_PROJECT_NAME}.pdf" ${Sphinx_RESULTS_DIR}
-            COMMENT "Building PDF documentation with Sphinx")
-    
-        # Generate documentation
-        add_custom_target(
-            docs
-            COMMENT "Building project documentation")
-        message(STATUS "   -> docs               ; generate PDF & HTML versions of project documentation")
-    
-        # Set build dependancies for documentation
-        add_dependencies(docs-html docs-doxygen )
-        add_dependencies(docs-pdf docs-doxygen )
-        add_dependencies(docs-doxygen docs-breathe )
-        add_dependencies(docs docs-pdf docs-html )
+            docs-api
+            COMMENT "Generate API documentation files")
+        message(STATUS "   -> docs-api           ; generate API documentation files")
 
-        # We need the executables so that we can call them
-        # with '-h' to get the command-line syntax
-        add_dependencies(docs-html all_executables)
-        add_dependencies(docs-pdf all_executables)
+        # Set build dependancies for documentation
+        add_dependencies(docs-breathe docs-doxygen )
+        add_dependencies(docs-api     docs-breathe )
+
     else()
         message(STATUS "   -> docs *NOT* added (needed libraries not found)")
     endif()

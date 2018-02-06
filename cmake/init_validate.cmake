@@ -18,15 +18,6 @@ macro(init_validate)
         set(ERROR_FOUND ON)
     endif()
 
-    # Check that the relative path (from the main project directory)
-    # to gbpBuild has been defined.  This should already have been
-    # checked for in CMakeLists.txt, but check again just so that
-    # everything needed by project.cmake is listed here
-    if(NOT GBPBUILD_REL_PATH)
-        message( SEND_ERROR "GBPBUILD_REL_PATH has not been set by project_init()")
-        set(ERROR_FOUND ON)
-    endif()
-
     # Stop Cmake if an error was encountered
     if(ERROR_FOUND)
         message( FATAL_ERROR "Please fix the project initialization in project.cmake.")
