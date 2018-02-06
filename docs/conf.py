@@ -21,6 +21,7 @@ import shutil
 import sys
 import git
 import glob
+import breathe
 
 from datetime import datetime
 from recommonmark.parser import CommonMarkParser
