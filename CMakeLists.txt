@@ -8,14 +8,8 @@ cmake_minimum_required(VERSION 3.2)
 # the initialization macro
 include(${CMAKE_SOURCE_DIR}/project.cmake)
 
-# Check that the relative path (from the main project directory)
-# to gbpBuild has been defined by project.cmake
-if(NOT GBPBUILD_REL_PATH)
-    message( FATAL_ERROR "GBPBUILD_REL_PATH has not been set by project.cmake")
-endif()
-
 # Add the 'cmake' directory in the project directory to the module path
-set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_SOURCE_DIR};${CMAKE_SOURCE_DIR}/cmake")
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_SOURCE_DIR};${CMAKE_SOURCE_DIR}/.cmake")
 message(STATUS "${CMAKE_MODULE_PATH}")
 
 # Load and run a macro to validate the initialization
@@ -37,9 +31,6 @@ set(CMAKE_CXX_COMPILER "g++")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
 set(CMAKE_CXX_STANDARD 11)
 
-# Set the location of the gbpBuild submodule
-set(GBP_BUILD_DIR "${CMAKE_SOURCE_DIR}/${GBPBUILD_REL_PATH}/" )
-
 # Load all macros and functions
 message(STATUS "Loading macros & functions...")
 include ("build")          # Main build macros
@@ -55,17 +46,15 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=0")
 # (needed by things like clang - tidy)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Initialize &/or build any needed external libraries.  This
-# needs to be done before including 'project.cmake' because we
-# need to make sure that 'gbpBuild' has been cloned, for example.
-process_externs( ${CMAKE_SOURCE_DIR} )
-
 # ===========================================
 # Execute all project specific configurations
 # (set options, library dependencies, etc.)
 # ===========================================
 project_options_and_dependancies()
 # ===========================================
+
+# Initialize &/or build any needed external libraries.
+process_externs( ${CMAKE_SOURCE_DIR} )
 
 # ============= Process the project =============
 # (look in cmake/build.cmake for these functions)

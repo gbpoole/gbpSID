@@ -17,11 +17,10 @@
 # documentation root, use os.path.abspath to make it absolute
 
 import os
-import shutil
 import sys
 import git
 import glob
-import breathe
+import breathe # This is here so that pigar will catch it when generating requirements.txt
 
 from datetime import datetime
 from recommonmark.parser import CommonMarkParser
@@ -29,22 +28,22 @@ from recommonmark.parser import CommonMarkParser
 # Find the project root directory
 git_repo = git.Repo(os.path.realpath(__file__), search_parent_directories=True)
 dir_root = git_repo.git.rev_parse("--show-toplevel")
-dir_python = os.path.abspath(os.path.join(dir_root,"python"))
+dir_python = os.path.abspath(os.path.join(dir_root, "python"))
 
 # Include the paths to local python projects (including the _dev package)
-for setup_py_i in glob.glob(dir_python+"/**/setup.py",recursive=True):
+for setup_py_i in glob.glob(dir_python + "/**/setup.py", recursive=True):
     sys.path.append(os.path.abspath(os.path.dirname(setup_py_i)))
 
 # Include the project development module
 import gbpSID_dev.project as prj
-import gbpSID_dev.docs    as docs
+import gbpSID_dev.docs as docs
 
 # Parse the project directory to learn what we need about the project
 this_project = prj.project()
 
 # Add it to the project path
-breathe_directory = "%s/breathe/"%(this_project.params['dir_docs_build'])
-sys.path.append( breathe_directory )
+breathe_directory = "%s/breathe/" % (this_project.params['dir_docs_build'])
+sys.path.append(breathe_directory)
 
 # -- General configuration ------------------------------------------------
 
@@ -55,20 +54,20 @@ needs_sphinx = '1.0'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['sphinx.ext.autodoc',
-    'sphinx.ext.doctest',
-    'sphinx.ext.intersphinx',
-    'sphinx.ext.todo',
-    'sphinx.ext.coverage',
-    'sphinx.ext.ifconfig',
-    'sphinx.ext.viewcode',
-    'breathe']
+              'sphinx.ext.doctest',
+              'sphinx.ext.intersphinx',
+              'sphinx.ext.todo',
+              'sphinx.ext.coverage',
+              'sphinx.ext.ifconfig',
+              'sphinx.ext.viewcode',
+              'breathe']
 
 # Some things that Breathe needs
-breathe_projects        = { this_project.params['project_name']: "%s/doxygen/xml/"%(this_project.params['dir_docs_build']) }
-breathe_default_project =   this_project.params['project_name']
+breathe_projects = {this_project.params['project_name']: "%s/doxygen/xml/" % (this_project.params['dir_docs_build'])}
+breathe_default_project = this_project.params['project_name']
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['%s/templates'%(this_project.dir_root)]
+templates_path = ['%s/templates' % (this_project.dir_root)]
 
 # Add a markdown parser
 source_parsers = {
@@ -90,7 +89,7 @@ master_doc = 'index'
 # General information about the project.
 project = this_project.params['project_name']
 year = datetime.today().year
-copyright = str(year)+', %s'%(this_project.params['project_author'])
+copyright = str(year) + ', %s' % (this_project.params['project_author'])
 author = this_project.params['project_author']
 
 # The version info for the project you're documenting, acts as replacement for
@@ -113,7 +112,7 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ['build*','**/extern']
+exclude_patterns = ['build*', '**/extern']
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
@@ -125,20 +124,20 @@ todo_include_todos = True
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme_path =['themes']
+html_theme_path = ['themes']
 html_theme = 'gbp_theme'
 html_show_sourcelink = False
-html_favicon = '%s/static/favicon.ico'%(this_project.params['dir_docs'])
-html_logo = '%s/static/logo.png'%(this_project.params['dir_docs'])
+html_favicon = '%s/static/favicon.ico' % (this_project.params['dir_docs'])
+html_logo = '%s/static/logo.png' % (this_project.params['dir_docs'])
 
-html_sidebars = { '**': ['globaltoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html'], }
+html_sidebars = {'**': ['globaltoc.html', 'relations.html', 'sourcelink.html', 'searchbox.html'], }
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-html_theme_options = {'gbp_project_name':this_project.params['project_name']}
+html_theme_options = {'gbp_project_name': this_project.params['project_name']}
 
-extra_nav_links = {'Index' : 'genindex.html'}
+extra_nav_links = {'Index': 'genindex.html'}
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -148,7 +147,7 @@ html_static_path = ['static']
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = '%sdoc'%(this_project.params['project_name'])
+htmlhelp_basename = '%sdoc' % (this_project.params['project_name'])
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -174,8 +173,13 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, '%s.tex'%(this_project.params['project_name']), '%s Documentation'%(this_project.params['project_name']),
-     this_project.params['project_author'], 'manual'),
+    (master_doc,
+     '%s.tex' %
+     (this_project.params['project_name']),
+     '%s Documentation' %
+     (this_project.params['project_name']),
+     this_project.params['project_author'],
+     'manual'),
 ]
 
 
@@ -184,9 +188,12 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, this_project.params['project_name'].lower(), '%s Documentation'%(this_project.params['project_name']),
-     [author], 1)
-]
+    (master_doc,
+     this_project.params['project_name'].lower(),
+     '%s Documentation' %
+     (this_project.params['project_name']),
+     [author],
+     1)]
 
 
 # -- Options for Texinfo output -------------------------------------------
@@ -195,7 +202,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, this_project.params['project_name'], '%s Documentation'%(this_project.params['project_name']),
+    (master_doc, this_project.params['project_name'], '%s Documentation' % (this_project.params['project_name']),
      author, this_project.params['project_name'], this_project.params['project_description'],
      'Miscellaneous'),
 ]
