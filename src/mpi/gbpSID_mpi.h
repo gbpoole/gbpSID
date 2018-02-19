@@ -28,9 +28,25 @@
 //    MPI->SID drop-in replacement.
 #define SID_COMM_WORLD (SID.COMM_WORLD)
 
+#if !USE_MPI
+typedef struct SID_Status SID_Status;
+struct SID_Status {
+    int SID_SOURCE;
+    int SID_TAG;
+};
+#endif
+
 #if USE_MPI
+#define SID_Status MPI_Status
+#define SID_SUCCESS MPI_SUCCESS
+#define SID_STATUS_IGNORE MPI_STATUS_IGNORE
+#define SID_SOURCE MPI_SOURCE;
+#define SID_TAG MPI_TAG;
+#define SID_ANY_SOURCE MPI_ANY_SOURCE
+#define SID_ANY_TAG MPI_ANY_TAG
 #define SID_IN_PLACE MPI_IN_PLACE
 #define SID_COMM_NULL MPI_COMM_NULL
+#define SID_Request MPI_Request
 #define SID_GROUP_EMPTY MPI_GROUP_EMPTY
 #define SID_Datatype MPI_Datatype
 #define SID_CHAR MPI_CHAR
@@ -47,8 +63,17 @@
 #define SID_MAX MPI_MAX
 #define SID_MIN MPI_MIN
 #else
+#define SID_STATUS_IGNORE NULL
+#define SID_ANY_SOURCE 1
+#define SID_ANY_TAG 1
+#ifdef _MAIN
+SID_Status SID_SUCCESS={SID_ANY_SOURCE,SID_ANY_TAG};
+#else
+extern SID_Status SID_SUCCESS;
+#endif
 #define SID_IN_PLACE NULL
 #define SID_COMM_NULL NULL
+#define SID_Request int
 #define SID_GROUP_EMPTY NULL
 #define SID_Datatype int
 #define SID_LONG_LONG SID_TTTP01
@@ -99,22 +124,62 @@ void SID_Comm_list(SID_Comm *comm_in,int comm_id,SID_Comm *comm_out);
 void SID_Comm_split(SID_Comm *comm_in, int colour, int key, SID_Comm *comm_out);
 void SID_Type_size(SID_Datatype type, int *size);
 void SID_Send(void *sendbuf, int sendcount, SID_Datatype sendtype, int dest, int sendtag, SID_Comm *comm);
-void SID_Recv(void *recvbuf, int recvcount, SID_Datatype recvtype, int source, int recvtag, SID_Comm *comm);
-void SID_Sendrecv(void *       sendbuf,
+void SID_Recv(void *recvbuf, int recvcount, SID_Datatype recvtype, int source, int recvtag, SID_Comm *comm, SID_Status *status);
+void SID_Isend(void *sendbuf, int sendcount, SID_Datatype sendtype, int dest, int sendtag, SID_Comm *comm, SID_Request *request);
+void SID_Irecv(void *recvbuf, int recvcount, SID_Datatype recvtype, int source, int recvtag, SID_Comm *comm, SID_Request *request);
+void SID_Ssend(void *buf,
+               int count,
+               SID_Datatype datatype,
+               int dest,
+               int tag,
+               SID_Comm *comm);
+void SID_Sendrecv(void *sendbuf, int sendcount, SID_Datatype sendtype, int dest, int sendtag, void *recvbuf,
+                  int recvcount, SID_Datatype recvtype, int source, int recvtag, SID_Comm *comm, SID_Status *status);
+void SID_Probe(int source,
+               int tag,
+               SID_Comm *comm,
+               SID_Status *status);
+void SID_Waitall(int count,
+                 SID_Request array_request[],
+                 SID_Status  array_status[]);
+void SID_Allgather(void         *sendbuf,
+                   int           sendcount,
+                   SID_Datatype  sendtype,
+                   void         *recvbuf,
+                   int           recvcount,
+                   SID_Datatype  recvtype,
+                   SID_Comm     *comm);
+void SID_Allgatherv(void        *sendbuf,
+                    int          sendcount,
+                    SID_Datatype sendtype,
+                    void        *recvbuf,
+                    int         *recvcounts,
+                    int         *displs,
+                    SID_Datatype recvtype,
+                    SID_Comm    *comm);
+void SID_Gatherv(void        *sendbuf,
+                 int          sendcount,
+                 SID_Datatype sendtype,
+                 void        *recvbuf,
+                 int         *recvcounts,
+                 int         *displs,
+                 SID_Datatype recvtype,
+                 int          root,
+                 SID_Comm    *comm);
+void SID_Scatterv(void        *sendbuf,
                   int          sendcount,
+                  int         *displs,
                   SID_Datatype sendtype,
-                  int          dest,
-                  int          sendtag,
-                  void *       recvbuf,
-                  int          recvcount,
+                  void        *recvbuf,
+                  int         *recvcounts,
                   SID_Datatype recvtype,
-                  int          source,
-                  int          recvtag,
-                  SID_Comm *   comm);
+                  int          root,
+                  SID_Comm    *comm);
 void SID_Reduce(void *sendbuf, void *recvbuf, int count, SID_Datatype datatype, SID_Op op, int root, SID_Comm *comm);
 void SID_Allreduce(void *sendbuf, void *recvbuf, int count, SID_Datatype datatype, SID_Op op, SID_Comm *comm);
 void SID_Barrier(SID_Comm *comm);
 void SID_Bcast(void *buffer, int count, SID_Datatype datatype, int source_rank, SID_Comm *comm);
+double SID_Wtime( void );
 
 #ifdef __cplusplus
 }
