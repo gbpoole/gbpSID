@@ -1,25 +1,28 @@
+# Build products
 *.o
 *.a
-*.dSYM
-*.pyc
+
+# Some annoying Apple stuff
 .DS_Store
-*.a.objsfile
-cmake-build-*
+*.dSYM
+
+# Python stuff
+*.pyc
+*.egg
+*.egg-info
+__pycache__
 .idea
-.install*
-.printed_status
-todo
-wip
-*.my*
-*.old
-3rd_Party
-gbpProj
-myBin
-myData
-myInclude
-myLib
-.cshrc.myCode
-.bashrc.myCode
+
+# .vi swap files
+*.*.swp
+
+# Common names for out-of-source build directories
+cmake-build-*
 build*
+
+# Used for testing
 mpich
-docs/themes/*
+
+#Miscillaneous
+.install*
+*.old

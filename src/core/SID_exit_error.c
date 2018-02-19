@@ -3,6 +3,10 @@
 #include <stdlib.h>
 #include <gbpSID.h>
 
+//! Exit with an error
+//! \param fmt
+//! \param r_val
+//! \param ...
 void SID_exit_error(const char *fmt, int r_val, ...) {
     char    temp_char[2];
     int     flag_CR = GBP_FALSE;

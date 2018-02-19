@@ -2,6 +2,13 @@
 #include <stdarg.h>
 #include <gbpSID.h>
 
+//! Open a chuncked SID file pointer
+//! \param filename_root
+//! \param mode
+//! \param fp
+//! \param header
+//! \param ...
+//! \return
 int SID_fopen_chunked(const char *filename_root, const char *mode, SID_fp *fp, void *header, ...) {
     int                    i_chunk;
     int                    i_group;

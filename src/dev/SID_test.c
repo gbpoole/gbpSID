@@ -2,6 +2,10 @@
 #include <stdarg.h>
 #include <gbpSID.h>
 
+//! Output a debug test message
+//! \param val
+//! \param fmt
+//! \param ...
 void SID_test(int val, const char *fmt, ...) {
     char    temp_char[2];
     int     i;

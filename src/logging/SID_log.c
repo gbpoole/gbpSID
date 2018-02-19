@@ -9,7 +9,7 @@ void SID_log(const char *fmt, int mode, ...) {
     va_list vargs;
     va_start(vargs, mode);
 
-    if(SID.awake && (SID.I_am_Master || SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_ALLRANKS)) && (SID.fp_log != NULL)) {
+    if(SID.logging_active && (SID.I_am_Master || SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_ALLRANKS)) && (SID.fp_log != NULL)) {
         if(SID.level < SID_LOG_MAX_LEVELS) {
             // If SID_LOG_NOPRINT is set, do not write anything (useful for changing indenting)
             int flag_print = GBP_TRUE;
@@ -56,10 +56,6 @@ void SID_log(const char *fmt, int mode, ...) {
                     fprintf(SID.fp_log, "\n");
                     SID.indent = GBP_TRUE;
                 }
-                /*
-                        else if(SID_CHECK_BITFIELD_SWITCH(mode,SID_LOG_CONTINUE))
-                          SID.indent=GBP_FALSE;
-                */
                 if(SID.indent) {
                     for(int i_level = 0; i_level < SID.level; i_level++)
                         fprintf(SID.fp_log, "%s", SID_LOG_INDENT_STRING);

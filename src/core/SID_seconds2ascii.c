@@ -3,7 +3,9 @@
 #include <time.h>
 #include <gbpSID.h>
 
-void SID_seconds2ascii(int n_secs, char *string);
+//! Convert a number of seconds to a c-style string describing the amount of time represented by it
+//! \param n_secs
+//! \param string
 void SID_seconds2ascii(int n_secs, char *string) {
     int  n_mins;
     int  n_hrs;

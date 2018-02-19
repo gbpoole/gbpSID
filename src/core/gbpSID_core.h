@@ -71,7 +71,7 @@ _FILE_C_CLASS int b;
 #define GBP_MAX(A, B) ((A) > (B) ? (A) : (B))
 #define GBP_IABS(A) ((A) < 0 ? -(A) : (A))
 #define SID_CHECK_BITFIELD_SWITCH(bitfield, flag) (((bitfield & flag) == flag))
-#define SID_DISABLE_BITFIELD_SWITCH(bitfield, flag) ((bitfield=(bitfield && !flag)))
+#define SID_DISABLE_BITFIELD_SWITCH(bitfield, flag) ((bitfield = (bitfield && !flag)))
 
 // Use double precision judiciously?
 #if USE_DOUBLE
@@ -80,7 +80,7 @@ _FILE_C_CLASS int b;
 #define GBPREAL float
 #endif
 
-// This is not ment as an error code per se but
+// This is not meant as an error code per se but
 //   signals that the syntax message should
 //   be (or has been) printed.  This may just
 //   be because the user has requested it.
@@ -88,92 +88,81 @@ _FILE_C_CLASS int b;
 //   should be removed.
 #define SID_ERROR_PRINT_SYNTAX SID_TTTP01
 
-// Error codes
-#define SID_ERROR_NONE 0
-#define SID_ERROR_LOGIC SID_TTTP02
-#define SID_ERROR_IO_OPEN SID_TTTP03
-#define SID_ERROR_IO_READ SID_TTTP04
-#define SID_ERROR_IO_WRITE SID_TTTP05
-#define SID_ERROR_MEMORY SID_TTTP06
-#define SID_ERROR_SYNTAX SID_TTTP07
-
-
-// Structures for parsing the command line
-typedef void **        SID_args;
-typedef struct SID_arg SID_arg;
-struct SID_arg {
-    char *key;
-    char *var_name;
-    char *description;
-    int   type;
-    int   flag_required;
-    void *val;
-};
-
-// Custom variadic arguments functions
 #define SID_MAX_VARGS_STREAM_SIZE 128
-typedef struct gbp_va_list gbp_va_list;
-struct gbp_va_list {
-    char stream[SID_MAX_VARGS_STREAM_SIZE];
-    int  stream_position;
-};
 
-// Structure to store SID info
-typedef struct SID_info SID_info;
+//! \defgroup core_classes Class definitions
+//! \defgroup core_error_codes Error code definitions
+
+// Error codes
+//! \addtogroup core_error_codes
+//!@{
+#define SID_ERROR_NONE 0              //!< No error
+#define SID_ERROR_LOGIC SID_TTTP02    //!< Generic error in logic
+#define SID_ERROR_IO_OPEN SID_TTTP03  //!< I/O open error
+#define SID_ERROR_IO_READ SID_TTTP04  //!< I/O read error
+#define SID_ERROR_IO_WRITE SID_TTTP05 //!< I/O write error
+#define SID_ERROR_MEMORY SID_TTTP06   //!< Memory allocation error
+#define SID_ERROR_SYNTAX SID_TTTP07   //!< Syntax error
+//!@}
+
+// Type declarations
+typedef struct gbp_va_list gbp_va_list;
+typedef struct SID_info    SID_info;
+
+//! \addtogroup core_classes
+//!@{
+//! Structure specifying a *gbpSID* runtime configuration
 struct SID_info {
-    FILE *  fp_log;
-    FILE *  fp_in;
-    int     error_state;
-    int     awake;
-    int     verbosity;
-    int     level;
-    int     indent;
-    int     My_rank;
-    int     n_proc;
-    char *  My_node;
-    int     I_am_Master;
-    int     I_am_last_rank;
-    int     rank_to_left;
-    int     rank_to_right;
-    time_t  time_start;
-    time_t  max_wallclock;
-    time_t  time_stop;
-    time_t *time_start_level;
-    time_t *time_stop_level;
-    double *IO_size;
-    int *   time_total_level;
-    int *   flag_use_timer;
-    int     flag_results_on;
-    int     flag_input_on;
-    size_t  RAM_local;
-    size_t  max_RAM_local;
+    SID_Comm *COMM_WORLD;                         //!< The communicator used by SID
+    FILE *    fp_log;                             //!< File pointer for log output
+    int       My_rank;                            //!< Rank of process in SID_COMM_WORLD
+    int       n_proc;                             //!< Number of processes in SID_COMM_WORLD communicator
+    int       logging_active;                     //!< Used to control whether a rank can write to the log or not
+    int       verbosity;                          //!< Sets the maximum indentation level of the log
+    int       level;                              //!< Sets the current indentation level of the log
+    int       indent;                             //!< If evluates to True, then next log entry needs to be indented
+    int       I_am_Master;                        //!< SID rank identified as the "Master Rank"
+    int       I_am_last_rank;                     //!< SID rank which is identified as the "Last Rank"
+    int       rank_to_left;                       //!< SID rank identified as being to the "left" of the current rank
+    int       rank_to_right;                      //!< SID rank identified as being to the "right" of the current rank
+    time_t    time_start;                         //!< Time of application execution start
+    time_t    time_stop;                          //!< Time of application execution end
+    time_t *  time_start_level;                   //!< Time of start for all active indentation levels
+    time_t *  time_stop_level;                    //!< Time of end for all active indentation levels
+    double *  IO_size;                            //!< I/O Size for I/O progress counter
+    int *     time_total_level;                   //!< Total time spent in this indent level
+    int *     flag_use_timer;                     //!< True if timing reporting is to be reported for this indent level
+    char *    My_node;                            //!< Name of the rank's node
+    char      My_binary[SID_MAX_FILENAME_LENGTH]; //!< Application executable name
 #if USE_MPI
     MPI_Info file_info;
 #endif
-    SID_Comm *COMM_WORLD;
 #if !USE_MPI_IO
     int n_groups;
     int My_group;
 #endif
-    char My_binary[SID_MAX_FILENAME_LENGTH];
-    int *arg_set;
-    int *arg_alloc;
 };
 
+//! Variadic arguments structure
+struct gbp_va_list {
+    char stream[SID_MAX_VARGS_STREAM_SIZE]; //!< A c-style string specifying the argument
+    int  stream_position;                   //!< Position in the list
+};
+
+//! @}
+
 // Default values
-#define DEFAULT_MAX_WALLCLOCK_TIME 31536000 // 1 year
 #ifdef _MAIN
 SID_info SID = {
-    NULL, NULL, GBP_FALSE, GBP_FALSE, 0,    0,    GBP_FALSE, SID_MASTER_RANK, 1, NULL, GBP_TRUE, GBP_TRUE, SID_MASTER_RANK, SID_MASTER_RANK, 0, 0,
-    0,    NULL, NULL,      NULL,      NULL, NULL, GBP_FALSE, GBP_FALSE,       0, 0,
+    NULL, NULL, 0,    1,    GBP_TRUE, 0, 0, GBP_TRUE, GBP_TRUE, GBP_TRUE, SID_MASTER_RANK, SID_MASTER_RANK, 0, 0, NULL, NULL,
+    NULL, NULL, NULL, NULL, "",
 #if USE_MPI
     0,
 #endif
-    NULL,
 #if !USE_MPI_IO
     1,    1,
 #endif
-    "",   NULL, NULL};
+};
 #else
 extern SID_info SID;
 #endif
@@ -188,6 +177,7 @@ void SID_Finalize();
 void SID_exit_error(const char *fmt, int r_val, ...);
 void SID_seconds2ascii(int n_secs, char *string);
 
+// Custom variadic arguments functions
 void SID_va_start(gbp_va_list *vargs);
 void SID_add_va_arg(gbp_va_list *vargs, size_t size, void *ptr);
 void SID_fetch_va_arg(gbp_va_list *vargs, size_t size, void *ptr);

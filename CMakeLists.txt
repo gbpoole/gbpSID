@@ -1,8 +1,27 @@
 # This is the CMakeList.txt file used to build the project
+#    - We use this old version because it is the  -
+#    -   latest version availale on Travis CI     -
 cmake_minimum_required(VERSION 3.2)
 
+# Read the file with the macro definitions which specify
+# the behaviour specific to this project and then run
+# the initialization macro
+include(${CMAKE_SOURCE_DIR}/project.cmake)
+
+# Add the 'cmake' directory in the project directory to the module path
+set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_SOURCE_DIR};${CMAKE_SOURCE_DIR}/.cmake")
+message(STATUS "${CMAKE_MODULE_PATH}")
+
+# Load and run a macro to validate the initialization
+include ("init_validate")
+init_validate()
+
 # Declare the project name
-project (gbpSID)
+project (${GBP_PROJECT_NAME})
+
+# Clear default install directory (user should use
+# DESTDIR with make to set installation directory)
+set( CMAKE_INSTALL_PREFIX "./" )
 
 # Set default compilers(must come before project line)
 set(CMAKE_C_COMPILER   "gcc")
@@ -10,11 +29,7 @@ set(CMAKE_CXX_COMPILER "g++")
 
 # Compiler flags
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99")
-#set(CMAKE_CXX_FLAGS "-std=c++11")
 set(CMAKE_CXX_STANDARD 11)
-
-# Add the 'cmake' directory in the project directory to the module path
-set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_SOURCE_DIR}/cmake;${CMAKE_SOURCE_DIR}")
 
 # Load all macros and functions
 message(STATUS "Loading macros & functions...")
@@ -31,45 +46,18 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=0")
 # (needed by things like clang - tidy)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Use double precision liberally ?
-option(USE_DOUBLE "Use double liberally" OFF)
-if(USE_DOUBE)
-    add_definitions(-DUSE_DOUBLE)
-endif()
+# ===========================================
+# Execute all project specific configurations
+# (set options, library dependencies, etc.)
+# ===========================================
+project_options_and_dependancies()
+# ===========================================
 
-# Turn on debugging mode
-option(SID_DEBUG "Enable SID debugging information" OFF)
-
-# These options specify when (if ever) missing libraries
-#   should be installed automatically by this build script
-# !!! Not implemented yet
-#option(INSTALL_FORCE   "Install all libraries automatically? (overrides INSTALL_MISSING)") 
-#option(INSTALL_MISSING "Install missing libraries?") 
-
-#=========== Add 3rd-party libraries ===========
-# (look in .cmake/3rd_party.cmake for a list of supported libraries)
-message(STATUS "")
-message(STATUS "Initializing 3rd-party libraries...")
-
-# List of *required* 3rd-Party libraries
-#set_3rd_party_required("XXX")
-
-# List of *requested* 3rd-Party libraries (and their defaults)
-set_3rd_party_requested("GBP_DOCS_BUILD" ON)
-
-# List of *optional* 3rd-Party libraries (and their defaults)
-set_3rd_party_optional("MPI"    ON)
-set_3rd_party_optional("MPI_IO" OFF)
-set_3rd_party_optional("CUDA"   OFF)
-
-# Print status message
-message(STATUS "Finished initializing 3rd-party libraries.")
+# Initialize &/or build any needed external libraries.
+process_externs( ${CMAKE_SOURCE_DIR} )
 
 # ============= Process the project =============
 # (look in cmake/build.cmake for these functions)
-
-# Initialize &/or build any needed external libraries
-process_externs( ${CMAKE_SOURCE_DIR} )
 
 # Generate the list of directories where header files
 # are located, as well as a list of all header files
@@ -94,4 +82,3 @@ add_custom_docs()
 # Print status message
 message(STATUS "Finished initializing custom targets.")
 message(STATUS "")
-

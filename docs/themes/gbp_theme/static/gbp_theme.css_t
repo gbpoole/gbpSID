@@ -1,0 +1,109 @@
+
+@import url("cloud.css");
+
+/* Solid-colored header style for h2, h3, & rubric */
+{# h2, h3, rubric - common styling for solid-colored section #}
+div.body h2,
+div.body p.rubric,
+.section.emphasize-children > .section > h3,
+.desc-section-1 > .section-header, {# top-level nested sections #}
+#table-of-contents > h1, {# hack for toc page #}
+h1#search-documentation {# hack for search page #}
+{
+    {% if theme_lighter_header_decor | tobool %}
+    {% else %}
+        background-color: {{ theme_sectionbgcolorh2 }};
+        border: 1px solid {{ theme_sectiontrimcolor }};
+        border-width: 0 0 0 6px;
+        color: {{ theme_sectiontextcolor }};
+        text-shadow: 0px 0px {{ theme_sectiontrimcolor }};
+        font-size: 125%;
+    {% endif %}
+}
+
+/* Use this to shrink the sidebar logo */
+/*
+div.sphinxsidebar p.logo
+{
+    margin: -15px 60px -15px 50px;
+    text-align: center;
+}
+*/
+
+/* This changes the color and puts image behind page titles */
+div.body h1
+{
+    align-text: center;
+    background: url("section_head_background.png") top center;
+    background-size: 100% 100%;
+    line-height: 250%;
+    background-repeat: no-repeat;
+    font-weight: bold;
+    color: #8A9ACE;
+    font-size: 200%;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Improve the relbars; narrower, w/o breadcrumbs, not bold */
+div.related a,
+div.related li.right a,
+div.related a:hover,
+div.related li.right a:hover
+{
+    padding: 0.1em 0.5em;
+    font-weight: normal;
+    background-color: transparent;
+    text-shadow: none;
+    box-shadow: none;
+}
+
+/* Stop consecutive code blocks from running into each other */
+div.highlight
+{
+    padding: 1px 0px;
+}
+
+/* Fix borders on code blocks */
+div.highlight pre
+{
+    border-width: 0px 3px;
+    border-style: solid;
+    border-radius: 10px;
+}
+
+/* Position and format the searchbox and text */
+/*
+div.sphinxsidebar #searchbox input[type="text"] {
+    width: 250px;
+    border-radius: 5px;
+    padding: 8px;
+    border-style: none;
+    margin: 10px 10px 0px 10px;
+}
+*/
+
+/* Format the sidebar TOC title */
+div.sphinxlocaltoc h3 {
+    font-family: sans-serif;
+    text-align: center;
+    font-variant: small-caps;
+    letter-spacing: 2px;
+}
+
+/* GBP - start */
+div.sphinxsidebar ul
+{
+    margin-top:    0;
+    margin-bottom: 0;
+    margin-left:  1.0em;
+    margin-right:  0;
+    padding: 0;
+}
+div.sphinxsidebar ul.top_margin {
+     margin-top: 0.5em;
+}
+/* GBP - stop */
+
+/* Prevent "Parameters:" etc. in apidocs from breaking into three lines */
+table.docutils th { white-space: nowrap; }

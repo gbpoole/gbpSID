@@ -1,6 +1,11 @@
 #include <string.h>
 #include <gbpSID.h>
 
+//! Open a SID file pointer
+//! \param filename
+//! \param mode
+//! \param fp
+//! \return
 int SID_fopen(const char *filename, const char *mode, SID_fp *fp) {
     int r_val = GBP_TRUE;
 #if USE_MPI

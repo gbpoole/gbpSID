@@ -25,6 +25,12 @@ void strip_path_local(char *string) {
     }
 }
 
+//! Initialize the SID run-time environment
+//! \param argc A pointer to the argument count passed to main()
+//! \param argv A pointer to the argument list passed to main()
+//! \param mpi_comm_as_void An optional MPI communicator to inherit from.  Set to NULL to ignore.
+//!
+//! This function should be called as soon as possible for any project utilizing *gbpSID*.  It takes pointers to the run-time arguments passed to main() and an optional communicator to inherit from as parameters
 void SID_Init(int *argc, char **argv[], void *mpi_comm_as_void) {
     int status;
     int i_level;
@@ -142,23 +148,14 @@ void SID_Init(int *argc, char **argv[], void *mpi_comm_as_void) {
         SID.flag_use_timer[i_level]   = GBP_FALSE;
     }
 
-        // Initialize other log information
-#if USE_MPI
-    if(*argc > 1)
-        SID.fp_in = fopen((*argv)[1], "r");
-    else
-        SID.fp_in = NULL;
-#else
-    SID.fp_in = stdin;
-#endif
+    // Initialize other log information
     if(flag_passed_comm)
         SID.fp_log = NULL;
     else
         SID.fp_log = stderr;
     SID.level           = 0;
     SID.indent          = GBP_TRUE;
-    SID.awake           = GBP_TRUE;
-    SID.flag_results_on = GBP_FALSE;
+    SID.logging_active  = GBP_TRUE;
     SID.verbosity       = SID_LOG_MAX_LEVELS;
 
     // Store the name of the binary executable that brought us here
@@ -211,7 +208,4 @@ void SID_Init(int *argc, char **argv[], void *mpi_comm_as_void) {
 
     // Start total-run-ime timer
     (void)time(&(SID.time_start));
-
-    // Default max wallclock
-    SID.max_wallclock = DEFAULT_MAX_WALLCLOCK_TIME;
 }

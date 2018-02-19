@@ -2,6 +2,11 @@
 #include <stdarg.h>
 #include <gbpSID.h>
 
+//! Concatinate a set of files
+//! \param filename_out
+//! \param mode
+//! \param n_files
+//! \param ...
 void SID_cat_files(const char *filename_out, int mode, int n_files, ...) {
     int         i_file;
     char *      filename_in;

@@ -1,5 +1,11 @@
 #include <gbpSID.h>
 
+//! Perform a rank-independent read with a SID file pointer
+//! \param buffer
+//! \param size_per_item
+//! \param n_items
+//! \param fp
+//! \return
 size_t SID_fread(void *buffer, size_t size_per_item, size_t n_items, SID_fp *fp) {
     size_t r_val;
 #if USE_MPI

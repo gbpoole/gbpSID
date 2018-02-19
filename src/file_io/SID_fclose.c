@@ -1,6 +1,9 @@
 #include <unistd.h>
 #include <gbpSID.h>
 
+//! Close a SID file pointer
+//! \param fp
+//! \return
 int SID_fclose(SID_fp *fp) {
 #if USE_MPI
 #if USE_MPI_IO

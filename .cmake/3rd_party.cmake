@@ -32,6 +32,17 @@ function(set_3rd_party_requested lib_name val)
     endif()
 endfunction()
 
+# Add a github submodule.  This is meant to be called from 'extern.cmake' files.
+function( add_external_submodule cur_dir submodule_name filename_check )
+    # Make sure we have updated the Clara submodule
+    if(NOT EXISTS "${filename_check}")
+        message(STATUS "  -> Checking out submodule: ${submodule_name}")
+        execute_process(COMMAND git submodule update --init WORKING_DIRECTORY ${cur_dir})
+    else()
+        message(STATUS "   -> ${submodule_name} submodule has already been checked out")
+    endif()
+endfunction()
+
 # =================== Some helper functions ==================
 
 # Evaluate expression
@@ -80,7 +91,11 @@ endmacro()
 
 # Success/fail/skipped status messages
 macro(check_3rd_party_status success )
+    # Write a sucess/failure message and throw an error if needed
     if(${success})
+        # Create a couple preprocessor macros that can be used in the code
+        add_definitions(-DUSE_${lib_name})
+        add_definitions(-D${lib_name}_FOUND)
         message(STATUS "   -> ${required_txt} library initialized:  ${lib_name}")
     else()
         if(required STREQUAL "REQUIRED" )
@@ -100,6 +115,8 @@ endmacro()
 
 
 # ============== Library-specific stuff follows ==============
+# If items are added to this list, don't forget to update the
+# list in the 'project.cmake' template file.
 
 # Initialize documentation build
 function(init_3rd_party_GBP_DOCS_BUILD lib_name required_in)
@@ -110,6 +127,24 @@ function(init_3rd_party_GBP_DOCS_BUILD lib_name required_in)
         # Check status and print message    
         check_3rd_party_status( ${GBP_DOCS_BUILD_FOUND} )
 
+    else()
+        skip_3rd_party_status(required_in)
+    endif()
+endfunction()
+
+# Initialize GSL
+function(init_3rd_party_GSL lib_name required_in)
+    set_required_variables(${required_in})
+    if(USE_${lib_name})
+        add_definitions(-DUSE_${lib_name})
+        find_package(${lib_name} ${required})
+
+        # Check status and print message    
+        check_3rd_party_status( GSL_FOUND )
+
+        # Personalized set-up:
+        include_directories( ${GSL_INCLUDE_DIRS} )
+        link_libraries( ${GSL_LIBRARIES} )
     else()
         skip_3rd_party_status(required_in)
     endif()
@@ -265,19 +300,49 @@ function(init_3rd_party_HDF5 lib_name required_in)
     endif()
 endfunction()
 
-# Initialize FFTW
-function(init_3rd_party_FFTW lib_name required_in)
+# Initialize FFTW v2
+function(init_3rd_party_FFTW2 lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
         add_definitions(-DUSE_${lib_name})
         find_package(${lib_name} ${required})
 
         # Check status and print message    
-        check_3rd_party_status( FFTW_FOUND )
+        check_3rd_party_status( FFTW2_FOUND )
 
         # Personalized set-up:
-        include_directories( ${FFTW_INCLUDES} )
-        link_libraries( ${FFTW_LIBRARIES} )
+        include_directories( ${FFTW2_INCLUDES} )
+        link_libraries( ${FFTW2_LIBRARIES} )
+
+        # Generalized FFTW declarations
+        if(${FFTW2_FOUND})
+            add_definitions(-DUSE_FFTW=ON)
+            add_definitions(-DFFTW_FOUND=ON)
+        endif()
+    else()
+        skip_3rd_party_status(required_in)
+    endif()
+endfunction()
+
+# Initialize FFTW v3
+function(init_3rd_party_FFTW3 lib_name required_in)
+    set_required_variables(${required_in})
+    if(USE_${lib_name})
+        add_definitions(-DUSE_${lib_name})
+        find_package(${lib_name} ${required})
+
+        # Check status and print message    
+        check_3rd_party_status( FFTW3_FOUND )
+
+        # Personalized set-up:
+        include_directories( ${FFTW3_INCLUDES} )
+        link_libraries( ${FFTW3_LIBRARIES} )
+
+        # Generalized FFTW declarations
+        if(${FFTW3_FOUND})
+            add_definitions(-DUSE_FFTW=ON)
+            add_definitions(-DFFTW_FOUND=ON)
+        endif()
     else()
         skip_3rd_party_status(required_in)
     endif()

@@ -1,0 +1,27 @@
+{#
+ This is the default Sphinx theme used by gbpBuild.
+
+ It is a modified version of the 'Cloud' Sphinx theme with
+ some additions inspired by the 'psi' theme.  Please see:
+
+   http://cloud-sptheme.readthedocs.io/en/latest/cloud_theme.html
+   https://github.com/psi4/sphinx-psi-theme
+
+ for more details.
+#}
+
+<div class="sphinxlocaltoc">
+<h3 class="title">Table of Contents</h3>
+   <ul class='top_margin'>
+      <li>
+         <a href="{{ pathto(master_doc) }}">Introduction</a>
+      </li>
+   </ul>
+   {{ toctree() }}
+   <ul>
+      <li>
+         <a href="genindex.html">Index</a>
+      </li>
+   </ul>
+</div>
+

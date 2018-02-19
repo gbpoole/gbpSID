@@ -1,3 +1,9 @@
+# The following directive is used to organise
+# how the Doxygen groups defined by this project
+# will be organised in the documentation:
+#
+# set_active_API_module   app     The Application Class
+
 # Set empty defaults
 set(LIBDIRS    "" )
 set(SRCDIRS    "" )
@@ -23,10 +29,11 @@ list(APPEND INCFILES "gbpSID_app_main.hh")
 
 # Add source files
 # eg. list(APPEND SRCFILES "file" )
+# -- NONE FOR THIS DIR --
 
 # Add executable source files (those with a main())
 # eg. list(APPEND EXEFILES "file" )
-# -- NONE FOR THIS DIR --
+list(APPEND EXEFILES "gbpSID_hello_world.cc" )
 
 # Add data files
 # eg. list(APPEND DATAFILES "file" )

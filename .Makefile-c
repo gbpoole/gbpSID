@@ -1,0 +1,110 @@
+###########################
+# Makefile for C/C++ code #
+###########################
+
+# Set the build directory based on the variable 'config'
+ifndef config
+    config=release
+endif
+ifeq ($(config),release)
+    BUILD_DIR_C:=build
+else ifeq ($(config),debug)
+    BUILD_DIR_C:=build-debug
+else ifeq ($(config),test)
+    BUILD_DIR_C:=build-test
+else 
+    $(error Invalid build 'config' {$(config)} specified.)
+endif
+
+###########################################
+# cmake build, install, docs, etc targets #
+###########################################
+
+# Perform build
+.PHONY: build-c
+build-c: cmake
+	@$(ECHO) "Performing C/C++ build..."
+	@cd $(BUILD_DIR_C);make
+	@$(ECHO) "Done."
+
+# Run cmake
+.PHONY: cmake
+cmake:  $(BUILD_DIR_C).DIR
+	@$(ECHO) "Running 'cmake'..."
+# TODO: Check if this works
+#	@cd $(BUILD_DIR_C);cmake --config config ..
+	@cd $(BUILD_DIR_C);cmake ..
+	@$(ECHO) "Done."
+
+# Make the build directory
+# This '.DIR' trick is needed to avoid
+# conflicts with the 'build' target.
+$(BUILD_DIR_C).DIR:
+ifeq ($(wildcard $(BUILD_DIR_C)),)
+	@$(ECHO) -n "Making build directory {"$(basename $@)"}..."
+	@mkdir $(basename $@)
+	@$(ECHO) "Done."
+endif
+
+# Run Doxygen to generate C/C++ API information
+.PHONY: docs-c
+docs-c: .print_status
+	@$(ECHO) "Generating project docs..."
+	@cd $(BUILD_DIR_C);make docs-api
+	@$(ECHO) "Done."
+
+# Install libraries and executables to $(PREFIX) directory
+.PHONY: install-c
+install-c: .print_status build-c
+	@$(ECHO) "Installing C/C++ code..."
+	@cd $(BUILD_DIR_C);make DESTDIR=$(PREFIX) install
+	@$(ECHO) "Done."
+
+# Clean C/C++ build
+.PHONY:	clean-c
+clean-c: .print_status
+	@$(ECHO) -n "Cleaning-up build directory '"$(BUILD_DIR_C)"'..."
+	@rm -rf $(BUILD_DIR_C)
+	@$(ECHO) "Done."
+
+#################################
+# C/C++ targets for developers  #
+#################################
+
+# Run C tests
+.PHONY:	test-c
+test-c: .print_status build-c
+	@$(ECHO) "Running C/C++ tests..."
+	@make -f test/Makefile tests
+	@$(ECHO) "Done."
+
+# Compute C/C++ test coverage
+.PHONY:	coverage-c
+coverage-c: .print_status build-c
+	@$(ECHO) "Generating C/C++ test coverage report..."
+	@make -f test/Makefile kcov
+	@$(ECHO) "Done."
+
+# Report C/C++ linting issues
+.PHONY:	lint-check-c
+lint-check-c: .print_status
+	@$(ECHO) "Linting C/C++ code..."
+	@cd $(BUILD_DIR_C);make clang-format-check
+	@$(ECHO) "Done."
+
+# Fix C/C++ linting issues in-place
+.PHONY:	lint-fix-c
+lint-fix-c: .print_status
+	@$(ECHO) "Applying linting suggestions to C/C++ code..."
+	@cd $(BUILD_DIR_C);make clang-format-fix
+	@$(ECHO) "Done."
+
+####################################################################
+# Supported 'cmake' targets not covered by the targets given above #
+####################################################################
+CMAKE_TARGETS = clang-tidy-suggest clang-tidy-fix
+.PHONY: $(CMAKE_TARGETS)
+$(CMAKE_TARGETS): .print_status cmake
+	@$(ECHO) "Running cmake target '"$@"'..."
+	@cd $(BUILD_DIR_C);make $@
+	@$(ECHO) "Done."

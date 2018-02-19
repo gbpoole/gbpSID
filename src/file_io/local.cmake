@@ -1,3 +1,9 @@
+# The following directive is used to organise
+# how the Doxygen groups defined by this project
+# will be organised in the documentation:
+#
+# set_active_API_module      file_io File I/O
+
 # Set empty defaults
 set(LIBDIRS    "" )
 set(SRCDIRS    "" )
