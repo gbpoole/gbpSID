@@ -167,14 +167,15 @@ void SID_Gatherv(void        *sendbuf,
                  int          root,
                  SID_Comm    *comm);
 void SID_Scatterv(void        *sendbuf,
-                  int          sendcount,
+                  int         *sendcounts,
                   int         *displs,
                   SID_Datatype sendtype,
                   void        *recvbuf,
-                  int         *recvcounts,
+                  int          recvcount,
                   SID_Datatype recvtype,
                   int          root,
                   SID_Comm    *comm);
+
 void SID_Reduce(void *sendbuf, void *recvbuf, int count, SID_Datatype datatype, SID_Op op, int root, SID_Comm *comm);
 void SID_Allreduce(void *sendbuf, void *recvbuf, int count, SID_Datatype datatype, SID_Op op, SID_Comm *comm);
 void SID_Barrier(SID_Comm *comm);
