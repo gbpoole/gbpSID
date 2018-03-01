@@ -37,15 +37,33 @@ else()
     message(STATUS "C++ compiler set from default: ${CMAKE_CXX_COMPILER}")
 endif()
 
+# Declare the project name
+project (${GBP_PROJECT_NAME})
+
 # Compiler flags
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wextra")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu99 -Wextra")
 set(CMAKE_CXX_STANDARD 11)
 
-# Declare the project name
-project (${GBP_PROJECT_NAME})
-
 # Check for minimum versions of compilers to avoid ABI conflicts
+# -- C --
+message(STATUS "Checking c compiler version:")
+if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
+    set(VERSION_MIN "5.0.0")
+    if(CMAKE_C_COMPILER_VERSION VERSION_LESS ${VERSION_MIN})
+        message(FATAL_ERROR "Insufficient gcc version (${CMAKE_C_COMPILER_VERSION}<${VERSION_MIN})")
+    endif()
+elseif((CMAKE_C_COMPILER_ID STREQUAL "Clang") OR (CMAKE_C_COMPILER_ID STREQUAL "AppleClang"))
+    set(VERSION_MIN "3.9.0")
+    if(CMAKE_C_COMPILER_VERSION VERSION_LESS ${VERSION_MIN})
+        message(FATAL_ERROR "Insufficient Clang version (${CMAKE_C_COMPILER_VERSION}<${VERSION_MIN})")
+    endif()
+else()
+    message(FATAL_ERROR "Unsupported compiler or platform (${CMAKE_CXX_COMPILER_ID})")
+endif()
+message(STATUS "   ID     : ${CMAKE_C_COMPILER_ID}")
+message(STATUS "   VERSION: ${CMAKE_C_COMPILER_VERSION}")
+# -- C++ --
 message(STATUS "Checking c++ compiler version:")
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(VERSION_MIN "5.0.0")
