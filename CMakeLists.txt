@@ -39,13 +39,14 @@ endif()
 
 # Compiler flags
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wextra")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu99 -Wextra")
 set(CMAKE_CXX_STANDARD 11)
 
 # Declare the project name
 project (${GBP_PROJECT_NAME})
 
 # Check for minimum versions of compilers to avoid ABI conflicts
-message(STATUS "Checking compiler version:")
+message(STATUS "Checking c++ compiler version:")
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(VERSION_MIN "5.0.0")
     if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS ${VERSION_MIN})
