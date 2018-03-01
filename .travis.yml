@@ -1,7 +1,6 @@
 # Configure TravisCI (https://travis-ci.org) tests
 
 language: cpp
-dist: trusty
 env:
     # Set a grid of environment variables to test
     # Make sure the home directory is set to be the TravisCI project directory
@@ -23,7 +22,7 @@ compiler:
 # This section is added to make sure that we have a sufficient version of gcc
 before_install:
   # C++14
-  #- sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
+  - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
   - sudo apt-get update -qq
 
 # This section is added to make sure that we have a sufficient version of gcc
