@@ -61,7 +61,7 @@ include ("custom_targets") # Custom-target macros
 message(STATUS "Done.")
 
 # Generate compile commands.json file
-# (needed by things like clang - tidy)
+# (needed by things like 'clang-tidy')
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # ===========================================

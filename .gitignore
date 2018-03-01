@@ -18,7 +18,8 @@ __pycache__
 
 # Common names for out-of-source build directories
 cmake-build-*
-build*
+build-*
+build
 
 # Used for testing
 mpich
