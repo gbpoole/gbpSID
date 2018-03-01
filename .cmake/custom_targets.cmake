@@ -112,7 +112,7 @@ macro(add_custom_docs)
             COMMENT "Generate API documentation files")
         message(STATUS "   -> docs-api           ; generate API documentation files")
 
-        # Set build dependancies for documentation
+        # Set build dependencies for documentation
         add_dependencies(docs-breathe docs-doxygen )
         add_dependencies(docs-api     docs-breathe )
 

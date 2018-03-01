@@ -3,7 +3,7 @@ set(GBPBUILD_REL_PATH "extern/gbpBuild" )
 set(GBP_PROJECT_NAME  "gbpSID")
 
 # Set options and dependencies
-macro(project_options_and_dependancies)
+macro(project_options_and_dependencies)
     #========= Set project-specific options ========
     # Use double precision liberally ?
     option(USE_DOUBLE "Use double liberally" OFF)

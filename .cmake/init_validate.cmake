@@ -5,10 +5,10 @@ macro(init_validate)
     # needed macros and variables before quiting.
     set(ERROR_FOUND OFF)
 
-    # Check that the macro project_options_and_dependancies()
+    # Check that the macro project_options_and_dependencies()
     # has been defined in project.cmake
-    if(NOT COMMAND project_options_and_dependancies)
-        message( SEND_ERROR "project_options_and_dependancies() has not been set in project.cmake")
+    if(NOT COMMAND project_options_and_dependencies)
+        message( SEND_ERROR "project_options_and_dependencies() has not been set in project.cmake")
         set(ERROR_FOUND ON)
     endif()
 

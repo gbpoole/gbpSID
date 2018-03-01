@@ -147,7 +147,6 @@ macro(skip_3rd_party_status required_in)
     endif()
 endmacro()
 
-
 # ============== Library-specific stuff follows ==============
 # If items are added to this list, don't forget to update the
 # list in the 'project.cmake' template file.
@@ -469,6 +468,34 @@ function(init_3rd_party_PugiXML lib_name required_in)
         # Personalized set-up:
         include_directories( ${PUGIXML_INCLUDE_DIR} )
         link_libraries( ${PUGIXML_LIBRARIES} )
+    else()
+        skip_3rd_party_status(required_in)
+    endif()
+endfunction()
+
+# Initialize the system thread library
+function(init_3rd_party_Threads lib_name required_in)
+    set_required_variables(${required_in})
+    if(USE_${lib_name})
+        add_definitions(-DUSE_${lib_name})
+        find_package(${lib_name} ${required})
+
+        # FindThreads does not provide a reliable way
+        # to check that a threads library was found,
+        # so just assume that it was. It will throw
+        # its own error on failure.
+        #if(CMAKE_THREAD_LIBS_INIT)
+        #    set( Threads_FOUND TRUE)
+        #else()
+        #    set( Threads_FOUND FALSE)
+        #endif()
+        set( Threads_FOUND TRUE)
+
+        # Check status and print message 
+        check_3rd_party_status( Threads_FOUND )
+
+        # Personalized set-up:
+        link_libraries( Threads::Threads )
     else()
         skip_3rd_party_status(required_in)
     endif()

@@ -28,8 +28,8 @@ typedef struct pcounter_info pcounter_info;
 struct pcounter_info {
     size_t n_i;
     size_t i_report_next;
-    int    i_report;
-    int    n_report;
+    size_t i_report;
+    size_t n_report;
 };
 
 // Function declarations
