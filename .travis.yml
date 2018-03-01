@@ -1,6 +1,6 @@
 # Configure TravisCI (https://travis-ci.org) tests
 
-language: c
+language: c++
 env:
     # Set a grid of environment variables to test
     # Make sure the home directory is set to be the TravisCI project directory
