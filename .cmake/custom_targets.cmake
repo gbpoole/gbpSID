@@ -94,11 +94,15 @@ macro(add_custom_docs)
         # List the file patterns to ignore when running Doxygen
         list(APPEND DOXYGEN_EXCLUDE_PATTERNS "*/extern/*" )
         list(APPEND DOXYGEN_EXCLUDE_PATTERNS "*/test/*" )
+        list(APPEND DOXYGEN_EXCLUDE_PATTERNS "*/build/*" )
+        list(APPEND DOXYGEN_EXCLUDE_PATTERNS "*/_build/*" )
         list(APPEND DOXYGEN_EXCLUDE_PATTERNS "*/build-*/*" )
+        list(APPEND DOXYGEN_EXCLUDE_PATTERNS "*/_build-*/*" )
+        list(APPEND DOXYGEN_EXCLUDE_PATTERNS "*/cmake-build-*/*" )
         list(APPEND DOXYGEN_EXCLUDE_PATTERNS "*/README.md" )
 
         # Finish Doxygen configuration
-        set(DOXYGEN_OUTPUT_DIRECTORY ${PRJ_DOCS_DIR}/build/doxygen )
+        set(DOXYGEN_OUTPUT_DIRECTORY ${PRJ_DOCS_DIR}/_build/doxygen )
         doxygen_add_docs(docs-doxygen ${ALL_FILES_PROJECT} )
     
         # Convert Doxygen xml to rst for Sphinx

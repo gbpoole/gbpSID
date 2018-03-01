@@ -16,8 +16,8 @@ GIT_HASH=$(shell git rev-parse --short HEAD)
 ECHO = /bin/echo
 export ECHO
 
-# The build directory for documentation
-BUILD_DIR_DOCS:=$(PRJ_DIR)/docs/build
+# The build directory for documentation ('_build' to avoid breaking Readthedocs builds)
+BUILD_DIR_DOCS:=$(PRJ_DIR)/docs/_build
 
 # List of common targets (potentially) requiring specialized action for each language separately
 BUILD_LIST =
@@ -103,7 +103,7 @@ endif
 .PHONY: docs
 docs: $(DOCS_LIST) docs-update
 	@$(ECHO) "Building documenation..."
-	@cd docs;sphinx-build . build
+	@cd docs;sphinx-build . _build
 	@$(ECHO) "Done."
 
 # Update API documentation

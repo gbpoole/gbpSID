@@ -470,7 +470,7 @@ def generate_C_execs_rst(project):
             # Send output of executable to the output file
             outFile.write(exec_i + '\n')
             outFile.write('-' * len(exec_i) + '\n')
-            out = subprocess.check_output([project.dir_root + "/build/" + exec_i, "-h"]).decode("utf-8")
+            out = subprocess.check_output([project.params['dir_build'] + "/" + exec_i, "-h"]).decode("utf-8")
             outFile.write(reformat_Clara_help_to_rst(out))
 
         # Add the footer if there is material for this module

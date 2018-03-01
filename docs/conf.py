@@ -63,7 +63,7 @@ extensions = ['sphinx.ext.autodoc',
               'breathe']
 
 # Some things that Breathe needs
-breathe_projects = {this_project.params['project_name']: "build/doxygen/xml/"}
+breathe_projects = {this_project.params['project_name']: "%s/doxygen/xml/" % (this_project.params['dir_docs_build'])}
 breathe_default_project = this_project.params['project_name']
 
 # Add any paths that contain templates here, relative to this directory.
@@ -112,7 +112,7 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ['build*', '**/extern']
+exclude_patterns = ['build*', '_build*', '**/extern']
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'

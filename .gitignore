@@ -23,6 +23,7 @@ __pycache__
 cmake-build-*
 build-*
 build
+_build
 
 # Used for testing
 mpich

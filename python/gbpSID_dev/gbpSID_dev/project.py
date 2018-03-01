@@ -27,10 +27,13 @@ class project:
         # Convert to single dictionary
         self.params = {k: v for d in params_list for k, v in d.items()}
 
-        # Set some project directories
+        # Set some project directories. Use '_build' as the documentation build
+        # directory to avoid breaking builds with Readthedocs, where it is wired
+        # to be '_build' and (it seems) can't be changed
+        self.params['dir_build'] = os.path.abspath(os.path.join(self.dir_root, "build"))
         self.params['dir_docs'] = os.path.abspath(os.path.join(self.dir_root, "docs"))
         self.params['dir_docs_api_src'] = os.path.abspath(os.path.join(self.dir_root, "docs/src"))
-        self.params['dir_docs_build'] = os.path.abspath(os.path.join(self.dir_root, "docs/build"))
+        self.params['dir_docs_build'] = os.path.abspath(os.path.join(self.dir_root, "docs/_build"))
         self.params['dir_python'] = os.path.abspath(os.path.join(self.dir_root, "python"))
         self.params['dir_python_pkg'] = os.path.abspath(os.path.join(self.dir_root, 'python/gbpSID/'))
 
