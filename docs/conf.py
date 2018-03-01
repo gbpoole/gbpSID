@@ -63,7 +63,7 @@ extensions = ['sphinx.ext.autodoc',
               'breathe']
 
 # Some things that Breathe needs
-breathe_projects = {this_project.params['project_name']: "%s/doxygen/xml/" % (this_project.params['dir_docs_build'])}
+breathe_projects = {this_project.params['project_name']: "build/doxygen/xml/"}
 breathe_default_project = this_project.params['project_name']
 
 # Add any paths that contain templates here, relative to this directory.
