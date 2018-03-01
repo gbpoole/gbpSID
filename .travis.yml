@@ -38,13 +38,7 @@ install: |
       sudo apt-get install -qq g++-6
       sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
     elif [ "$TRAVIS_OS_NAME" = "osx"  ]; then
-      echo "test1"
-      ls /usr/local
-      echo "test2"
       brew outdated gcc || brew upgrade gcc
-      echo "test3"
-      ls /usr/local
-      echo "test4"
     fi
 
 # The following lines are needed by Codecov
