@@ -20,13 +20,22 @@ init_validate()
 set( CMAKE_INSTALL_PREFIX "./" )
 
 # Set default compilers (must come before project line)
-# For GCC build
-#set(CMAKE_C_COMPILER   "gcc")
-#set(CMAKE_CXX_COMPILER "g++")
-
-# For Clang build
-set(CMAKE_C_COMPILER   "clang")
-set(CMAKE_CXX_COMPILER "clang++")
+# By checking ENV, we can alter compiler versions in CI
+# environments (for example)
+message(STATUS "")
+message(STATUS "--- Configuring compiler ---")
+message(STATUS "")
+if(DEFINED ENV{CXX} AND DEFINED ENV{CC})
+    set(CMAKE_C_COMPILER $ENV{CC})
+    set(CMAKE_CXX_COMPILER $ENV{CXX})
+    message(STATUS "C   compiler set from environment: ${CMAKE_C_COMPILER}")
+    message(STATUS "C++ compiler set from environment: ${CMAKE_CXX_COMPILER}")
+else()
+    set(CMAKE_C_COMPILER   "clang")
+    set(CMAKE_CXX_COMPILER "clang++")
+    message(STATUS "C   compiler set from default: ${CMAKE_C_COMPILER}")
+    message(STATUS "C++ compiler set from default: ${CMAKE_CXX_COMPILER}")
+endif()
 
 # Compiler flags
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wextra")
@@ -36,7 +45,7 @@ set(CMAKE_CXX_STANDARD 11)
 project (${GBP_PROJECT_NAME})
 
 # Check for minimum versions of compilers to avoid ABI conflicts
-message(STATUS "Checking compiler:")
+message(STATUS "Checking compiler version:")
 if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(VERSION_MIN "5.0.0")
     if(CMAKE_CXX_COMPILER_VERSION VERSION_LESS ${VERSION_MIN})
@@ -52,6 +61,9 @@ else()
 endif()
 message(STATUS "   ID     : ${CMAKE_CXX_COMPILER_ID}")
 message(STATUS "   VERSION: ${CMAKE_CXX_COMPILER_VERSION}")
+message(STATUS "")
+message(STATUS "--- Finished configuring compiler ---")
+message(STATUS "")
 
 # Load all macros and functions
 message(STATUS "Loading macros & functions...")
