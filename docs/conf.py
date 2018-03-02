@@ -50,6 +50,9 @@ sys.path.append(breathe_directory)
 if (os.environ.get('READTHEDOCS', None) == 'True'):
     path_doxyfile=os.path.join(this_project.params['dir_docs'],"Doxyfile")
     dir_doxy_xml=os.path.join(this_project.params['dir_docs'],"xml")
+    print("test1")
+    subprocess.call("ls", shell=True)
+    print("test2")
     with open(path_doxyfile,"w") as fp_out:
         fp_out.write("OUTPUT_DIRECTORY=docs\n")
         fp_out.write("RECURSIVE=YES\n")
