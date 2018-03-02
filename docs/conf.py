@@ -57,6 +57,13 @@ if (os.environ.get('READTHEDOCS', None) == 'True'):
         fp_out.write("OUTPUT_DIRECTORY=docs\n")
         fp_out.write("RECURSIVE=YES\n")
     subprocess.call("cd ..; doxygen %s"%(path_doxyfile), shell=True)
+    print("test3")
+    subprocess.call("ls", shell=True)
+    print("test4")
+    subprocess.call("ls ..", shell=True)
+    print("test5")
+    subprocess.call("ls xml", shell=True)
+    print("test6")
 else:
     dir_doxy_xml=os.path.join(this_project.params['dir_docs_build'],"doxygen/xml")
 
