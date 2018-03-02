@@ -48,8 +48,11 @@ sys.path.append(breathe_directory)
 
 # If the is a Readthedocs build, then we need to run Doxygen
 if (os.environ.get('READTHEDOCS', None) == 'True'):
-    dir_doxy_xml=os.path.join(os.path.realpath(__file__),"xml")
-    subprocess.call('cd ../doxygen; doxygen docs/Doxyfile', shell=True)
+    path_doxyfile=os.path.join(this_project.params['dir_docs'],"Doxyfile")
+    dir_doxy_xml=os.path.join(this_project.params['dir_docs'],"xml")
+    with open(path_doxyfile,"w") as fp_out:
+        fp_out.write("OUTPUT_DIRECTORY=docs")
+    subprocess.call("cd ../doxygen; doxygen %s"%(path_doxyfile), shell=True)
 else:
     dir_doxy_xml=os.path.join(this_project.params['dir_docs_build'],"doxygen/xml")
 
