@@ -7,5 +7,6 @@
 #include <file_io/gbpSID_file_io.h>
 #include <mpi/gbpSID_mpi.h>
 #include <dev/gbpSID_dev.h>
+#include <tools/gbpSID_tools.h>
 
 #endif
