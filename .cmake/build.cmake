@@ -317,8 +317,47 @@ macro(process_targets cur_dir )
     endforeach()
 endmacro()
 
+# Process an environment variable
+macro(define_project_env_variable variableName description default_value )
+    # Check to see if the variable has been defined in the environment
+    if (NOT "$ENV{${variableName}}" STREQUAL "")
+        set(${variableName} "$ENV{${variableName}}" CACHE INTERNAL "Copied from environment variable")
+        message(STATUS "${variableName} set to {${${variableName}}} from environment.")
+    # ... if not, set it to the given default
+    else()
+        set(${variableName} "${default_value}" CACHE INTERNAL "Set from default")
+        message(STATUS "${variableName} set to {${${variableName}}} from default.")
+    endif()
+
+    # Check for optional arguments.  They will be allowed values.
+    set (allowed_values ${ARGN})
+    list(LENGTH allowed_values n_allowed_values)
+
+    # If any allowed values are given, make sure that the set value is one of them
+    if(${n_allowed_values} GREATER 0)
+        list (FIND allowed_values "${${variableName}}" _index)
+        if (${_index} EQUAL -1)
+            message(FATAL_ERROR "Value assigned to ${variableName} (${${variableName}}) is not a member of the given allowed list (${allowed_values}).")
+        endif()        
+    endif()
+
+    # Define a compile option from the variable if it is clearly boolean
+    if(${n_allowed_values} EQUAL 2)
+        list (FIND allowed_values "ON"  _index1)
+        list (FIND allowed_values "OFF" _index2)
+        if(_index1 GREATER -1 AND _index2 GREATER -1)
+            option(${variableName} ${description} ${${variableName}})
+            if(${${variableName}})
+                message(STATUS "Adding compile definition: ${variableName}")
+                add_definitions(-D${variableName})
+            endif()
+        endif()
+    endif()
+
+endmacro()
+
 # Add tests (optionally give test filename; else 'tests.cmake' is default)
-macro(add_tests)
+macro(process_tests)
     # Check for optional arguments
     set (optional_args ${ARGN})
     list(LENGTH optional_args n_optional_args)
@@ -334,7 +373,7 @@ macro(add_tests)
         enable_testing()
         include(TEST_FILE_PATH)
     else()
-        message(STATUS "No test files specified.")
+        message(STATUS "No tests have been specified for this project.")
     endif()
 endmacro()
 

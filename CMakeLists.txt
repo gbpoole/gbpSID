@@ -20,24 +20,17 @@ init_validate()
 set( CMAKE_INSTALL_PREFIX "./" )
 
 # Set default compilers; must come before project()
-message(STATUS "")
-message(STATUS "--- Configuring compiler ---")
-message(STATUS "")
 include ("compilers")
 init_compilers()
 
 # Declare the project name
-project (${GBP_PROJECT_NAME})
+project (${_PROJECT_NAME})
 
 # Compiler flags
 set_compiler_flags()
 
 # Validate compilers (minimum versions, etc)
 validate_compilers()
-
-message(STATUS "")
-message(STATUS "--- Finished configuring compiler ---")
-message(STATUS "")
 
 # Load all macros and functions
 message(STATUS "Loading macros & functions...")
@@ -73,8 +66,8 @@ process_headers( ${CMAKE_SOURCE_DIR} )
 # Generate all library and executable targets
 process_targets( ${CMAKE_SOURCE_DIR} )
 
-# Enable testing
-add_tests()
+# Enable testing (defined in 'tests.cmake'; no tests if absent)
+process_tests()
 
 # ==================
 # Add custom targets 

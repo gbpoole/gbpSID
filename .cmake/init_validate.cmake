@@ -13,8 +13,8 @@ macro(init_validate)
     endif()
 
     # Check that a project name has been defined
-    if(NOT GBP_PROJECT_NAME)
-        message( SEND_ERROR "GBP_PROJECT_NAME has not been set by project_init()")
+    if(NOT _PROJECT_NAME)
+        message( SEND_ERROR "_PROJECT_NAME has not been set by 'project_options_and_dependencies'.")
         set(ERROR_FOUND ON)
     endif()
 
