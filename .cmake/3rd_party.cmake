@@ -125,11 +125,9 @@ endmacro()
 macro(check_3rd_party_status success )
     # Write a sucess/failure message and throw an error if needed
     if(${success})
-        # Create a couple preprocessor macros that can be used in the code
+        # Create a preprocessor macro that can be used in the code
         add_definitions(-DUSE_${lib_name})
-        add_definitions(-D${lib_name}_FOUND)
         SET(USE_${lib_name} TRUE CACHE INTERNAL "${lib_name} is configured")
-        SET(${lib_name}_FOUND TRUE CACHE INTERNAL "${lib_name} is configured")
         message(STATUS "   -> ${required_txt} library initialized:  ${lib_name}")
     else()
         if(required STREQUAL "REQUIRED" )
