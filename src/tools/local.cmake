@@ -29,6 +29,7 @@ list(APPEND INCFILES "gbpSID_tools.h")
 # Add source files
 # eg. list(APPEND SRCFILES "file" )
 list(APPEND SRCFILES "exchange_ring_buffer.c")
+list(APPEND SRCFILES "set_exchange_ring_ranks.c")
 
 # Add executable source files (those with a main())
 # eg. list(APPEND EXEFILES "file" )
