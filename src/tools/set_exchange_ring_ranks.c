@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
-#include <gbpLib.h>
-#include <gbpDomain.h>
+#include <gbpSID.h>
 
 void set_exchange_ring_ranks(int *rank_to, int *rank_from, int i_rank) {
     if(i_rank != 0) {
