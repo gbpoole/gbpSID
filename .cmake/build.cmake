@@ -5,6 +5,18 @@
 # Macro to get all the information we
 #    need about a given directory
 macro(set_dir_state cur_dir)
+    # Check optional arguments to see if we've been asked to scan all directories
+    set (optional_args ${ARGN})
+    list(LENGTH optional_args n_optional_args)
+    set(SCAN_ALL_DIRS FALSE)
+    if(${n_optional_args} EQUAL 1)
+        if(optional_args)
+            set(SCAN_ALL_DIRS TRUE)
+        endif()
+    elseif(NOT ${n_optional_args} EQUAL 0)
+        message(STATUS "Invalid number of optional arguments (${n_optional_args}) passed to set_dir_state().")
+    endif()
+
     # Read a file which specifies the content
     #   and subdirectory structure of the
     #   given directory.
@@ -244,7 +256,7 @@ macro(process_options cur_dir )
     endif()
 
     # Recurse through all directories
-    set_dir_state(${cur_dir})
+    set_dir_state(${cur_dir} TRUE)
     foreach(_dir_name ${ALLDIRS} )
         process_options( ${cur_dir}/${_dir_name} ) 
     endforeach()
@@ -271,7 +283,7 @@ macro(process_dependencies cur_dir )
     endif()
 
     # Recurse through all directories
-    set_dir_state(${cur_dir})
+    set_dir_state(${cur_dir} TRUE)
     foreach(_dir_name ${ALLDIRS} )
         process_options( ${cur_dir}/${_dir_name} ) 
     endforeach()
@@ -374,13 +386,13 @@ endmacro()
 # Process an environment variable
 macro(define_project_env_variable variableName description default_value )
     # Check to see if the variable has been defined in the environment
-    if ("$ENV{${variableName}}")
+    if (DEFINED ENV{${variableName}})
         set(${variableName} "$ENV{${variableName}}" CACHE INTERNAL "Copied from environment variable")
-        message(STATUS "${variableName} set to {${${variableName}}} from environment.")
+        message(STATUS "   -> ${variableName} set to {${${variableName}}} from environment.")
     # ... if not, set it to the given default
     else()
         set(${variableName} "${default_value}" CACHE INTERNAL "Set from default")
-        message(STATUS "${variableName} set to {${${variableName}}} from default.")
+        message(STATUS "   -> ${variableName} set to {${${variableName}}} from default.")
     endif()
 
     # Check for optional arguments.  They will be allowed values.
@@ -402,7 +414,7 @@ macro(define_project_env_variable variableName description default_value )
         if(_index1 GREATER -1 AND _index2 GREATER -1)
             option(${variableName} ${description} ${${variableName}})
             if(${${variableName}})
-                message(STATUS "Adding compile definition: ${variableName}")
+                message(STATUS "   -> Adding compile definition: ${variableName}")
                 add_definitions(-D${variableName})
             endif()
         endif()

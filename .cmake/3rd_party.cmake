@@ -7,7 +7,7 @@
 # Declare that a 3rd-party library is *required*
 function(set_3rd_party_required lib_name )
     # Check if USE_lib_name has been set in the environment.  Validate value if so.
-    if("$ENV{USE_${lib_name}}")
+    if(DEFINED ENV{USE_${lib_name}})
         if(NOT "$ENV{USE_${lib_name}}")
             message(FATAL_ERROR "A required library (${lib_name}) has been switched-off in the environment.")
         endif()
