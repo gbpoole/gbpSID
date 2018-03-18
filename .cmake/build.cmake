@@ -245,6 +245,8 @@ macro(process_options cur_dir )
     if( ${cur_dir} STREQUAL ${CMAKE_SOURCE_DIR} )
         message(STATUS "" )
         message(STATUS "Checking for project options..." )
+        set(project_variable_names  "")
+        set(project_variable_values "")
     endif()
 
     # Check if the current directory has a 'project.cmake' file
@@ -385,41 +387,47 @@ endmacro()
 
 # Process an environment variable
 macro(define_project_env_variable variableName description default_value )
-    # Check to see if the variable has been defined in the environment
-    if (DEFINED ENV{${variableName}})
-        set(${variableName} "$ENV{${variableName}}" CACHE INTERNAL "Copied from environment variable")
-        message(STATUS "   -> ${variableName} set to {${${variableName}}} from environment.")
-    # ... if not, set it to the given default
-    else()
-        set(${variableName} "${default_value}" CACHE INTERNAL "Set from default")
-        message(STATUS "   -> ${variableName} set to {${${variableName}}} from default.")
-    endif()
+    # Check to see if this varaible has already been defined
+    if(NOT "${variableName}" IN_LIST project_variable_names)
+        # Check to see if the variable has been defined in the environment
+        if (DEFINED ENV{${variableName}})
+            set(${variableName} "$ENV{${variableName}}" CACHE INTERNAL "Copied from environment variable")
+            message(STATUS "   -> ${variableName} set to {${${variableName}}} from environment.")
+        # ... if not, set it to the given default
+        else()
+            set(${variableName} "${default_value}" CACHE INTERNAL "Set from default")
+            message(STATUS "   -> ${variableName} set to {${${variableName}}} from default.")
+        endif()
 
-    # Check for optional arguments.  They will be allowed values.
-    set (allowed_values ${ARGN})
-    list(LENGTH allowed_values n_allowed_values)
+        # Check for optional arguments.  They will be allowed values.
+        set (allowed_values ${ARGN})
+        list(LENGTH allowed_values n_allowed_values)
 
-    # If any allowed values are given, make sure that the set value is one of them
-    if(${n_allowed_values} GREATER 0)
-        list (FIND allowed_values "${${variableName}}" _index)
-        if (${_index} EQUAL -1)
-            message(FATAL_ERROR "Value assigned to ${variableName} (${${variableName}}) is not a member of the given allowed list (${allowed_values}).")
-        endif()        
-    endif()
+        # If any allowed values are given, make sure that the set value is one of them
+        if(${n_allowed_values} GREATER 0)
+            list (FIND allowed_values "${${variableName}}" _index)
+            if (${_index} EQUAL -1)
+                message(FATAL_ERROR "Value assigned to ${variableName} (${${variableName}}) is not a member of the given allowed list (${allowed_values}).")
+            endif()        
+        endif()
 
-    # Define a compile option from the variable if it is clearly boolean
-    if(${n_allowed_values} EQUAL 2)
-        list (FIND allowed_values "ON"  _index1)
-        list (FIND allowed_values "OFF" _index2)
-        if(_index1 GREATER -1 AND _index2 GREATER -1)
-            option(${variableName} ${description} ${${variableName}})
-            if(${${variableName}})
-                message(STATUS "   -> Adding compile definition: ${variableName}")
-                add_definitions(-D${variableName})
+        # Define a compile option from the variable if it is clearly boolean
+        if(${n_allowed_values} EQUAL 2)
+            list (FIND allowed_values "ON"  _index1)
+            list (FIND allowed_values "OFF" _index2)
+            if(_index1 GREATER -1 AND _index2 GREATER -1)
+                option(${variableName} ${description} ${${variableName}})
+                if(${${variableName}})
+                    message(STATUS "   -> Adding compile definition: ${variableName}")
+                    add_definitions(-D${variableName})
+                endif()
             endif()
         endif()
-    endif()
 
+        # Add the variable to the project list
+        list(APPEND project_variable_names  ${variableName})
+        list(APPEND project_variable_values ${allowed_values})
+    endif()
 endmacro()
 
 # Add tests (optionally give test filename; else 'tests.cmake' is default)
