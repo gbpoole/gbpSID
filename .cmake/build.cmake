@@ -374,7 +374,7 @@ endmacro()
 # Process an environment variable
 macro(define_project_env_variable variableName description default_value )
     # Check to see if the variable has been defined in the environment
-    if (NOT "$ENV{${variableName}}" STREQUAL "")
+    if ("$ENV{${variableName}}")
         set(${variableName} "$ENV{${variableName}}" CACHE INTERNAL "Copied from environment variable")
         message(STATUS "${variableName} set to {${${variableName}}} from environment.")
     # ... if not, set it to the given default

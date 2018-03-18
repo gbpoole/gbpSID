@@ -6,6 +6,12 @@
 
 # Declare that a 3rd-party library is *required*
 function(set_3rd_party_required lib_name )
+    # Check if USE_lib_name has been set in the environment.  Validate value if so.
+    if("$ENV{USE_${lib_name}}")
+        if(NOT "$ENV{USE_${lib_name}}")
+            message(FATAL_ERROR "A required library (${lib_name}) has been switched-off in the environment.")
+    endif()
+
     # Check for optional arguments
     set (optional_args ${ARGN})
     list(LENGTH optional_args n_optional_args)
@@ -21,6 +27,15 @@ endfunction()
 # Declare that a 3rd-party library is *optional*
 # Build will *fail* if val is 'ON' and package load fails
 function(set_3rd_party_optional lib_name val )
+    # Check if USE_lib_name has been set in the environment.  Set to value if so.
+    if(DEFINED ENV{USE_${lib_name}})
+        set(val_env "$ENV{USE_${lib_name}}")
+        if(NOT val_env STREQUAL val)
+            set(val "${val_env}")
+            message(STATUS "   -> Optional library ${lib_name} has been turned ${val} from the environment.")
+        endif()
+    endif()
+
     # Check for optional arguments
     set (optional_args ${ARGN})
     list(LENGTH optional_args n_optional_args)
@@ -44,6 +59,15 @@ endfunction()
 # Declare that a 3rd-party library is *requested*
 # Build will *continue* if val is 'ON' and package load fails
 function(set_3rd_party_requested lib_name val)
+    # Check if USE_lib_name has been set in the environment.  Set to value if so.
+    if(DEFINED ENV{USE_${lib_name}})
+        set(val_env "$ENV{USE_${lib_name}}")
+        if(NOT val_env STREQUAL val)
+            set(val "${val_env}")
+            message(STATUS "   -> Requested library ${lib_name} has been turned ${val} from the environment.")
+        endif()
+    endif()
+
     # Check for optional arguments
     set (optional_args ${ARGN})
     list(LENGTH optional_args n_optional_args)
@@ -130,7 +154,7 @@ macro(check_3rd_party_status success )
         SET(USE_${lib_name} TRUE CACHE INTERNAL "${lib_name} is configured")
         message(STATUS "   -> ${required_txt} library initialized:  ${lib_name}")
     else()
-        if(required STREQUAL "REQUIRED" )
+        if((required_txt STREQUAL "Required") OR (required_txt STREQUAL "Optional") )
             message(FATAL_ERROR "${required_txt} library initialization failed: ${lib_name}")
         else()
             message(STATUS "${required_txt} library initialization failed: ${lib_name}")
