@@ -91,8 +91,7 @@ endif
 ifeq ($(shell which pip),)
 	@$(error "'pip' not in path.  Please install it or fix your environment and try again.)
 endif
-	# Install everything in the requirements file
-	@pip install -r .requirements.txt
+	@pip -q install -r .requirements.txt
 	@$(ECHO) "Done."
 
 ########################################

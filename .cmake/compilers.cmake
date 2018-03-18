@@ -20,8 +20,8 @@ endmacro(init_compilers)
 
 # Set compiler flags
 macro(set_compiler_flags)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 -Wextra")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu99 -Wextra")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -std=gnu99 -Wextra")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=gnu99 -Wextra")
     set(CMAKE_CXX_STANDARD 11)
 endmacro(set_compiler_flags)
 
@@ -63,5 +63,4 @@ macro(validate_compilers)
     message(STATUS "   VERSION: ${CMAKE_CXX_COMPILER_VERSION}")
     message(STATUS "")
     message(STATUS "--- Finished configuring compiler ---")
-    message(STATUS "")
 endmacro(validate_compilers)

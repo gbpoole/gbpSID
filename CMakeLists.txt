@@ -3,41 +3,39 @@
 #    -   latest version availale on Travis CI     -
 cmake_minimum_required(VERSION 3.2)
 
-# Read the file with the macro definitions which specify
-# the behaviour specific to this project and then run
-# the initialization macro
-include(${CMAKE_SOURCE_DIR}/project.cmake)
-
+# ==== Set paths ====
 # Add the 'cmake' directory in the project directory to the module path
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_SOURCE_DIR};${CMAKE_SOURCE_DIR}/.cmake")
-
-# Load and run a macro to validate the initialization
-include ("init_validate")
-init_validate()
 
 # Clear default install directory (user should use
 # DESTDIR with make to set installation directory)
 set( CMAKE_INSTALL_PREFIX "./" )
+# ===================
+
+# Load all macros and functions
+message(STATUS "Loading macros & functions...")
+include ("validate_project") # Project validation and initialization macros
+include ("compilers")        # Compiler set-up macros
+include ("3rd_party")        # 3rd party library support functions
+include ("build")            # Main build macros
+include ("custom_targets")   # Custom-target macros
+message(STATUS "Done.")
+
+# Initialize this project
+include ("project")
+validate_project( )
 
 # Set default compilers; must come before project()
-include ("compilers")
 init_compilers()
 
 # Declare the project name
 project (${_PROJECT_NAME})
 
-# Compiler flags
-set_compiler_flags()
-
 # Validate compilers (minimum versions, etc)
 validate_compilers()
 
-# Load all macros and functions
-message(STATUS "Loading macros & functions...")
-include ("build")          # Main build macros
-include ("3rd_party")      # 3rd party library support functions
-include ("custom_targets") # Custom-target macros
-message(STATUS "Done.")
+# Compiler flags
+set_compiler_flags()
 
 # Generate compile commands.json file
 # (needed by things like 'clang-tidy')
@@ -46,8 +44,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # ===========================================
 # Execute all project specific configurations
 # (set options, library dependencies, etc.)
+# These are defined in 'project.cmake' files.
 # ===========================================
-project_options_and_dependencies()
+process_options( ${CMAKE_SOURCE_DIR} )
+process_dependencies( ${CMAKE_SOURCE_DIR} )
 
 # ====================================================
 # Initialize &/or build any needed external libraries.

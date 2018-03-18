@@ -227,6 +227,60 @@ macro(build_data_files cur_dir )
     endforeach()
 endmacro()
 
+# Macro for initializing environment-settable options for the whole project
+macro(process_options cur_dir )
+
+    if( ${cur_dir} STREQUAL ${CMAKE_SOURCE_DIR} )
+        message(STATUS "" )
+        message(STATUS "Checking for project options..." )
+    endif()
+
+    # Check if the current directory has a 'project.cmake' file
+    # If it does, validate it and then run the project_options()
+    # macro that dhould be defined within it.
+    if(EXISTS "${cur_dir}/project.cmake")
+        include( ${cur_dir}/project.cmake )
+        project_options( ${cur_dir} )
+    endif()
+
+    # Recurse through all directories
+    set_dir_state(${cur_dir})
+    foreach(_dir_name ${ALLDIRS} )
+        process_options( ${cur_dir}/${_dir_name} ) 
+    endforeach()
+
+    if( ${cur_dir} STREQUAL ${CMAKE_SOURCE_DIR} )
+        message(STATUS "Done." )
+    endif()
+endmacro()
+
+# Macro for initializing 3rd-party dependencies for the whole project
+macro(process_dependencies cur_dir )
+
+    if( ${cur_dir} STREQUAL ${CMAKE_SOURCE_DIR} )
+        message(STATUS "" )
+        message(STATUS "Checking for project dependencies..." )
+    endif()
+
+    # Check if the current directory has a 'project.cmake' file
+    # If it does, validate it and then run the project_options()
+    # macro that dhould be defined within it.
+    if(EXISTS "${cur_dir}/project.cmake")
+        include( ${cur_dir}/project.cmake )
+        project_dependencies( ${cur_dir} )
+    endif()
+
+    # Recurse through all directories
+    set_dir_state(${cur_dir})
+    foreach(_dir_name ${ALLDIRS} )
+        process_options( ${cur_dir}/${_dir_name} ) 
+    endforeach()
+
+    if( ${cur_dir} STREQUAL ${CMAKE_SOURCE_DIR} )
+        message(STATUS "Done." )
+    endif()
+endmacro()
+
 # Macro for initializing &/or building external dependencies
 macro(process_externs cur_dir )
 
@@ -389,4 +443,3 @@ macro(print_all_variables)
     endforeach()
     message(STATUS "print_all_variables------------------------------------------}")
 endmacro()
-
