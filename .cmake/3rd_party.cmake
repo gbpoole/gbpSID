@@ -10,6 +10,7 @@ function(set_3rd_party_required lib_name )
     if("$ENV{USE_${lib_name}}")
         if(NOT "$ENV{USE_${lib_name}}")
             message(FATAL_ERROR "A required library (${lib_name}) has been switched-off in the environment.")
+        endif()
     endif()
 
     # Check for optional arguments
