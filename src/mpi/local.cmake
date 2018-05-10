@@ -48,6 +48,7 @@ list(APPEND SRCFILES "SID_Gatherv.c")
 list(APPEND SRCFILES "SID_Scatterv.c")
 list(APPEND SRCFILES "SID_Barrier.c")
 list(APPEND SRCFILES "SID_Bcast.c")
+list(APPEND SRCFILES "SID_Wait.c")
 list(APPEND SRCFILES "SID_Waitall.c")
 list(APPEND SRCFILES "SID_Wtime.c")
 
