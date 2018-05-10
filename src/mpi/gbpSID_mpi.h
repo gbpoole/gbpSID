@@ -139,6 +139,8 @@ void SID_Probe(int source,
                int tag,
                SID_Comm *comm,
                SID_Status *status);
+void SID_Wait(SID_Request *array_request,
+              SID_Status  *array_status);
 void SID_Waitall(int count,
                  SID_Request array_request[],
                  SID_Status  array_status[]);
