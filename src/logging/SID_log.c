@@ -9,7 +9,24 @@ void SID_log(const char *fmt, int mode, ...) {
     va_list vargs;
     va_start(vargs, mode);
 
-    if(SID.logging_active && (SID.I_am_Master || SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_ALLRANKS)) && (SID.fp_log != NULL)) {
+    // If n_ranks>1 and ALLRANKS is turned-on in the mode, then
+    // loop over all ranks, replacing the switch with ANYRANK
+    // and LABELRANK, and then exit.  Turn-off SID_LOG_CHECKPOINT
+    // to make sure that the call to SID_log() here does not block.
+    if(SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_ALLRANKS)){
+        mode&=(~SID_LOG_ALLRANKS);
+        if(SID.n_proc>1){
+            mode|=(SID_LOG_ANYRANK|SID_LOG_LABELRANK);
+            for(int i_rank=0;i_rank<SID.n_proc;i_rank++){
+                if(i_rank==SID.My_rank)
+                    SID_log(fmt,mode&(~SID_LOG_CHECKPOINT),vargs);
+                SID_Barrier(SID_COMM_WORLD);
+            }
+            return;
+        }
+    }
+
+    if(SID.logging_active && (SID.I_am_Master || SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_ANYRANK)) && (SID.fp_log != NULL)) {
         if(SID.level < SID_LOG_MAX_LEVELS) {
             // If SID_LOG_NOPRINT is set, do not write anything (useful for changing indenting)
             int flag_print = GBP_TRUE;
@@ -60,6 +77,10 @@ void SID_log(const char *fmt, int mode, ...) {
                     for(int i_level = 0; i_level < SID.level; i_level++)
                         fprintf(SID.fp_log, "%s", SID_LOG_INDENT_STRING);
                 }
+
+                // Write a rank label, if required
+                if(SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_LABELRANK))
+                    fprintf(SID.fp_log,"[Rank %3d]: ",SID.My_rank);
 
                 // Write text
                 vfprintf(SID.fp_log, fmt, vargs);
