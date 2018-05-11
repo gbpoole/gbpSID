@@ -1,9 +1,9 @@
-#ifndef GBPSID_APP_H
-#define GBPSID_APP_H
-
 #include <clara.hpp>
-#include <gbpSID_core.h>
 #include <iostream>
+
+// _MAIN absolutely must be declared before including gbpSID.h here
+#define _MAIN
+#include <gbpSID.h>
 
 namespace gbpSID {
     class application {
@@ -11,6 +11,8 @@ namespace gbpSID {
         // Arguments as passed from the command line
         int    _argc;
         char **_argv;
+
+        // A flag indicating if the application's syntax needs to be printed
         bool   _print_syntax;
 
         // Command-line parser
@@ -18,14 +20,12 @@ namespace gbpSID {
         std::string   instructions_text;
 
       public:
-        // These two virtual functions must be personalised for every application:
-        // ----------------------------------------------------------------------
+        // These two functions must be personalised for every application:
+        // ---------------------------------------------------------------
         // 1) This function defines the application-specific command line arguments
-        virtual void define_arguments(){};
+        void define_arguments();
         // 2) This function executes the application.  Make sure to return SID_ERROR_NONE if no error.
-        virtual int execute() {
-            return (SID_ERROR_NONE);
-        };
+        int execute();
         // ----------------------------------------------------------------------
 
         // Initialize the argument parser
@@ -127,4 +127,31 @@ namespace gbpSID {
     };
 
 } // namespace gbpSID
-#endif
+
+// This is the main() used for all gbpSID applications
+int main(int argc, char *argv[]) {
+    // Throw exceptions on high-level errors
+    int r_val = EXIT_SUCCESS;
+    try {
+        // Create an application instance.  This calls SID_Init() and parses
+        //    the arguments.  Later, the deconstructor calls SID_Finalize()
+        gbpSID::application app(argc, argv);
+
+        // Execute the application
+        int SID_r_val = app();
+
+        // Check for a clean exit.  Throw an exception otherwise.
+        if(SID_r_val != SID_ERROR_NONE)
+            throw SID_r_val;
+    }
+
+    // Catch exceptions.  Set and report an error code
+    //    if exceptions have been thrown.
+    catch(std::exception &e) {
+        std::cerr << "\nError: " << e.what() << "\n\n";
+        r_val = EXIT_FAILURE;
+    }
+
+    // Return EXIT_SUCCESS or EXIT_FAILURE
+    return r_val;
+}

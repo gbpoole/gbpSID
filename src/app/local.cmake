@@ -25,7 +25,6 @@ set(DATASUBDIR "" )
 # Add header files
 # eg. list(APPEND INCFILES "file" )
 list(APPEND INCFILES "gbpSID_app.hh")
-list(APPEND INCFILES "gbpSID_app_main.hh")
 
 # Add source files
 # eg. list(APPEND SRCFILES "file" )
