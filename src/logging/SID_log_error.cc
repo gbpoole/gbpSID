@@ -1,3 +1,4 @@
+#include <stdarg.h>
 #include <gbpSID.hh>
 
 // This is a wrapper of SID_log_error() for C++ strings

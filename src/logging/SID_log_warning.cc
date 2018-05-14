@@ -1,3 +1,4 @@
+#include <stdarg.h>
 #include <gbpSID.hh>
 
 // This is an overload of SID_log_warning() for C++ strings
