@@ -3,7 +3,7 @@
 
 // _MAIN absolutely must be declared before including gbpSID.h here
 #define _MAIN
-#include <gbpSID.h>
+#include <gbpSID.hh>
 
 namespace gbpSID {
     class application {
@@ -16,10 +16,12 @@ namespace gbpSID {
         bool   _print_syntax;
 
         // Command-line parser
-        clara::Parser cli;
-        std::string   instructions_text;
+        clara::Parser   cli;
+        struct arg_list args;
+        std::string     instructions_text;
 
       public:
+
         // These two functions must be personalised for every application:
         // ---------------------------------------------------------------
         // 1) This function defines the application-specific command line arguments
@@ -101,11 +103,11 @@ namespace gbpSID {
             }
 
             // Display syntax information if needed
-            else if(SID_CHECK_BITFIELD_SWITCH(r_val, SID_ERROR_PRINT_SYNTAX)) {
+            else if(SID_CHECK_BITFIELD_SWITCH(r_val, SID_ERROR_PRINT_SYNTAX))
                 display_help();
-                // This flag is not meant to be part of any error codes
-                SID_DISABLE_BITFIELD_SWITCH(r_val, SID_ERROR_PRINT_SYNTAX);
-            }
+
+            // This flag is not meant to be part of any error codes
+            SID_DISABLE_BITFIELD_SWITCH(r_val, SID_ERROR_PRINT_SYNTAX);
 
             // Return an error code.  Make sure it is SID_ERROR_NONE for success.
             return (r_val);
