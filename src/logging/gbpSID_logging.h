@@ -38,17 +38,15 @@ struct pcounter_info {
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 void SID_log(const char *fmt, int mode, ...);
-void SID_log_set_fp(FILE *fp);
 void SID_log_error(const char *fmt, ...);
 void SID_log_warning(const char *fmt, int mode, ...);
+void SID_log_set_fp(FILE *fp);
 void SID_log_header();
 void SID_log_footer();
 void SID_set_verbosity(int mode, ...);
 void SID_Init_pcounter(pcounter_info *pcounter, size_t n_i, int n_report);
 void SID_check_pcounter(pcounter_info *pcounter, size_t i);
-
 #ifdef __cplusplus
 }
 #endif
