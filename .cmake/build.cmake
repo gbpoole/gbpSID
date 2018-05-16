@@ -17,6 +17,9 @@ macro(set_dir_state cur_dir)
         message(STATUS "Invalid number of optional arguments (${n_optional_args}) passed to set_dir_state().")
     endif()
 
+    # Initialize defaults
+    set(DATASUBDIR "" )
+
     # Read a file which specifies the content
     #   and subdirectory structure of the
     #   given directory.
@@ -55,9 +58,9 @@ macro(set_dir_state cur_dir)
     list(APPEND ALLDIRS ${SRCDIRS} )
     list(APPEND ALLDIRS ${PASSDIRS} )
 
-    # Set the full path to the final 
+    # Set the full path to the final
     # data directory install destination
-    set(DATADIR ${CMAKE_INSTALL_PREFIX}/data/${DATASUBDIR} )
+    set(DATADIR ${DESTDIR}/share/${DATASUBDIR} )
 endmacro()
 
 # Macro which adds a directory to the project's
@@ -148,6 +151,24 @@ macro(collect_data_files_recurse cur_dir )
     endforeach()
 endmacro()
 
+# Macros for adding sources to a library build
+macro(collect_tests cur_dir )
+    set(TESTS_LIST "" )
+    collect_tests_recurse( ${cur_dir} )
+endmacro()
+macro(collect_tests_recurse cur_dir )
+    # Add any executables in this directory to the list
+    set_dir_state( ${cur_dir} )
+    foreach(_test ${TESTS_WITH_PATH} )
+        list(APPEND TESTS_LIST ${_test} )
+    endforeach()
+
+    # Recurse over the source directories 
+    foreach( _dir_name ${SRCDIRS} )
+        collect_tests_recurse( ${cur_dir}/${_dir_name}  )
+    endforeach()
+endmacro()
+
 # Macro for initializing a specific library
 macro(build_library lib_name cur_dir )
 
@@ -217,8 +238,9 @@ macro(build_executables cur_dir )
         target_compile_options(${_exe_name} PRIVATE -DGBP_DATA_DIR=\"${DATADIR}\" )
         install(TARGETS ${_exe_name} DESTINATION bin )
 
-        # Add dependencies. 
+        # Add dependencies (including the math library)
         target_link_libraries(${_exe_name} ${_DEPLIST_REV})
+        target_link_libraries(${_exe_name} m)
         if(DEPLIST)
             add_dependencies(${_exe_name} ${DEPLIST})
         endif()
@@ -235,7 +257,7 @@ macro(build_data_files cur_dir )
     foreach( _data_file ${DATAFILE_LIST} )
         get_filename_component( _data_name ${_data_file} NAME )
         message(STATUS "Adding data file " ${_data_name} )
-        configure_file( ${_data_file} data/${DATASUBDIR}/${_data_name} COPYONLY )
+        install(FILES ${_data_file} DESTINATION share/${DATASUBDIR} )
     endforeach()
 endmacro()
 
@@ -260,7 +282,7 @@ macro(process_options cur_dir )
     # Recurse through all directories
     set_dir_state(${cur_dir} TRUE)
     foreach(_dir_name ${ALLDIRS} )
-        process_options( ${cur_dir}/${_dir_name} ) 
+        process_options( ${cur_dir}/${_dir_name} )
     endforeach()
 
     if( ${cur_dir} STREQUAL ${CMAKE_SOURCE_DIR} )
@@ -287,11 +309,28 @@ macro(process_dependencies cur_dir )
     # Recurse through all directories
     set_dir_state(${cur_dir} TRUE)
     foreach(_dir_name ${ALLDIRS} )
-        process_options( ${cur_dir}/${_dir_name} ) 
+        process_options( ${cur_dir}/${_dir_name} )
     endforeach()
 
     if( ${cur_dir} STREQUAL ${CMAKE_SOURCE_DIR} )
         message(STATUS "Done." )
+    endif()
+endmacro()
+
+# Add tests (optionally give test filename; else 'tests.cmake' is default)
+macro(process_tests cur_dir )
+    # Collect the tests for this directory
+    collect_tests( ${cur_dir} )
+    if(TESTS_LIST)
+        enable_testing()
+        foreach(test ${TESTS_LIST})
+            add_test(NAME ${test} COMMAND ${test})
+            set_target_properties(${test} PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/tests")
+        endforeach(test)
+        # Configure test properties
+        set_target_properties(tests PROPERTIES LINKER_LANGUAGE CXX)
+    else()
+        message(STATUS "No tests have been specified for this project.")
     endif()
 endmacro()
 
@@ -387,68 +426,53 @@ endmacro()
 
 # Process an environment variable
 macro(define_project_env_variable variableName description default_value )
-    # Check to see if this varaible has already been defined
-    if(NOT "${variableName}" IN_LIST project_variable_names)
-        # Check to see if the variable has been defined in the environment
-        if (DEFINED ENV{${variableName}})
-            set(${variableName} "$ENV{${variableName}}" CACHE INTERNAL "Copied from environment variable")
-            message(STATUS "   -> ${variableName} set to {${${variableName}}} from environment.")
-        # ... if not, set it to the given default
-        else()
+    # Check to see if the variable has been defined in the environment
+    if (NOT "$ENV{${variableName}}" STREQUAL "")
+        set(${variableName} "$ENV{${variableName}}" CACHE INTERNAL "Copied from environment variable")
+        message(STATUS "${variableName} set to {${${variableName}}} from environment.")
+    # ... if not, set it to the given default
+    else()
+        if (NOT "${default_value}" STREQUAL "NO_DEFAULT")
             set(${variableName} "${default_value}" CACHE INTERNAL "Set from default")
-            message(STATUS "   -> ${variableName} set to {${${variableName}}} from default.")
+            message(STATUS "${variableName} set to {${${variableName}}} from default.")
+        else()
+            message(FATAL_ERROR "A required project environmnet variable {${variableName}} has not been set.")
         endif()
+    endif()
 
-        # Check for optional arguments.  They will be allowed values.
-        set (allowed_values ${ARGN})
-        list(LENGTH allowed_values n_allowed_values)
+    # Check for optional arguments.  They will be allowed values.
+    set (allowed_values ${ARGN})
+    list(LENGTH allowed_values n_allowed_values)
 
-        # If any allowed values are given, make sure that the set value is one of them
-        if(${n_allowed_values} GREATER 0)
-            list (FIND allowed_values "${${variableName}}" _index)
-            if (${_index} EQUAL -1)
-                message(FATAL_ERROR "Value assigned to ${variableName} (${${variableName}}) is not a member of the given allowed list (${allowed_values}).")
-            endif()        
+    # If any allowed values are given, make sure that the set value is one of them
+    if(${n_allowed_values} GREATER 0)
+        list (FIND allowed_values "${${variableName}}" _index)
+        if (${_index} EQUAL -1)
+            message(FATAL_ERROR "Value assigned to ${variableName} (${${variableName}}) is not a member of the given allowed list (${allowed_values}).")
         endif()
+    endif()
 
-        # Define a compile option from the variable if it is clearly boolean
-        if(${n_allowed_values} EQUAL 2)
-            list (FIND allowed_values "ON"  _index1)
-            list (FIND allowed_values "OFF" _index2)
-            if(_index1 GREATER -1 AND _index2 GREATER -1)
-                option(${variableName} ${description} ${${variableName}})
-                if(${${variableName}})
-                    message(STATUS "   -> Adding compile definition: ${variableName}")
-                    add_definitions(-D${variableName})
-                endif()
+    # Define an appropriate compile option from the variable (boolean if clearly indicated as such by the defaults)
+    if(${n_allowed_values} EQUAL 2)
+        list (FIND allowed_values "ON"  _index1)
+        list (FIND allowed_values "OFF" _index2)
+        if(_index1 GREATER -1 AND _index2 GREATER -1)
+            option(${variableName} ${description} ${${variableName}})
+            if(${${variableName}})
+                #message(STATUS "Adding compile definition: ${variableName}")
+                add_definitions(-D${variableName}=1)
+            else()
+                add_definitions(-D${variableName}=0)
             endif()
+        else()
+            #message(STATUS "Adding compile definition: ${variableName}=${${variableName}}")
+            add_definitions(-D${variableName}=${${variableName}})
         endif()
-
-        # Add the variable to the project list
-        list(APPEND project_variable_names  ${variableName})
-        list(APPEND project_variable_values ${allowed_values})
-    endif()
-endmacro()
-
-# Add tests (optionally give test filename; else 'tests.cmake' is default)
-macro(process_tests)
-    # Check for optional arguments
-    set (optional_args ${ARGN})
-    list(LENGTH optional_args n_optional_args)
-    # Find the file
-    if(${n_optional_args} EQUAL 0)
-        find_path(TEST_FILE_PATH tests.cmake)
-    elseif(${n_optional_args} EQUAL 1)
-        find_path(TEST_FILE_PATH ${optional_args})
     else()
-        message(FATAL_ERROR "Too many optional arguments (${n_optional_args}; 0 or 1 allowed) sent to add_tests().")
+        #message(STATUS "Adding compile definition: ${variableName}=${${variableName}}")
+        add_definitions(-D${variableName}=${${variableName}})
     endif()
-    if(TEST_FILE_PATH)
-        enable_testing()
-        include(TEST_FILE_PATH)
-    else()
-        message(STATUS "No tests have been specified for this project.")
-    endif()
+
 endmacro()
 
 # Macro for printing variables

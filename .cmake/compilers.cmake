@@ -20,8 +20,8 @@ endmacro(init_compilers)
 
 # Set compiler flags
 macro(set_compiler_flags)
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -std=gnu99 -Wextra")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -std=gnu99 -Wextra")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O3 -Wextra")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -Wextra")
     set(CMAKE_CXX_STANDARD 11)
 endmacro(set_compiler_flags)
 

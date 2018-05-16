@@ -18,17 +18,17 @@ macro(validate_project)
         set(ERROR_FOUND ON)
     endif()
 
-    # Check that a project name has been defined
+    # Check that a project initalization macro has been defined
     if(NOT COMMAND project_init)
         message( SEND_ERROR "project_init() has not been set in project.cmake")
         set(ERROR_FOUND ON)
-    endif()
-
-    # Check that a project name has been defined
-    project_init()
-    if(NOT _PROJECT_NAME)
-        message( SEND_ERROR "_PROJECT_NAME has not been set by 'project_init()'.")
-        set(ERROR_FOUND ON)
+    else()
+        # Check that a project name has been defined by it
+        project_init()
+        if(NOT _PROJECT_NAME)
+            message( SEND_ERROR "_PROJECT_NAME has not been set by 'project_init()'.")
+            set(ERROR_FOUND ON)
+        endif()
     endif()
 
     # Stop Cmake if an error was encountered

@@ -56,7 +56,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # ===========================================
 # Execute all project specific configurations
 # (set options, library dependencies, etc.)
-# These are defined in 'project.cmake' files.
+# These should be defined in a 'project.cmake'
+# file.
 # ===========================================
 process_options( ${CMAKE_SOURCE_DIR} )
 process_dependencies( ${CMAKE_SOURCE_DIR} )
@@ -78,8 +79,8 @@ process_headers( ${CMAKE_SOURCE_DIR} )
 # Generate all library and executable targets
 process_targets( ${CMAKE_SOURCE_DIR} )
 
-# Enable testing (defined in 'tests.cmake'; no tests if absent)
-process_tests()
+# Enable testing (if any have been specified in the local.cmake files)
+process_tests( ${CMAKE_SOURCE_DIR} )
 
 # ==================
 # Add custom targets 
