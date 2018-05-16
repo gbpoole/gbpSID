@@ -5,16 +5,24 @@
 .PHONY: default
 default: all
 
+# This ensures that we use standard (what is used in interactive shells) version of echo.
+ECHO = /bin/echo
+export ECHO
+
 # Extract the project name from the parent directory
 PRJ_DIR=$(PWD)
-PRJ_NAME=$(shell basename $(PRJ_DIR))
+PRJ_NAME=`grep project_name .project.yml | awk '{print $$3}'`
 
 # Get git hash
 GIT_HASH=$(shell git rev-parse --short HEAD)
 
-# This ensures that we use standard (what is used in interactive shells) version of echo.
-ECHO = /bin/echo
-export ECHO
+# Fetch the version from the .version file
+ifneq ($(wildcard .version),)
+	PRJ_VERSION:=`cat .version`
+	PRJ_VERSION:='v'$(PRJ_VERSION)
+else
+	PRJ_VERSION:=unset
+endif
 
 # The build directory for documentation ('_build' to avoid breaking Readthedocs builds)
 BUILD_DIR_DOCS:=$(PRJ_DIR)/docs/_build
@@ -92,6 +100,7 @@ ifeq ($(shell which pip),)
 	@$(error "'pip' not in path.  Please install it or fix your environment and try again.)
 endif
 	@pip -q install -r .requirements.txt
+	@pip -q install -r .requirements_build.txt
 	@$(ECHO) "Done."
 
 ########################################
@@ -140,12 +149,10 @@ lint-check:	.print_status $(LINT_CHECK_LIST)
 # Apply all linting suggestions
 lint-fix:	.print_status $(LINT_FIX_LIST)
 
-# Update the pip python requirements file for the project.  This
-# needs to be kept up-to-date for Readthedocs builds (for example).
+# Update the pip python requirements files for the project.
 .PHONY: requirements-update
-requirements-update: .requirements.txt
-.requirements.txt:
-	@$(ECHO) "Generating project Python requirements..."
+requirements-update: .print_status
+	@$(ECHO) "Updating project Python requirements..."
 ifeq ($(shell which pigar),)
 	@$(error "'pigar' not in path.  Please install it with 'pip install pigar' and try again.)
 else
@@ -156,12 +163,6 @@ endif
 ##########################
 # Print a status message #
 ##########################
-ifneq ($(wildcard .version),)
-	PRJ_VERSION:=`cat .version`
-	PRJ_VERSION:='v'$(PRJ_VERSION)
-else
-	PRJ_VERSION:=unset
-endif
 .print_status: .printed_status
 # Fetch the version from the .version file
 	@$(ECHO)

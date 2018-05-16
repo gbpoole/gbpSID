@@ -1,10 +1,9 @@
 # Configure TravisCI (https://travis-ci.org) tests
 
-language: cpp
+language: c
 env:
     # Set a grid of environment variables to test
     # Make sure the home directory is set to be the TravisCI project directory
-    # The following set of lines serve as an example
     #- USE_MPI=ON  USE_MPI_IO=OFF USE_CUDA=OFF USE_DOUBLE=OFF HOME=${TRAVIS_BUILD_DIR}
     #- USE_MPI=ON  USE_MPI_IO=OFF USE_CUDA=OFF USE_DOUBLE=ON  HOME=${TRAVIS_BUILD_DIR}
     #- USE_MPI=ON  USE_MPI_IO=ON  USE_CUDA=OFF USE_DOUBLE=OFF HOME=${TRAVIS_BUILD_DIR}
@@ -19,28 +18,6 @@ compiler:
     - gcc
     - clang
 
-# This section is added to make sure that we have a sufficient version of gcc
-before_install: |
-    # C++14
-    if [ "$TRAVIS_OS_NAME" = "linux"  ]; then 
-      sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-      sudo apt-get update -qq
-    elif [ "$TRAVIS_OS_NAME" = "osx"  ]; then
-      brew update
-    fi
-
-# This section is added to make sure that we have a sufficient version of gcc
-install: |
-    # C++14
-    if [ "$TRAVIS_OS_NAME" = "linux"  ]; then 
-      sudo apt-get install -qq gcc-6
-      sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-6 90
-      sudo apt-get install -qq g++-6
-      sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-6 90
-    elif [ "$TRAVIS_OS_NAME" = "osx"  ]; then
-      brew outdated gcc || brew upgrade gcc
-    fi
-
 # The following lines are needed by Codecov
 sudo: required
 addons:
@@ -50,10 +27,6 @@ addons:
       - libelf-dev
       - libdw-dev
       - cmake
-
-before_script: |
-    alias g++="g++-6"
-    alias gcc="gcc-6"
 
 # All the tests will be run by this Makefile
 script: |

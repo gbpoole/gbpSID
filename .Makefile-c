@@ -53,11 +53,11 @@ docs-c: .print_status
 	@cd $(BUILD_DIR_C);make docs-api
 	@$(ECHO) "Done."
 
-# Install libraries and executables to $(PREFIX) directory
+# Install
 .PHONY: install-c
 install-c: .print_status build-c
 	@$(ECHO) "Installing C/C++ code..."
-	@cd $(BUILD_DIR_C);make DESTDIR=$(PREFIX) install
+	@cd $(BUILD_DIR_C);make install
 	@$(ECHO) "Done."
 
 # Clean C/C++ build
@@ -87,14 +87,14 @@ coverage-c: .print_status build-c
 
 # Report C/C++ linting issues
 .PHONY:	lint-check-c
-lint-check-c: .print_status
+lint-check-c: .print_status build-c
 	@$(ECHO) "Linting C/C++ code..."
 	@cd $(BUILD_DIR_C);make clang-format-check
 	@$(ECHO) "Done."
 
 # Fix C/C++ linting issues in-place
 .PHONY:	lint-fix-c
-lint-fix-c: .print_status
+lint-fix-c: .print_status build-c
 	@$(ECHO) "Applying linting suggestions to C/C++ code..."
 	@cd $(BUILD_DIR_C);make clang-format-fix
 	@$(ECHO) "Done."

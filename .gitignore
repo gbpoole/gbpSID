@@ -25,6 +25,11 @@ build-*
 build
 _build
 
+# Default install is local
+bin
+lib
+share
+
 # Used for testing
 mpich
 
