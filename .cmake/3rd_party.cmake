@@ -360,9 +360,6 @@ endfunction()
 function(init_3rd_party_FFTW2 lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
-        # Look for FFTW_ROOT in the environment variables
-        define_project_env_variable(FFTW_ROOT "Root directory for FFTW library" "")
-
         add_definitions(-DUSE_${lib_name})
         find_package(${lib_name} ${required})
 
