@@ -3,7 +3,7 @@
 
 # Set the default target to 'build'
 .PHONY: default
-default: all
+default: help
 
 # This ensures that we use standard (what is used in interactive shells) version of echo.
 ECHO = /bin/echo
@@ -11,7 +11,7 @@ export ECHO
 
 # Extract the project name from the parent directory
 PRJ_DIR=$(PWD)
-PRJ_NAME=`grep project_name .project.yml | awk '{print $$3}'`
+PRJ_NAME=`grep "\- name:" .project.yml | awk '{print $$3}'`
 
 # Get git hash
 GIT_HASH=$(shell git rev-parse --short HEAD)
@@ -61,6 +61,15 @@ endif
 #############################
 # Targets for project users #
 #############################
+
+# Help
+help:
+	@$(ECHO) 
+	@$(ECHO) "The following targets are available:"
+	@$(ECHO) "	build   - build all software for this project"
+	@$(ECHO) "	install - install all software for this project"
+	@$(ECHO) "	etc.  ... finish this help"
+	@$(ECHO) 
 
 # One-time initialization
 .PHONY: init
@@ -120,7 +129,7 @@ docs: $(DOCS_LIST) docs-update
 .PHONY: docs-update
 docs-update: build $(BUILD_DIR_DOCS)
 	@$(ECHO) "Updating API documenation..."
-	@python python/$(PRJ_NAME)_dev/$(PRJ_NAME)_dev/scripts/update_$(PRJ_NAME)_docs.py
+	@update_gbpBuild_docs $(PWD)
 	@$(ECHO) "Done."
 
 # Make the documentation build directory

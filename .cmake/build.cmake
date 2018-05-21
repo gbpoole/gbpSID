@@ -318,7 +318,7 @@ macro(process_dependencies cur_dir )
 endmacro()
 
 # Add tests (optionally give test filename; else 'tests.cmake' is default)
-macro(process_tests cur_dir )
+macro(process_tests cur_dir)
     # Collect the tests for this directory
     collect_tests( ${cur_dir} )
     if(TESTS_LIST)
@@ -428,17 +428,26 @@ endmacro()
 macro(define_project_env_variable variableName description default_value )
     # Check to see if the variable has been defined in the environment
     if (NOT "$ENV{${variableName}}" STREQUAL "")
-        set(${variableName} "$ENV{${variableName}}" CACHE INTERNAL "Copied from environment variable")
-        message(STATUS "${variableName} set to {${${variableName}}} from environment.")
+        if(NOT ${variableName})
+            set(${variableName} "$ENV{${variableName}}" CACHE INTERNAL "Copied from environment variable")
+            message(STATUS "${variableName} set to {${${variableName}}} from environment.")
+        endif()
     # ... if not, set it to the given default
     else()
         if (NOT "${default_value}" STREQUAL "NO_DEFAULT")
-            set(${variableName} "${default_value}" CACHE INTERNAL "Set from default")
-            message(STATUS "${variableName} set to {${${variableName}}} from default.")
+            if(NOT ${variableName})
+                set(${variableName} "${default_value}" CACHE INTERNAL "Set from default")
+                message(STATUS "${variableName} set to {${${variableName}}} from default.")
+            endif()
         else()
             message(FATAL_ERROR "A required project environmnet variable {${variableName}} has not been set.")
         endif()
     endif()
+
+    # Note that if a variable is passed multiple times to this function, it will be set above
+    # only once, but the rest of this code will be executed every time.  This way, the
+    # check on allowed values will be performed every time, with each call's set of values,
+    # which may be different in each case.
 
     # Check for optional arguments.  They will be allowed values.
     set (allowed_values ${ARGN})

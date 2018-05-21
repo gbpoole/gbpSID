@@ -79,7 +79,7 @@ process_headers( ${CMAKE_SOURCE_DIR} )
 # Generate all library and executable targets
 process_targets( ${CMAKE_SOURCE_DIR} )
 
-# Enable testing (if any have been specified in the local.cmake files)
+# Enable testing (defined in 'tests.cmake'; no tests if absent)
 process_tests( ${CMAKE_SOURCE_DIR} )
 
 # ==================
