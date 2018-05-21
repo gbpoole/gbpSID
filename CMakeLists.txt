@@ -7,18 +7,6 @@ cmake_minimum_required(VERSION 3.8)
 # Add the 'cmake' directory in the project directory to the module path
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_SOURCE_DIR};${CMAKE_SOURCE_DIR}/.cmake")
 
-# For some reason, find_library does not search these paths(!) ... add them.
-# n.b.: On OSX, LD_LIBRARY_PATH can't be used, check PATH instead
-if(${APPLE})
-    list(APPEND CMAKE_LIBRARY_PATH $ENV{PATH})
-else()
-    list(APPEND CMAKE_LIBRARY_PATH $ENV{LD_LIBRARY_PATH})
-endif()
-
-# For some reason, find_path does not search these paths(!) ... add them.
-list(APPEND CMAKE_INCLUDE_PATH $ENV{CPATH})
-list(APPEND CMAKE_INCLUDE_PATH $ENV{INCLUDE})
-
 # Clear default install directory (user should use
 # DESTDIR with make to set installation directory)
 set( CMAKE_INSTALL_PREFIX "./" )
@@ -36,6 +24,15 @@ message(STATUS "Done.")
 # Initialize this project
 include ("project")
 validate_project( )
+
+# Add a couple common library prefix paths
+list(APPEND CMAKE_PREFIX_PATH $ENV{HOME})
+list(APPEND CMAKE_PREFIX_PATH $ENV{HOME}/my_code)
+list(APPEND CMAKE_PREFIX_PATH $ENV{HOME}/3rd_Party)
+
+# For some reason, find_path does not search these paths ... add them.
+list(APPEND CMAKE_INCLUDE_PATH $ENV{CPATH})
+list(APPEND CMAKE_INCLUDE_PATH $ENV{INCLUDE})
 
 # Set default compilers; must come before project()
 init_compilers()
