@@ -9,6 +9,7 @@
 # Python stuff
 *.pyc
 *.egg
+*.eggs
 *.egg-info
 __pycache__
 .idea
@@ -24,11 +25,6 @@ cmake-build-*
 build-*
 build
 _build
-
-# Default install is local
-bin
-lib
-share
 
 # Used for testing
 mpich
