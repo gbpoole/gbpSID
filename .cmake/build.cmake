@@ -151,13 +151,13 @@ macro(collect_data_files_recurse cur_dir )
     endforeach()
 endmacro()
 
-# Macros for adding sources to a library build
+# Macros for adding tests to a library build
 macro(collect_tests cur_dir )
     set(TESTS_LIST "" )
     collect_tests_recurse( ${cur_dir} )
 endmacro()
 macro(collect_tests_recurse cur_dir )
-    # Add any executables in this directory to the list
+    # Add any tests in this directory to the list
     set_dir_state( ${cur_dir} )
     foreach(_test ${TESTS_WITH_PATH} )
         list(APPEND TESTS_LIST ${_test} )
@@ -390,14 +390,14 @@ endmacro()
 # Main macro which initializes all project targets
 macro(process_targets cur_dir )
     # Perform some initialization on the first call
-    if( ${cur_dir} STREQUAL ${CMAKE_SOURCE_DIR} )
+    if(NOT TARGET all_executables )
         set(SRC_FILES_PROJECT "" )
         # Create an executables target.  This will allow us to
         # create a dependency on all the executables being done
         # ... needed by the documentation targets for example
         add_custom_target(
             all_executables
-            COMMENT "Check executable targets") 
+            COMMENT "List of all project executables") 
     endif()
 
     # Build all targets associated with library directories
@@ -422,6 +422,22 @@ macro(process_targets cur_dir )
     foreach( _dir_i ${PASSDIRS} )
         process_targets( ${cur_dir}/${_dir_i} )
     endforeach()
+endmacro()
+
+# Process a gbpBuild project
+macro(process_project dir_root flag_add_tests)
+    # Generate the list of directories where header files
+    # are located, as well as a list of all header files
+    process_headers( ${dir_root} )
+    
+    # Generate all library and executable targets
+    process_targets( ${dir_root} )
+    
+    # Enable testing (if requested; times when you would not
+    # want to include when the project is an external).
+    if(${flag_add_tests})
+        process_tests( ${dir_root} )
+    endif()
 endmacro()
 
 # Process an environment variable

@@ -9,5 +9,5 @@ macro(local_extern cur_dir )
     #    https://github.com/philsquared/Clara
     #    https://www.youtube.com/watch?v=Od4bjLfwI-A
     #
-    add_external_submodule( ${cur_dir} "Clara" ${cur_dir}"/extern/Clara/include/clara.hpp" )
+    add_external_submodule( "${cur_dir}/extern/Clara/" "Clara" "include/clara.hpp" FALSE)
 endmacro()

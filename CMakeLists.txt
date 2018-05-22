@@ -67,17 +67,7 @@ process_externs( ${CMAKE_SOURCE_DIR} )
 # ===================
 # Process the project
 # ===================
-# (look in cmake/build.cmake for these functions)
-
-# Generate the list of directories where header files
-# are located, as well as a list of all header files
-process_headers( ${CMAKE_SOURCE_DIR} )
-
-# Generate all library and executable targets
-process_targets( ${CMAKE_SOURCE_DIR} )
-
-# Enable testing (defined in 'tests.cmake'; no tests if absent)
-process_tests( ${CMAKE_SOURCE_DIR} )
+process_project( ${CMAKE_SOURCE_DIR} TRUE)
 
 # ==================
 # Add custom targets 
