@@ -425,7 +425,23 @@ macro(process_targets cur_dir )
 endmacro()
 
 # Process a gbpBuild project
-macro(process_project dir_root flag_add_tests)
+macro(process_project dir_root flag_extern)
+
+    if(${flag_extern})
+        # ===========================================
+        # Execute all project specific configurations
+        # (set options, library dependencies, etc.)
+        # These should be defined in 'project.cmake' files.
+        process_options( ${dir_root} )
+        process_dependencies( ${dir_root} )
+        
+        # ====================================================
+        # Initialize &/or build any needed external libraries.
+        # This is needed to make sure we get externs-of-externs
+        # ====================================================
+        process_externs( ${dir_root} )
+    endif()
+
     # Generate the list of directories where header files
     # are located, as well as a list of all header files
     process_headers( ${dir_root} )
@@ -435,7 +451,7 @@ macro(process_project dir_root flag_add_tests)
     
     # Enable testing (if requested; times when you would not
     # want to include when the project is an external).
-    if(${flag_add_tests})
+    if(NOT ${flag_extern})
         process_tests( ${dir_root} )
     endif()
 endmacro()

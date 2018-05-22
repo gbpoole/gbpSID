@@ -90,7 +90,7 @@ function(set_3rd_party_requested lib_name val)
 endfunction()
 
 # Add a github submodule.  This is meant to be called from 'extern.cmake' files.
-macro(add_external_submodule extern_dir submodule_name filename_check )
+macro(add_external_submodule extern_dir submodule_name filename_check flag_gbpBuild)
     # Make sure we have updated the Clara submodule
     set(filename_check_path "${extern_dir}/${filename_check}")
     if(NOT EXISTS "${filename_check_path}")
@@ -100,16 +100,9 @@ macro(add_external_submodule extern_dir submodule_name filename_check )
         message(STATUS "   -> ${submodule_name} submodule has already been checked out")
     endif()
 
-    # Check for optional arguments
-    set (optional_args ${ARGN})
-    list(LENGTH optional_args n_optional_args)
-
-    # If one optional arg is given and it tests TRUE, then
-    # process this external as a gbpBuild project.
-    if(${n_optional_args} GREATER 0)
-        if(${optional_args})
-            process_project( ${extern_dir} FALSE)
-        endif()
+    # Process the project, adding targets, dependancies, etc. to the project
+    if(${flag_gbpBuild})
+        process_project( ${extern_dir} TRUE)
     endif()
 
 endmacro()

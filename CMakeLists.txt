@@ -54,7 +54,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Execute all project specific configurations
 # (set options, library dependencies, etc.)
 # These should be defined in a 'project.cmake'
-# file.
+# file.  This needs to be done before 
+# process_project() is called below to make
+# sure that this project's environment
+# variable settings take precidence.
 # ===========================================
 process_options( ${CMAKE_SOURCE_DIR} )
 process_dependencies( ${CMAKE_SOURCE_DIR} )
@@ -67,7 +70,7 @@ process_externs( ${CMAKE_SOURCE_DIR} )
 # ===================
 # Process the project
 # ===================
-process_project( ${CMAKE_SOURCE_DIR} TRUE)
+process_project( ${CMAKE_SOURCE_DIR} FALSE)
 
 # ==================
 # Add custom targets 
