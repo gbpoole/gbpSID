@@ -41,7 +41,7 @@ int application::execute() {
         msg+=".";
 
     // Print message
-    SID_log(msg,SID_LOG_COMMENT|SID_LOG_ALLRANKS);
+    SID_log(msg.c_str(),SID_LOG_COMMENT|SID_LOG_ALLRANKS);
 
     // Exit cleanly.  Make sure SID_ERROR_NONE is
     // returned on a clean exit.

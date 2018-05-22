@@ -38,11 +38,6 @@ list(APPEND SRCFILES "SID_set_verbosity.c")
 list(APPEND SRCFILES "SID_Init_pcounter.c")
 list(APPEND SRCFILES "SID_check_pcounter.c")
 
-# C++ overloads
-list(APPEND SRCFILES "SID_log.cc")
-list(APPEND SRCFILES "SID_log_error.cc")
-list(APPEND SRCFILES "SID_log_warning.cc")
-
 # Add executable source files (those with a main())
 # eg. list(APPEND EXEFILES "file" )
 # -- NONE FOR THIS DIR --

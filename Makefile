@@ -3,7 +3,7 @@
 
 # Set the default target to 'build'
 .PHONY: default
-default: help
+default: build
 
 # This ensures that we use standard (what is used in interactive shells) version of echo.
 ECHO = /bin/echo

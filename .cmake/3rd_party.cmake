@@ -90,15 +90,29 @@ function(set_3rd_party_requested lib_name val)
 endfunction()
 
 # Add a github submodule.  This is meant to be called from 'extern.cmake' files.
-function( add_external_submodule cur_dir submodule_name filename_check )
+macro(add_external_submodule extern_dir submodule_name filename_check )
     # Make sure we have updated the Clara submodule
-    if(NOT EXISTS "${filename_check}")
+    set(filename_check_path "${extern_dir}/${filename_check}")
+    if(NOT EXISTS "${filename_check_path}")
         message(STATUS "  -> Checking out submodule: ${submodule_name}")
-        execute_process(COMMAND git submodule update --init WORKING_DIRECTORY ${cur_dir})
+        execute_process(COMMAND git submodule update --init WORKING_DIRECTORY ${extern_dir})
     else()
         message(STATUS "   -> ${submodule_name} submodule has already been checked out")
     endif()
-endfunction()
+
+    # Check for optional arguments
+    set (optional_args ${ARGN})
+    list(LENGTH optional_args n_optional_args)
+
+    # If one optional arg is given and it tests TRUE, then
+    # process this external as a gbpBuild project.
+    if(${n_optional_args} GREATER 0)
+        if(${optional_args})
+            process_project( ${extern_dir} FALSE)
+        endif()
+    endif()
+
+endmacro()
 
 # =================== Some helper functions ==================
 
@@ -363,6 +377,13 @@ function(init_3rd_party_FFTW2 lib_name required_in)
         add_definitions(-DUSE_${lib_name})
         find_package(${lib_name} ${required})
 
+        # Declare the version of FFTW that we are using
+        if(FFTW_V3)
+            message(FATAL_ERROR "Attempting to configure FFTW V2 when FFTW V3 is already configured.")
+        endif()
+        add_definitions(-DFFTW_V2)
+        SET(FFTW_V2 TRUE CACHE INTERNAL "FFTW V2 configured")
+
         # Check status and print message    
         check_3rd_party_status( FFTW2_FOUND )
 
@@ -374,8 +395,8 @@ function(init_3rd_party_FFTW2 lib_name required_in)
         if(${FFTW2_FOUND})
             add_definitions(-DUSE_FFTW)
             add_definitions(-DFFTW_FOUND)
-            SET(USE_FFTW TRUE CACHE INTERNAL "FFTW (version 2 or 3) is configured")
-            SET(FFTW_FOUND TRUE CACHE INTERNAL "FFTW (version 2 or 3) is configured")
+            SET(USE_FFTW TRUE CACHE INTERNAL "FFTW is configured")
+            SET(FFTW_FOUND TRUE CACHE INTERNAL "FFTW is configured")
         endif()
     else()
         skip_3rd_party_status(required_in)
@@ -386,11 +407,15 @@ endfunction()
 function(init_3rd_party_FFTW3 lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
-        # Look for FFTW_ROOT in the environment variables
-        define_project_env_variable(FFTW_ROOT "Root directory for FFTW library" "")
-
         add_definitions(-DUSE_${lib_name})
         find_package(${lib_name} ${required})
+
+        # Declare the version of FFTW that we are using
+        if(FFTW_V2)
+            message(FATAL_ERROR "Attempting to configure FFTW V3 when FFTW V2 is already configured.")
+        endif()
+        add_definitions(-DFFTW_V3)
+        SET(FFTW_V3 TRUE CACHE INTERNAL "FFTW V3 configured")
 
         # Check status and print message    
         check_3rd_party_status( FFTW3_FOUND )
