@@ -100,5 +100,4 @@ void SID_log_header() {
         fprintf(SID.fp_log,"Peak total %s=%4.2lf kb\n",spacer,(float)max_RAM/(float)SID_SIZE_OF_KILOBYTE);
     }
     */
-
 }

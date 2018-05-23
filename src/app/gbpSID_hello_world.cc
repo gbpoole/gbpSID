@@ -17,11 +17,11 @@ using namespace gbpSID;
 
 // Build command-line parser for this application.
 // Note that options for help and the executable name
-// are added to the parser by default.  No need to 
+// are added to the parser by default.  No need to
 // worry about either of those.
 void application::define_arguments() {
     // Set default values
-    args = {"someone",GBP_FALSE};
+    args = {"someone", GBP_FALSE};
     // Add options
     cli |= clara::Opt([&](bool) { args.enthusiastic = GBP_TRUE; })["-e"]["--enthusiastic"]("add enthusiasm to the message");
     // Add arguments
@@ -32,16 +32,15 @@ void application::define_arguments() {
 
 // This method executes the application's logic
 int application::execute() {
-
     // Compose message
-    std::string msg="Hello world, from "+args.sender;
+    std::string msg = "Hello world, from " + args.sender;
     if(args.enthusiastic)
-        msg+="!";
+        msg += "!";
     else
-        msg+=".";
+        msg += ".";
 
     // Print message
-    SID_log(msg.c_str(),SID_LOG_COMMENT|SID_LOG_ALLRANKS);
+    SID_log(msg.c_str(), SID_LOG_COMMENT | SID_LOG_ALLRANKS);
 
     // Exit cleanly.  Make sure SID_ERROR_NONE is
     // returned on a clean exit.

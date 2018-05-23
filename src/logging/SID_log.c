@@ -13,13 +13,13 @@ void SID_log(const char *fmt, int mode, ...) {
     // loop over all ranks, replacing the switch with ANYRANK
     // and LABELRANK, and then exit.  Turn-off SID_LOG_CHECKPOINT
     // to make sure that the call to SID_log() here does not block.
-    if(SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_ALLRANKS)){
-        mode&=(~SID_LOG_ALLRANKS);
-        if(SID.n_proc>1){
-            mode|=(SID_LOG_ANYRANK|SID_LOG_LABELRANK);
-            for(int i_rank=0;i_rank<SID.n_proc;i_rank++){
-                if(i_rank==SID.My_rank)
-                    SID_log(fmt,mode&(~SID_LOG_CHECKPOINT),vargs);
+    if(SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_ALLRANKS)) {
+        mode &= (~SID_LOG_ALLRANKS);
+        if(SID.n_proc > 1) {
+            mode |= (SID_LOG_ANYRANK | SID_LOG_LABELRANK);
+            for(int i_rank = 0; i_rank < SID.n_proc; i_rank++) {
+                if(i_rank == SID.My_rank)
+                    SID_log(fmt, mode & (~SID_LOG_CHECKPOINT), vargs);
                 SID_Barrier(SID_COMM_WORLD);
             }
             return;
@@ -34,7 +34,7 @@ void SID_log(const char *fmt, int mode, ...) {
                 flag_print = GBP_FALSE;
 
             // If SID_LOG_IO_RATE is set, the first varg is the IO size
-            double IO_size=0;
+            double IO_size = 0;
             if(SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_IO_RATE))
                 IO_size = (double)((size_t)va_arg(vargs, size_t)) / (double)SID_SIZE_OF_MEGABYTE;
 
@@ -80,7 +80,7 @@ void SID_log(const char *fmt, int mode, ...) {
 
                 // Write a rank label, if required
                 if(SID_CHECK_BITFIELD_SWITCH(mode, SID_LOG_LABELRANK))
-                    fprintf(SID.fp_log,"[Rank %3d]: ",SID.My_rank);
+                    fprintf(SID.fp_log, "[Rank %3d]: ", SID.My_rank);
 
                 // Write text
                 vfprintf(SID.fp_log, fmt, vargs);

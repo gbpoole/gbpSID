@@ -4,8 +4,8 @@
 
 double SID_Wtime(void) {
 #if USE_MPI
-    return(MPI_Wtime());
+    return (MPI_Wtime());
 #else
-    return((double)time(NULL));
+    return ((double)time(NULL));
 #endif
 }

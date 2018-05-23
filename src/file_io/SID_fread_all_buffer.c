@@ -1,7 +1,6 @@
 #include <string.h>
 #include <gbpSID.h>
 
-
 void SID_fread_all_buffer(void *rval, size_t dtype_size, size_t n_items, SID_fp_buffer *fp_buffer) {
     // Set the requested total return size
     size_t data_size = dtype_size * n_items;

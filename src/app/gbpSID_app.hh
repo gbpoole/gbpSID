@@ -13,7 +13,7 @@ namespace gbpSID {
         char **_argv;
 
         // A flag indicating if the application's syntax needs to be printed
-        bool   _print_syntax;
+        bool _print_syntax;
 
         // Command-line parser
         clara::Parser   cli;
@@ -21,7 +21,6 @@ namespace gbpSID {
         std::string     instructions_text;
 
       public:
-
         // These two functions must be personalised for every application:
         // ---------------------------------------------------------------
         // 1) This function defines the application-specific command line arguments
@@ -117,7 +116,7 @@ namespace gbpSID {
         //    based on what is defined in the derived class'
         //    'parse_arguments()' function.
         void display_help() {
-            if(SID.I_am_Master){
+            if(SID.I_am_Master) {
                 // Display usage
                 cli.writeToStream(std::cout);
                 // The following space is needed for parsing in Sphinx docs

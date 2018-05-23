@@ -17,7 +17,7 @@ void SID_test(int val, const char *fmt, ...) {
 #else
     fprintf(SID.fp_log, "SID_test N=%05d ", val);
 #endif
-    if(fmt != NULL){
+    if(fmt != NULL) {
         vfprintf(SID.fp_log, fmt, vargs);
         fprintf(SID.fp_log, "\n");
     }

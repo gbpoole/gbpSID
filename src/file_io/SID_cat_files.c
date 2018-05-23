@@ -42,8 +42,8 @@ void SID_cat_files(const char *filename_out, int mode, int n_files, ...) {
             SID_exit_error("Could not open file {%s}!", SID_ERROR_IO_OPEN, filename_in);
         else
             SID_log("Processing {%s}...", SID_LOG_OPEN, filename_in);
-        n_bytes = file_stats.st_size;
-        FILE *fp_in   = fopen(filename_in, "r");
+        n_bytes     = file_stats.st_size;
+        FILE *fp_in = fopen(filename_in, "r");
 
         // Copy this input file to the output file in chunks ...
         n_bytes_buffer = GBP_MIN(n_bytes, SID_IO_BUFFER_SIZE);

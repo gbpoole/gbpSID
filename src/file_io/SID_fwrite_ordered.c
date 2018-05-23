@@ -44,8 +44,20 @@ size_t SID_fwrite_ordered(void *buffer, size_t size_per_item, size_t n_items, SI
                 n_send       = 0;
                 n_items_rank = 0;
             }
-            SID_Sendrecv(&n_send, 1, SID_SIZE_T, destin_rank, 1918270, &n_send, 1, SID_SIZE_T, source_rank, 1918270, SID_COMM_WORLD, SID_STATUS_IGNORE);
-            SID_Sendrecv(&n_items_rank, 1, SID_SIZE_T, destin_rank, 1918271, &n_items_rank, 1, SID_SIZE_T, source_rank, 1918271, SID_COMM_WORLD, SID_STATUS_IGNORE);
+            SID_Sendrecv(
+                &n_send, 1, SID_SIZE_T, destin_rank, 1918270, &n_send, 1, SID_SIZE_T, source_rank, 1918270, SID_COMM_WORLD, SID_STATUS_IGNORE);
+            SID_Sendrecv(&n_items_rank,
+                         1,
+                         SID_SIZE_T,
+                         destin_rank,
+                         1918271,
+                         &n_items_rank,
+                         1,
+                         SID_SIZE_T,
+                         source_rank,
+                         1918271,
+                         SID_COMM_WORLD,
+                         SID_STATUS_IGNORE);
             n_unsent = n_send;
             r_val_i  = 0;
             offset   = 0;
@@ -54,7 +66,8 @@ size_t SID_fwrite_ordered(void *buffer, size_t size_per_item, size_t n_items, SI
                     n_Sendrecv = (int)n_unsent;
                 else
                     n_Sendrecv = SID_IO_BUFFER_SIZE;
-                SID_Sendrecv(&n_Sendrecv, 1, SID_INT, destin_rank, 1918272, &n_Sendrecv, 1, SID_INT, source_rank, 1918272, SID_COMM_WORLD, SID_STATUS_IGNORE);
+                SID_Sendrecv(
+                    &n_Sendrecv, 1, SID_INT, destin_rank, 1918272, &n_Sendrecv, 1, SID_INT, source_rank, 1918272, SID_COMM_WORLD, SID_STATUS_IGNORE);
                 SID_Sendrecv(&(((char *)buffer)[offset]),
                              n_Sendrecv,
                              SID_BYTE,

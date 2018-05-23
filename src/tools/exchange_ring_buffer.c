@@ -7,7 +7,7 @@ void exchange_ring_buffer(void *  send_buffer,
                           size_t  send_count,
                           void *  receive_buffer,
                           size_t *receive_count_out,
-                          SID_MARK_USED(int i_rank,USE_MPI)) {
+                          SID_MARK_USED(int i_rank, USE_MPI)) {
     int    send_buffer_size;
     int    receive_buffer_size;
     size_t receive_count;
@@ -20,7 +20,8 @@ void exchange_ring_buffer(void *  send_buffer,
         send_buffer_size = 0;
     set_exchange_ring_ranks(&rank_to, &rank_from, i_rank);
     if(i_rank != 0) {
-        SID_Sendrecv(&send_count, 1, SID_SIZE_T, rank_to, 1036267, &receive_count, 1, SID_SIZE_T, rank_from, 1036267, SID_COMM_WORLD, SID_STATUS_IGNORE);
+        SID_Sendrecv(
+            &send_count, 1, SID_SIZE_T, rank_to, 1036267, &receive_count, 1, SID_SIZE_T, rank_from, 1036267, SID_COMM_WORLD, SID_STATUS_IGNORE);
         receive_buffer_size = (int)(receive_count * buffer_type_size);
         SID_Sendrecv(send_buffer,
                      send_buffer_size,
