@@ -7,7 +7,7 @@ void exchange_ring_buffer(void *  send_buffer,
                           size_t  send_count,
                           void *  receive_buffer,
                           size_t *receive_count_out,
-                          int     i_rank) {
+                          SID_MARK_USED(int i_rank,USE_MPI)) {
     int    send_buffer_size;
     int    receive_buffer_size;
     size_t receive_count;

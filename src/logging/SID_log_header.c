@@ -19,9 +19,9 @@ void SID_log_header() {
         fprintf(SID.fp_log, "\n");
         fprintf(SID.fp_log, "Run details:\n");
         fprintf(SID.fp_log, "------------\n");
-#ifdef USE_MPI
+#if USE_MPI
         fprintf(SID.fp_log, "MPI    is ON\n");
-#ifdef USE_MPI_IO
+#if USE_MPI_IO
         fprintf(SID.fp_log, "MPI-IO is ON\n");
 #else
         fprintf(SID.fp_log, "MPI-IO is OFF\n");

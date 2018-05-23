@@ -5,9 +5,9 @@ void SID_Allgather(void         *sendbuf,
                    int           sendcount,
                    SID_Datatype  sendtype,
                    void         *recvbuf,
-                   int           recvcount,
+                   SID_MARK_USED(int recvcount,USE_MPI),
                    SID_Datatype  recvtype,
-                   SID_Comm     *comm){
+                   SID_MARK_USED(SID_Comm *comm,USE_MPI)){
 #if USE_MPI
     MPI_Allgather(sendbuf, sendcount, sendtype, recvbuf, recvcount, recvtype, (MPI_Comm)(comm->comm));
 #else

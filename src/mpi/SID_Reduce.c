@@ -1,7 +1,13 @@
 #include <string.h>
 #include <gbpSID.h>
 
-void SID_Reduce(void *sendbuf, void *recvbuf, int count, SID_Datatype datatype, SID_Op op, int root, SID_Comm *comm) {
+void SID_Reduce(void *       sendbuf,
+                void *       recvbuf,
+                int          count,
+                SID_Datatype datatype,
+                SID_MARK_USED(SID_Op op, USE_MPI),
+                SID_MARK_USED(int root, USE_MPI),
+                SID_MARK_USED(SID_Comm *comm, USE_MPI)) {
 #if USE_MPI
     MPI_Reduce(sendbuf, recvbuf, count, datatype, (MPI_Op)op, root, (MPI_Comm)(comm->comm));
 #else

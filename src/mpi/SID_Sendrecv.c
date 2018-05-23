@@ -1,14 +1,24 @@
 #include <string.h>
 #include <gbpSID.h>
 
-void SID_Sendrecv(void *sendbuf, int sendcount, SID_Datatype sendtype, int dest, int sendtag, void *recvbuf,
-                  int recvcount, SID_Datatype recvtype, int source, int recvtag, SID_Comm *comm, SID_Status *status) {
+void SID_Sendrecv(void *       sendbuf,
+                  int          sendcount,
+                  SID_Datatype sendtype,
+                  SID_MARK_USED(int dest, USE_MPI),
+                  SID_MARK_USED(int sendtag, USE_MPI),
+                  void *       recvbuf,
+                  int          recvcount,
+                  SID_Datatype recvtype,
+                  SID_MARK_USED(int source, USE_MPI),
+                  SID_MARK_USED(int recvtag, USE_MPI),
+                  SID_MARK_USED(SID_Comm *comm, USE_MPI),
+                  SID_MARK_USED(SID_Status *status, USE_MPI)) {
 #ifdef SID_SENDRECV_SIZELIMIT
 #if USE_MPI
     // The following code was adapted from Gadget
 
     if(dest != source)
-        SID_log_error("dest=source in SID_Sendrecv().",SID_ERROR_LOGIC);
+        SID_log_error("dest=source in SID_Sendrecv().", SID_ERROR_LOGIC);
 
     int size_sendtype;
     int size_recvtype;
@@ -20,7 +30,7 @@ void SID_Sendrecv(void *sendbuf, int sendcount, SID_Datatype sendtype, int dest,
     }
 
     int count_limit = (int)((((long long)SID_SENDRECV_SIZELIMIT) * 1024 * 1024) / size_sendtype);
-    int iter = 0;
+    int iter        = 0;
     while(sendcount > 0 || recvcount > 0) {
         int send_now;
         if(sendcount > count_limit) {

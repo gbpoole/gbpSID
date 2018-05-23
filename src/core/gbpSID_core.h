@@ -21,6 +21,18 @@ _FILE_C_CLASS int a;
 _FILE_C_CLASS int b;
 #endif
 
+// The last two of these macros can be used to conditionally mark function parameters as unused.
+// Note that the condition MUST expand strictly to only 0 or 1.  This means that it can not
+// take an undefined MACRO, for example.
+#define SID_MARK_UNUSED_1(parameter_definition) parameter_definition __attribute__((unused))
+#define SID_MARK_UNUSED_0(parameter_definition) parameter_definition
+#define SID_MARK_UNUSED_CONCAT(parameter_definition, condition) SID_MARK_UNUSED_##condition(parameter_definition)
+#define SID_MARK_USED_1(parameter_definition) parameter_definition
+#define SID_MARK_USED_0(parameter_definition) parameter_definition __attribute__((unused))
+#define SID_MARK_USED_CONCAT(parameter_definition, condition) SID_MARK_USED_##condition(parameter_definition)
+#define SID_MARK_UNUSED(parameter_definition, condition) SID_MARK_UNUSED_CONCAT(parameter_definition, condition)
+#define SID_MARK_USED(parameter_definition, condition) SID_MARK_USED_CONCAT(parameter_definition, condition)
+
 // TTPXX=Two-to-the-power-XX
 // These are useful for setting
 // switches on bit fields
@@ -154,8 +166,7 @@ struct gbp_va_list {
 // Default values
 #ifdef _MAIN
 SID_info SID = {
-    NULL, NULL, 0,    1,    GBP_TRUE, 0, 0, GBP_TRUE, GBP_TRUE, GBP_TRUE, SID_MASTER_RANK, SID_MASTER_RANK, 0, 0, NULL, NULL,
-    NULL, NULL, NULL, NULL, "",
+    NULL, NULL, 0, 1, GBP_TRUE, 0, 0, GBP_TRUE, GBP_TRUE, GBP_TRUE, SID_MASTER_RANK, SID_MASTER_RANK, 0, 0, NULL, NULL, NULL, NULL, NULL, NULL, "",
 #if USE_MPI
     0,
 #endif

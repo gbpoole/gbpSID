@@ -5,11 +5,11 @@ void SID_Gatherv(void        *sendbuf,
                  int          sendcount,
                  SID_Datatype sendtype,
                  void        *recvbuf,
-                 int         *recvcounts,
-                 int         *displs,
+                 SID_MARK_USED(int *recvcounts,USE_MPI),
+                 SID_MARK_USED(int *displs,USE_MPI),
                  SID_Datatype recvtype,
-                 int          root,
-                 SID_Comm    *comm){
+                 SID_MARK_USED(int root,USE_MPI),
+                 SID_MARK_USED(SID_Comm *comm,USE_MPI)){
 #if USE_MPI
     MPI_Gatherv(sendbuf, sendcount, sendtype, recvbuf, recvcounts, displs, recvtype, root, (MPI_Comm)(comm->comm));
 #else

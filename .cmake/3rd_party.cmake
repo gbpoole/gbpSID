@@ -158,10 +158,12 @@ macro(check_3rd_party_status success )
     # Write a sucess/failure message and throw an error if needed
     if(${success})
         # Create a preprocessor macro that can be used in the code
-        add_definitions(-DUSE_${lib_name})
+        add_definitions(-DUSE_${lib_name}=1)
         SET(USE_${lib_name} TRUE CACHE INTERNAL "${lib_name} is configured")
         message(STATUS "   -> ${required_txt} library initialized:  ${lib_name}")
     else()
+        # Create a preprocessor macro that can be used in the code
+        add_definitions(-DUSE_${lib_name}=0)
         if((required_txt STREQUAL "Required") OR (required_txt STREQUAL "Optional") )
             message(FATAL_ERROR "${required_txt} library initialization failed: ${lib_name}")
         else()
@@ -169,7 +171,8 @@ macro(check_3rd_party_status success )
         endif()
     endif()
 endmacro()
-macro(skip_3rd_party_status required_in)
+macro(skip_3rd_party_status lib_name required_in)
+    add_definitions(-DUSE_${lib_name}=0)
     if(required_in STREQUAL "REQUIRED" )
         message(FATAL_ERROR "${required_txt} library initialization skipped: ${lib_name}")
     else()
@@ -180,18 +183,40 @@ endmacro()
 # ============== Library-specific stuff follows ==============
 # If items are added to this list, don't forget to update the
 # list in the 'project.cmake' template file.
+#
+# Note that all 'init_3rd_party_{LIBNAME}()' functions
+# should follow the general pattern of:
+#
+#    function(init_3rd_party_{LIBNAME} lib_name required_in)
+#        set_required_variables(${required_in})
+#        if(USE_${lib_name})
+#            find_package(${lib_name} ${required})
+#    
+#            # Check status and print message    
+#            check_3rd_party_status( ${lib_name}_FOUND )
+#        else()
+#            skip_3rd_party_status(${lib_name} required_in)
+#        endif()
+#    endfunction()
+#
+# In particular, either check_3rd_party_status() or
+# skip_3rd_party_status(required_in) should be called
+# to make sure that a -DUSE_{LIBNAME}=1 or 0 compile
+# variable is set.
+#
+# If cmake does not offer a Find_package() option
+# for your library, you'll need to write one and
+# place it in this directory.
 
 # Initialize documentation build
 function(init_3rd_party_GBP_DOCS_BUILD lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
         find_package(${lib_name} ${required})
-
         # Check status and print message    
-        check_3rd_party_status( ${GBP_DOCS_BUILD_FOUND} )
-
+        check_3rd_party_status( ${lib_name}_FOUND )
     else()
-        skip_3rd_party_status(required_in)
+        skip_3rd_party_status( ${lib_name} required_in)
     endif()
 endfunction()
 
@@ -199,17 +224,14 @@ endfunction()
 function(init_3rd_party_GSL lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
-        add_definitions(-DUSE_${lib_name})
         find_package(${lib_name} ${required})
-
         # Check status and print message    
-        check_3rd_party_status( GSL_FOUND )
-
+        check_3rd_party_status( ${lib_name}_FOUND )
         # Personalized set-up:
         include_directories( ${GSL_INCLUDE_DIRS} )
         link_libraries( ${GSL_LIBRARIES} )
     else()
-        skip_3rd_party_status(required_in)
+        skip_3rd_party_status( ${lib_name} required_in)
     endif()
 endfunction()
 
@@ -217,22 +239,14 @@ endfunction()
 function(init_3rd_party_MPI lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
-
-        # In case we need to use a custom build, 
-        # we need to add it to the search path
-        list(APPEND MPI_HINT_DIRS "${CMAKE_SOURCE_DIR}/mpich" )
-
-        add_definitions(-DUSE_${lib_name})
         find_package(${lib_name} ${required})
-
         # Check status and print message    
         check_3rd_party_status( ${MPI_CXX_FOUND} AND ${MPI_C_FOUND} )
-
         # Personalized set-up:
         include_directories(${MPI_C_INCLUDE_PATH} ${MPI_CXX_INCLUDE_PATH})
         link_libraries(${MPI_C_LIBRARIES} ${MPI_CXX_LIBRARIES})
     else()
-        skip_3rd_party_status(required_in)
+        skip_3rd_party_status(${lib_name} required_in)
     endif()
 endfunction()
 
@@ -247,7 +261,7 @@ function(init_3rd_party_MPI_IO lib_name required_in)
         # Check status and print message    
         check_3rd_party_status( TRUE )
     else()
-        skip_3rd_party_status(required_in)
+        skip_3rd_party_status(${lib_name} required_in)
     endif()
 endfunction()
 
@@ -255,17 +269,12 @@ endfunction()
 function(init_3rd_party_CUDA lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
-        add_definitions(-DUSE_${lib_name})
         find_package(${lib_name} ${required})
-
         # Check status and print message
         check_3rd_party_status( ${CUDA_FOUND} AND ${CUDA_FOUND} )
-
         # Personalized set-up:
-
         # Add CUDA files to sources
         set(SOURCES ${SOURCES_C} ${SOURCES_CU})
-
         # Pass options to NVCC
         set(CUDA_HOST_COMPILER ${CMAKE_CXX_COMPILER})
         set(CUDA_PROPAGATE_HOST_FLAGS ON)
@@ -280,7 +289,7 @@ function(init_3rd_party_CUDA lib_name required_in)
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${CUDA_C_FLAGS}")
         set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${CUDA_EXE_LINKER_FLAGS}")
     else()
-        skip_3rd_party_status(required_in)
+        skip_3rd_party_status(${lib_name} required_in)
     endif()
 endfunction()
 
@@ -297,7 +306,7 @@ function(init_3rd_party_CUFFT lib_name required_in)
         # Check status and print message    
         check_3rd_party_status( TRUE )
     else()
-        skip_3rd_party_status(required_in)
+        skip_3rd_party_status(${lib_name} required_in)
     endif()
 endfunction()
 
@@ -305,17 +314,14 @@ endfunction()
 function(init_3rd_party_GD lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
-        add_definitions(-DUSE_${lib_name})
         find_package(${lib_name} ${required})
-
         # Check status and print message    
         check_3rd_party_status( GD_FOUND )
-
         # Personalized set-up:
         include_directories( ${GD_INCLUDE_DIRS} )
         link_libraries( ${GD_LIBRARIES} )
     else()
-        skip_3rd_party_status(required_in)
+        skip_3rd_party_status(${lib_name} required_in)
     endif()
 endfunction()
 
@@ -325,15 +331,13 @@ function(init_3rd_party_CFITSIO lib_name required_in)
     if(USE_${lib_name})
         add_definitions(-DUSE_${lib_name})
         find_package(${lib_name} ${required})
-
         # Check status and print message    
         check_3rd_party_status( Cfitsio_FOUND )
-
         # Personalized set-up:
         include_directories( ${CFITSIO_INCLUDE_DIRS} )
         link_libraries( ${CFITSIO_LIBRARIES} )
     else()
-        skip_3rd_party_status(required_in)
+        skip_3rd_party_status(${lib_name} required_in)
     endif()
 endfunction()
 
@@ -343,10 +347,8 @@ function(init_3rd_party_HDF5 lib_name required_in)
     if(USE_${lib_name})
         add_definitions(-DUSE_${lib_name})
         find_package(${lib_name} ${required} COMPONENTS C HL)
-
         # Check status and print message    
         check_3rd_party_status( HDF5_FOUND )
-
         # Personalized set-up:
         include_directories( ${HDF5_INCLUDE_DIRS} )
         link_libraries( ${HDF5_C_LIBRARIES} ${HDF5_C_HL_LIBRARIES} )
@@ -358,8 +360,9 @@ function(init_3rd_party_HDF5 lib_name required_in)
             get_filename_component(HDF5_LIBDIR ${HDF5_LIB} DIRECTORY)
             link_libraries("${HDF5_LIBDIR}/libhdf5_hl.so")
         endif()
+
     else()
-        skip_3rd_party_status(required_in)
+        skip_3rd_party_status(${lib_name} required_in)
     endif()
 endfunction()
 
@@ -367,15 +370,14 @@ endfunction()
 function(init_3rd_party_FFTW2 lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
-        add_definitions(-DUSE_${lib_name})
-        find_package(${lib_name} ${required})
-
         # Declare the version of FFTW that we are using
         if(FFTW_V3)
             message(FATAL_ERROR "Attempting to configure FFTW V2 when FFTW V3 is already configured.")
         endif()
         add_definitions(-DFFTW_V2)
         SET(FFTW_V2 TRUE CACHE INTERNAL "FFTW V2 configured")
+
+        find_package(${lib_name} ${required})
 
         # Check status and print message    
         check_3rd_party_status( FFTW2_FOUND )
@@ -386,13 +388,16 @@ function(init_3rd_party_FFTW2 lib_name required_in)
 
         # Generalized FFTW declarations
         if(${FFTW2_FOUND})
-            add_definitions(-DUSE_FFTW)
-            add_definitions(-DFFTW_FOUND)
+            add_definitions(-DUSE_FFTW=1)
+            add_definitions(-DFFTW_FOUND=1)
             SET(USE_FFTW TRUE CACHE INTERNAL "FFTW is configured")
             SET(FFTW_FOUND TRUE CACHE INTERNAL "FFTW is configured")
+        else()
+            add_definitions(-DUSE_FFTW=0)
+            add_definitions(-DFFTW_FOUND=0)
         endif()
     else()
-        skip_3rd_party_status(required_in)
+        skip_3rd_party_status(${lib_name} required_in)
     endif()
 endfunction()
 
@@ -400,15 +405,14 @@ endfunction()
 function(init_3rd_party_FFTW3 lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
-        add_definitions(-DUSE_${lib_name})
-        find_package(${lib_name} ${required})
-
         # Declare the version of FFTW that we are using
         if(FFTW_V2)
             message(FATAL_ERROR "Attempting to configure FFTW V3 when FFTW V2 is already configured.")
         endif()
         add_definitions(-DFFTW_V3)
         SET(FFTW_V3 TRUE CACHE INTERNAL "FFTW V3 configured")
+
+        find_package(${lib_name} ${required})
 
         # Check status and print message    
         check_3rd_party_status( FFTW3_FOUND )
@@ -419,13 +423,16 @@ function(init_3rd_party_FFTW3 lib_name required_in)
 
         # Generalized FFTW declarations
         if(${FFTW3_FOUND})
-            add_definitions(-DUSE_FFTW)
-            add_definitions(-DFFTW_FOUND)
+            add_definitions(-DUSE_FFTW=1)
+            add_definitions(-DFFTW_FOUND=1)
             SET(USE_FFTW TRUE CACHE INTERNAL "FFTW (version 2 or 3) is configured")
             SET(FFTW_FOUND TRUE CACHE INTERNAL "FFTW (version 2 or 3) is configured")
+        else()
+            add_definitions(-DUSE_FFTW=0)
+            add_definitions(-DFFTW_FOUND=0)
         endif()
     else()
-        skip_3rd_party_status(required_in)
+        skip_3rd_party_status(${lib_name} required_in)
     endif()
 endfunction()
 
@@ -433,17 +440,14 @@ endfunction()
 function(init_3rd_party_OpenMP lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
-        add_definitions(-DUSE_${lib_name})
         find_package(${lib_name} ${required})
-
         # Check status and print message    
         check_3rd_party_status( OpenMP_FOUND )
-
         # Personalized set-up:
         set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
         set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
     else()
-        skip_3rd_party_status(required_in)
+        skip_3rd_party_status(${lib_name} required_in)
     endif()
 endfunction()
 
@@ -455,20 +459,16 @@ function(init_3rd_party_Soci lib_name required_in)
 
     set_required_variables(${required_in})
     if(USE_${lib_name})
-        add_definitions(-DUSE_${lib_name})
         if(${n_optional_args} GREATER 0)
             find_package(${lib_name} ${required} COMPONENTS "${optional_args}" )
         else()
             find_package(${lib_name} ${required} )
         endif()
-
         # Check status and print message    
         check_3rd_party_status( SOCI_FOUND )
-
         # Personalized set-up:
         include_directories( ${SOCI_INCLUDE_DIRS} )
         link_libraries( ${SOCI_LIBRARY} )
-
         # Add plugins
         if(${n_optional_args} GREATER 0)
             foreach(component_i ${optional_args})
@@ -477,7 +477,7 @@ function(init_3rd_party_Soci lib_name required_in)
             endforeach()
         endif()
     else()
-        skip_3rd_party_status(required_in)
+        skip_3rd_party_status(${lib_name} required_in)
     endif()
 endfunction()
 
@@ -485,17 +485,14 @@ endfunction()
 function(init_3rd_party_PostgreSQL lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
-        add_definitions(-DUSE_${lib_name})
         find_package(${lib_name} ${required})
-
         # Check status and print message    
         check_3rd_party_status( PostgreSQL_FOUND )
-
         # Personalized set-up:
         include_directories( ${PostgreSQL_INCLUDE_DIRS} )
         link_libraries( ${PostgreSQL_LIBRARIES} )
     else()
-        skip_3rd_party_status(required_in)
+        skip_3rd_party_status(${lib_name} required_in)
     endif()
 endfunction()
 
@@ -503,17 +500,14 @@ endfunction()
 function(init_3rd_party_PugiXML lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
-        add_definitions(-DUSE_${lib_name})
         find_package(${lib_name} ${required})
-
         # Check status and print message    
         check_3rd_party_status( PUGIXML_FOUND )
-
         # Personalized set-up:
         include_directories( ${PUGIXML_INCLUDE_DIR} )
         link_libraries( ${PUGIXML_LIBRARIES} )
     else()
-        skip_3rd_party_status(required_in)
+        skip_3rd_party_status(${lib_name} required_in)
     endif()
 endfunction()
 
@@ -521,9 +515,7 @@ endfunction()
 function(init_3rd_party_Threads lib_name required_in)
     set_required_variables(${required_in})
     if(USE_${lib_name})
-        add_definitions(-DUSE_${lib_name})
         find_package(${lib_name} ${required})
-
         # FindThreads does not provide a reliable way
         # to check that a threads library was found,
         # so just assume that it was. It will throw
@@ -541,7 +533,7 @@ function(init_3rd_party_Threads lib_name required_in)
         # Personalized set-up:
         link_libraries( Threads::Threads )
     else()
-        skip_3rd_party_status(required_in)
+        skip_3rd_party_status(${lib_name} required_in)
     endif()
 endfunction()
 
@@ -553,7 +545,6 @@ function(init_3rd_party_Boost lib_name required_in )
 
     set_required_variables(${required_in})
     if(USE_${lib_name})
-        add_definitions(-DUSE_${lib_name})
         if(${n_optional_args} GREATER 0)
             find_package(${lib_name} ${required} COMPONENTS "${optional_args}" )
         else()
@@ -567,6 +558,6 @@ function(init_3rd_party_Boost lib_name required_in )
         include_directories( ${Boost_INCLUDE_DIRS} )
         link_libraries( ${Boost_LIBRARIES} )
     else()
-        skip_3rd_party_status(required_in)
+        skip_3rd_party_status(${lib_name} required_in)
     endif()
 endfunction()

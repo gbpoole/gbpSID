@@ -7,9 +7,9 @@
 
 void strip_path_local(char *string);
 void strip_path_local(char *string) {
-    int  i_char;
-    int  j_char;
-    int  i_start;
+    int i_char;
+    int j_char;
+    int i_start;
 
     int string_size = strlen(string);
     for(i_char = 0, i_start = 0; i_char < string_size; i_char++) {
@@ -30,8 +30,9 @@ void strip_path_local(char *string) {
 //! \param argv A pointer to the argument list passed to main()
 //! \param mpi_comm_as_void An optional MPI communicator to inherit from.  Set to NULL to ignore.
 //!
-//! This function should be called as soon as possible for any project utilizing *gbpSID*.  It takes pointers to the run-time arguments passed to main() and an optional communicator to inherit from as parameters
-void SID_Init(int *argc, char **argv[], void *mpi_comm_as_void) {
+//! This function should be called as soon as possible for any project utilizing *gbpSID*.  It takes pointers to the run-time arguments passed to
+//! main() and an optional communicator to inherit from as parameters
+void SID_Init(SID_MARK_USED(int *argc, USE_MPI), char **argv[], void *mpi_comm_as_void) {
     int status;
     int i_level;
     int i_char;
@@ -153,10 +154,10 @@ void SID_Init(int *argc, char **argv[], void *mpi_comm_as_void) {
         SID.fp_log = NULL;
     else
         SID.fp_log = stderr;
-    SID.level           = 0;
-    SID.indent          = GBP_TRUE;
-    SID.logging_active  = GBP_TRUE;
-    SID.verbosity       = SID_LOG_MAX_LEVELS;
+    SID.level          = 0;
+    SID.indent         = GBP_TRUE;
+    SID.logging_active = GBP_TRUE;
+    SID.verbosity      = SID_LOG_MAX_LEVELS;
 
     // Store the name of the binary executable that brought us here
     strcpy(SID.My_binary, (*argv)[0]);
