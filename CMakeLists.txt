@@ -7,11 +7,6 @@ cmake_minimum_required(VERSION 3.8)
 # Add the 'cmake' directory in the project directory to the module path
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_SOURCE_DIR};${CMAKE_SOURCE_DIR}/.cmake")
 
-# Clear default install directory (user should use
-# DESTDIR with make to set installation directory)
-set( CMAKE_INSTALL_PREFIX "./" )
-# ===================
-
 # Load all macros and functions
 message(STATUS "Loading macros & functions...")
 include ("validate_project") # Project validation and initialization macros
@@ -21,7 +16,7 @@ include ("build")            # Main build macros
 include ("custom_targets")   # Custom-target macros
 message(STATUS "Done.")
 
-# Initialize this project
+# Initialize this project (needs to come before project() to get _PROJECT_NAME)
 include ("project")
 validate_project( )
 
@@ -31,8 +26,14 @@ include ("init_paths")
 # Set default compilers; must come before project()
 init_compilers()
 
+# ===================
+
 # Declare the project name
 project (${_PROJECT_NAME})
+
+# Clear default install directory (user should use
+# DESTDIR with make to set installation directory)
+set( CMAKE_INSTALL_PREFIX "./" )
 
 # Validate compilers (minimum versions, etc)
 validate_compilers()
