@@ -160,7 +160,7 @@ macro(check_3rd_party_status success )
         # Create a preprocessor macro that can be used in the code
         add_definitions(-DUSE_${lib_name}=1)
         SET(USE_${lib_name} TRUE CACHE INTERNAL "${lib_name} is configured")
-        message(STATUS "   -> ${required_txt} library initialized:  ${lib_name}")
+        message(STATUS "   -> ${required_txt} library initialized: ${lib_name}")
     else()
         # Create a preprocessor macro that can be used in the code
         add_definitions(-DUSE_${lib_name}=0)
