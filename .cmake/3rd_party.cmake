@@ -94,7 +94,7 @@ macro(add_external_submodule extern_dir submodule_name filename_check flag_gbpBu
     # Make sure we have updated the Clara submodule
     set(filename_check_path "${extern_dir}/${filename_check}")
     if(NOT EXISTS "${filename_check_path}")
-        message(STATUS "  -> Checking out submodule: ${submodule_name}")
+        message(STATUS "   -> Checking out submodule: ${submodule_name}")
         execute_process(COMMAND git submodule update --init WORKING_DIRECTORY ${extern_dir})
     else()
         message(STATUS "   -> ${submodule_name} submodule has already been checked out")

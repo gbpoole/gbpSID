@@ -25,14 +25,8 @@ message(STATUS "Done.")
 include ("project")
 validate_project( )
 
-# Add a couple common library prefix paths
-list(APPEND CMAKE_PREFIX_PATH $ENV{HOME})
-list(APPEND CMAKE_PREFIX_PATH $ENV{HOME}/my_code)
-list(APPEND CMAKE_PREFIX_PATH $ENV{HOME}/3rd_Party)
-
-# For some reason, find_path does not search these paths ... add them.
-list(APPEND CMAKE_INCLUDE_PATH $ENV{CPATH})
-list(APPEND CMAKE_INCLUDE_PATH $ENV{INCLUDE})
+# Add a bunch of common library prefix paths from the environment
+include ("init_paths")
 
 # Set default compilers; must come before project()
 init_compilers()
