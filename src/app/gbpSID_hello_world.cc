@@ -21,7 +21,7 @@ using namespace gbpSID;
 // worry about either of those.
 void application::define_arguments() {
     // Set default values
-    args = {"someone", GBP_FALSE};
+    args = arg_list{"someone", GBP_FALSE};
     // Add options
     cli |= clara::Opt([&](bool) { args.enthusiastic = GBP_TRUE; })["-e"]["--enthusiastic"]("add enthusiasm to the message");
     // Add arguments
