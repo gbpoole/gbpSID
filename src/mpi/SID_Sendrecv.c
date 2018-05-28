@@ -17,9 +17,6 @@ void SID_Sendrecv(void *       sendbuf,
 #if USE_MPI
     // The following code was adapted from Gadget
 
-    if(dest != source)
-        SID_log_error("dest=source in SID_Sendrecv().", SID_ERROR_LOGIC);
-
     int size_sendtype;
     int size_recvtype;
     SID_Type_size(sendtype, &size_sendtype);
