@@ -13,46 +13,43 @@ void SID_Sendrecv(void *       sendbuf,
                   SID_MARK_USED(int recvtag, USE_MPI),
                   SID_MARK_USED(SID_Comm *comm, USE_MPI),
                   SID_MARK_USED(SID_Status *status, USE_MPI)) {
-#ifdef SID_SENDRECV_SIZELIMIT
+#if SID_SENDRECV_SIZELIMIT
 #if USE_MPI
     // The following code was adapted from Gadget
-
     int size_sendtype;
     int size_recvtype;
     SID_Type_size(sendtype, &size_sendtype);
     SID_Type_size(recvtype, &size_recvtype);
 
-    if(dest == SID.My_rank) {
+    // We're having some locking issues with this at the moment.  Needs to be debugged.  Abort for now.
+    SID_exit_error("SID_Sendrecv() currently not working with SID_SENDRECV_SIZELIMIT!=0.  Please finish debugging.",SID_ERROR_LOGIC);
+
+    if(dest == SID.My_rank)
         memcpy(recvbuf, sendbuf, recvcount * size_recvtype);
-    }
-
-    int count_limit = (int)((((long long)SID_SENDRECV_SIZELIMIT) * 1024 * 1024) / size_sendtype);
-    int iter        = 0;
-    while(sendcount > 0 || recvcount > 0) {
-        int send_now;
-        if(sendcount > count_limit) {
-            send_now = count_limit;
-            if(iter == 0) {
-                printf("imposing size limit on SID_Sendrecv() on task=%d (send of size=%d)\n", SID.My_rank, sendcount * size_sendtype);
-                fflush(stdout);
+    else{
+        int count_limit = (int)((((long long)SID_SENDRECV_SIZELIMIT) * 1024 * 1024) / size_sendtype);
+        int iter        = 0;
+        while(sendcount > 0 || recvcount > 0) {
+            int send_now = sendcount;
+            if(sendcount > count_limit) {
+                send_now = count_limit;
+                if(iter == 0)
+                    SID_log("Imposing size limit on SID_Sendrecv() on task=%d (send of size=%d)\n", SID_LOG_COMMENT|SID_LOG_ANYRANK,SID.My_rank, sendcount * size_sendtype);
+                iter++;
             }
-            iter++;
-        } else
-            send_now = sendcount;
-
-        int recv_now;
-        if(recvcount > count_limit)
-            recv_now = count_limit;
-        else
-            recv_now = recvcount;
-
-        MPI_Sendrecv(sendbuf, send_now, sendtype, dest, sendtag, recvbuf, recv_now, recvtype, source, recvtag, (MPI_Comm)(comm->comm), status);
-
-        sendcount -= send_now;
-        recvcount -= recv_now;
-
-        sendbuf += send_now * size_sendtype;
-        recvbuf += recv_now * size_recvtype;
+    
+            int recv_now = recvcount;
+            if(recvcount > count_limit)
+                recv_now = count_limit;
+    
+            MPI_Sendrecv(sendbuf, send_now, sendtype, dest, sendtag, recvbuf, recv_now, recvtype, source, recvtag, (MPI_Comm)(comm->comm), status);
+    
+            sendcount -= send_now;
+            recvcount -= recv_now;
+    
+            sendbuf += send_now * size_sendtype;
+            recvbuf += recv_now * size_recvtype;
+        }
     }
 #else
     if(sendbuf != recvbuf) {

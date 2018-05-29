@@ -5,19 +5,19 @@ void SID_Type_size(SID_Datatype type, int *size) {
     MPI_Type_size(type, size);
 #else
     if(type == SID_INT)
-        (*size) = sizeof(int);
+        (*size) = (int)sizeof(int);
     else if(type == SID_LONG_LONG)
-        (*size) = sizeof(long long);
+        (*size) = (int)sizeof(long long);
     else if(type == SID_UNSIGNED)
-        (*size) = sizeof(unsigned int);
+        (*size) = (int)sizeof(unsigned int);
     else if(type == SID_SIZE_T)
-        (*size) = sizeof(size_t);
+        (*size) = (int)sizeof(size_t);
     else if(type == SID_FLOAT)
-        (*size) = sizeof(float);
+        (*size) = (int)sizeof(float);
     else if(type == SID_DOUBLE)
-        (*size) = sizeof(double);
+        (*size) = (int)sizeof(double);
     else if(type == SID_CHAR)
-        (*size) = sizeof(char);
+        (*size) = (int)sizeof(char);
     else
         SID_exit_error("Unsupported SID_Datatype (%d) in SID_Type_size().", SID_ERROR_LOGIC, type);
 #endif
