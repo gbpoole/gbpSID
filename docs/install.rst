@@ -1,7 +1,7 @@
 Installation
 ============
 
-To aquire and build this library, you will need to have :code:`git` and :code:`cmake` installed.  You may also want one-or-more of the following optional 3rd-party libraries:
+To acquire and build this library, you will need to have :code:`git` and :code:`cmake` installed.  You may also want one-or-more of the following optional 3rd-party libraries:
 
 * an MPI distribution (eg. OpenMPI)
 
@@ -15,12 +15,12 @@ With these installed, you will need to:
 
 3) build it with :code:`make` 
 
-Alternatively (an prehaps more-often-than-not), you may want to add *gbpSID* as a submodule to another project.  In either case, each of these steps is described in more detail below.
+Alternatively (an perhaps more-often-than-not), you may want to add *gbpSID* as a submodule to another project.  In either case, each of these steps is described in more detail below.
 
-Acquireing the code
+Acquiring the code
 -------------------
 
-*gbpSID* is a "live-at-head" project.  In other words, it is intended that the latest commit on the 'master' branch will always be the best version to develop with.  To aquire it, simply clone it from *GitHub*::
+It is intended that the latest commit on the 'master' branch will always be the best version to develop with.  To acquire it, simply clone it from *GitHub*::
 
     git clone https://github.com/gbpoole/gbpSID.git
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# gbpSID documentation build configuration file
+# Project documentation build configuration file
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -26,16 +26,15 @@ import breathe # This is here so that pigar will catch it when generating requir
 from datetime import datetime
 from recommonmark.parser import CommonMarkParser
 
-## Include the paths to local python projects (including the _dev package)
-#for setup_py_i in glob.glob(dir_python + "/**/setup.py", recursive=True):
-#    sys.path.append(os.path.abspath(os.path.dirname(setup_py_i)))
-
 # Include the project development module
 import gbpBuild.project as prj
 import gbpBuild.docs as docs
 
 # Parse the project directory to learn what we need about the project
 this_project = prj.project(os.path.abspath(__file__))
+
+# Add all python packages from this project to the path
+this_project.add_packages_to_path()
 
 # Add it to the project path
 breathe_directory = "%s/breathe/" % (this_project.params['dir_docs_build'])

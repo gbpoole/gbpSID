@@ -154,6 +154,9 @@ Functions
 .. doxygenfunction:: SID_Bcast
    :project: gbpSID
 
+.. doxygenfunction:: SID_Wait
+   :project: gbpSID
+
 .. doxygenfunction:: SID_Waitall
    :project: gbpSID
 
@@ -261,5 +264,11 @@ Functions
    :project: gbpSID
 
 .. doxygenfunction:: SID_test
+   :project: gbpSID
+
+.. doxygenfunction:: exchange_ring_buffer
+   :project: gbpSID
+
+.. doxygenfunction:: set_exchange_ring_ranks
    :project: gbpSID
 

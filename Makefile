@@ -109,7 +109,7 @@ ifeq ($(shell which pip),)
 	@$(error "'pip' not in path.  Please install it or fix your environment and try again.)
 endif
 	@pip -q install -r .requirements.txt
-	@pip -q install -r .requirements_build.txt
+	@pip -q install -r .requirements_dev.txt
 	@$(ECHO) "Done."
 
 ########################################
@@ -143,6 +143,7 @@ endif
 # Remove the documenation build directory
 .PHONY: docs-clean
 docs-clean:
+	@rm -rf docs/__pycache__
 	@rm -rf $(BUILD_DIR_DOCS)
 
 ##################################

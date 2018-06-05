@@ -15,5 +15,5 @@ where options are:
   **-?,** **-h,** **--help**        
 	display usage information
 
-This program demonstrates how to configure and use an application program with the gbpApp class.
+This program demonstrates how to configure and use an application program with the gbpSID application class.
 
